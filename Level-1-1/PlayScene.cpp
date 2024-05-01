@@ -9,7 +9,7 @@
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
-
+#include "Shroom.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
