@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "Shroom.h"
 #include "Platform.h"
+#include "MysteryBlock.h"
 
 #include "Collision.h"
 
@@ -60,6 +61,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithShroom(e);
 	else if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatform(e);
+	else if (dynamic_cast<CMysteryBlock*>(e->obj))
+		OnCollisionWithMysteryBlock(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -116,6 +119,14 @@ void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
 }
 
 void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
+{
+	if (e->ny > 0)
+	{
+		
+	}
+}
+
+void CMario::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 {
 	if (e->ny > 0)
 	{

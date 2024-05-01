@@ -78,6 +78,9 @@
     <ClCompile Include="Shroom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MysteryBlock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
