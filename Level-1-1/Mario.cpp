@@ -8,6 +8,7 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "Shroom.h"
+#include "Platform.h"
 
 #include "Collision.h"
 
@@ -57,6 +58,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CShroom*>(e->obj))
 		OnCollisionWithShroom(e);
+	else if (dynamic_cast<CPlatform*>(e->obj))
+		OnCollisionWithPlatform(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -109,6 +112,14 @@ void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
 	else
 	{
 		StartUntouchable();
+	}
+}
+
+void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
+{
+	if (e->ny > 0)
+	{
+		
 	}
 }
 
