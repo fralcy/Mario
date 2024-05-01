@@ -33,7 +33,7 @@
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 
-
+#define MARIO_STATE_LEVEL_UP 700
 #pragma region ANIMATION_ID
 
 #define ID_ANI_MARIO_IDLE_RIGHT 400
@@ -78,6 +78,8 @@
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1600
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1601
 
+#define ID_ANI_MARIO_LEVEL_UP_RIGHT 1700
+#define ID_ANI_MARIO_LEVEL_UP_LEFT 1701
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -117,9 +119,11 @@ class CMario : public CGameObject
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
+	void OnCollisionWithShroom(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
+	int GetAniIdLevelUp();
 
 public:
 	CMario(float x, float y) : CGameObject(x, y)

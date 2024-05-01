@@ -7,6 +7,7 @@
 #include "Goomba.h"
 #include "Coin.h"
 #include "Portal.h"
+#include "Shroom.h"
 
 #include "Collision.h"
 
@@ -54,6 +55,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
+	else if (dynamic_cast<CShroom*>(e->obj))
+		OnCollisionWithShroom(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -94,6 +97,19 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	e->obj->Delete();
 	coin++;
+}
+void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
+{
+	e->obj->Delete();
+	if (level == MARIO_LEVEL_SMALL)
+	{
+		SetState(MARIO_STATE_LEVEL_UP);
+		SetLevel(MARIO_LEVEL_BIG);
+	}
+	else
+	{
+		StartUntouchable();
+	}
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -224,7 +240,19 @@ int CMario::GetAniIdBig()
 
 	return aniId;
 }
-
+int CMario::GetAniIdLevelUp()
+{
+	int aniId = -1;
+	if (nx > 0)
+	{
+		aniId = ID_ANI_MARIO_LEVEL_UP_RIGHT;
+	}
+	else
+	{
+		aniId = ID_ANI_MARIO_LEVEL_UP_LEFT;
+	}
+	return aniId;
+}
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -232,6 +260,8 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if (state == MARIO_STATE_LEVEL_UP)
+		aniId = GetAniIdLevelUp();
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
