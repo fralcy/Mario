@@ -152,5 +152,8 @@
     <ClInclude Include="Shroom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MysteryBlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
