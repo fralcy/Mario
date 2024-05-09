@@ -3,10 +3,9 @@
 CCoin::CCoin(float x, float y, int type):CGameObject(x, y)
 {
 	this->type = type;
-	maxheight = y - 20;
 	if (type == 0)
 	{
-		vy = -0.1f;
+		vy = -0.25f;
 	}
 }
 
@@ -30,15 +29,29 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (type == 0)
 	{
-		if (y > maxheight)
+		if (isfalling == false)
 		{
-			y += vy * dt;
+			if (y > maxheight)
+			{
+				y += vy * dt;
+			}
+			else
+			{
+				isfalling = true;
+				vy = -vy;
+			}
 		}
 		else
 		{
-			isDeleted = true;
-			Delete();
-			return;
+			if (y < maxheight + 40)
+			{
+				y += vy * dt;
+			}
+			else
+			{
+				Delete();
+				return;
+			}
 		}
 	}
 	CGameObject::Update(dt, coObjects);

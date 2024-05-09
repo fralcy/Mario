@@ -12,11 +12,13 @@
 class CCoin : public CGameObject {
 protected:
 	int type;
-	float maxheight;
+	float maxheight = y - 64;
+	bool isfalling = false;
 public:
 	CCoin(float x, float y, int type);
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
+	int GetType() const { return type; }
 };
