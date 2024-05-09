@@ -11,6 +11,7 @@
 #include "Platform.h"
 #include "Shroom.h"
 #include "Mysteryblock.h"
+#include "Leaf.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -124,7 +125,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int item = (int)atof(tokens[3].c_str());
 		obj = new CMysteryBlock(x, y, item, MYSTERY_BLOCK_STATE_ACTIVE); 
 		break; }
-
+	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 	case OBJECT_TYPE_PLATFORM:
 	{
 
@@ -323,9 +324,9 @@ void CPlayScene::AddObj(int obj_type, float x, float y, int p)
 		obj = new CMysteryBlock(x, y, 0, p);
 		break;
 
-	//case OBJECT_TYPE_LEAF:
-	//	obj = new CShroom(x, y);
-	//	break;
+	case OBJECT_TYPE_LEAF:
+		obj = new CLeaf(x, y);
+		break;
 
 	default:
 		DebugOut(L"[ERROR] Invalid dynamic object type: %d\n", obj_type);
