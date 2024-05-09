@@ -10,6 +10,7 @@
 #include "Coin.h"
 #include "Platform.h"
 #include "Shroom.h"
+#include "Mysteryblock.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -118,8 +119,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+	case OBJECT_TYPE_COIN: obj = new CCoin(x, y, 1); break;
 	case OBJECT_TYPE_SHROOM: obj = new CShroom(x, y); break;
+	case OBJECT_TYPE_MYSTERY_BLOCK: {
+		int item = (int)atof(tokens[3].c_str());
+		obj = new CMysteryBlock(x, y, item); 
+		break; }
 
 	case OBJECT_TYPE_PLATFORM:
 	{
@@ -300,6 +305,36 @@ void CPlayScene::Unload()
 	player = NULL;
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
+}
+
+void CPlayScene::AddObj(int obj_type, float x, float y)
+{
+	CGameObject* obj = NULL;
+
+	switch (obj_type)
+	{
+	case OBJECT_TYPE_COIN:
+		obj = new CCoin(x, y, 0);
+		break;
+
+	case OBJECT_TYPE_SHROOM:
+		obj = new CShroom(x, y);
+		break;
+
+	//case OBJECT_TYPE_LEAF:
+	//	obj = new CShroom(x, y);
+	//	break;
+
+	default:
+		DebugOut(L"[ERROR] Invalid dynamic object type: %d\n", obj_type);
+		return;
+	}
+
+	if (obj != NULL)
+	{
+		obj->SetPosition(x, y);
+		objects.push_back(obj);
+	}
 }
 
 bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }

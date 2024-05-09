@@ -5,10 +5,13 @@ coin.txt
 cloud.txt
 brick.txt
 ground.txt
+mysteryblock.txt
+goomba.txt
+shroom.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 6 = Shroom
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
@@ -34,12 +37,16 @@ ground.txt
 4	160	80
 4	180	80
 
+#Goomba
 
-
+#Shroom
 
 #Platform
 5 	0	200	16	15	40	71000	72000	73000
 5	140	160	16	15	26	51000	52000	53000
+
+#?Block
+7	80	140	0
 
 #Portal 
 50	200	160	216	180	1

@@ -78,7 +78,7 @@
     <ClCompile Include="Shroom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MysteryBlock.cpp">
+    <ClCompile Include="Mysteryblock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,7 +155,7 @@
     <ClInclude Include="Shroom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MysteryBlock.h">
+    <ClInclude Include="Mysteryblock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

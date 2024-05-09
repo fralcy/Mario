@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "debug.h"
-
+#include "AssetIDs.h"
 #include "Mario.h"
 #include "Game.h"
 
@@ -50,6 +50,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = 0;
 	}
+	
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
@@ -128,9 +129,27 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 {
+	CMysteryBlock* mysteryblock  = dynamic_cast<CMysteryBlock*>(e->obj);
 	if (e->ny > 0)
 	{
-		
+		if (mysteryblock->GetState() == MYSTERY_BLOCK_STATE_ACTIVE)
+		{
+			mysteryblock->SetState(MYSTERY_BLOCK_STATE_DIE);
+			if (mysteryblock->GetType()==1)
+				if (level != MARIO_LEVEL_BIG)
+				{
+					CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_SHROOM, mysteryblock->GetX(), mysteryblock->GetY()-16);
+				}
+				else
+				{
+
+				}
+			else
+			{
+				CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_COIN, mysteryblock->GetX(), mysteryblock->GetY());
+				coin++;
+			}
+		}
 	}
 }
 

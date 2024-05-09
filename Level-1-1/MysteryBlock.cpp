@@ -2,8 +2,12 @@
 
 void CMysteryBlock::Render()
 {
-	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(ID_ANI_MYSTERY_BLOCK)->Render(x, y);
+	int aniId = ID_ANI_MYSTERY_BLOCK;
+	if (state == MYSTERY_BLOCK_STATE_DIE)
+	{
+		aniId = ID_ANI_MYSTERY_BLOCK_DIE;
+	}
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }
 
