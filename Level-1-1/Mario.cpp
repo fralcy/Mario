@@ -142,7 +142,10 @@ void CMario::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 			if (mysteryblock->GetType()==1)
 				if (level != MARIO_LEVEL_BIG)
 				{
-					CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_SHROOM, mysteryblock->GetX(), mysteryblock->GetY()-16);
+					int dir = 0;
+					(x < mysteryblock->GetX()) ? dir = 1 : dir = -1;
+					CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_SHROOM, mysteryblock->GetX(), mysteryblock->GetY(), dir);
+					CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_MYSTERY_BLOCK, mysteryblock->GetX(), mysteryblock->GetY(), 0);
 				}
 				else
 				{
@@ -150,7 +153,7 @@ void CMario::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 				}
 			else
 			{
-				CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_COIN, mysteryblock->GetX(), mysteryblock->GetY());
+				CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_COIN, mysteryblock->GetX(), mysteryblock->GetY()-16, 0);
 				coin++;
 			}
 		}

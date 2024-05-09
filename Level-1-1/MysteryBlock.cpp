@@ -1,5 +1,10 @@
 #include "MysteryBlock.h"
 
+CMysteryBlock::CMysteryBlock(float x, float y, int type, int state) : CGameObject(x, y)
+{	
+	this->type = type;
+	this->state = state;
+}
 void CMysteryBlock::Render()
 {
 	int aniId = ID_ANI_MYSTERY_BLOCK;

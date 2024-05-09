@@ -12,7 +12,7 @@
 class CCoin : public CGameObject {
 protected:
 	int type;
-	float maxheight = y - 64;
+	float maxheight = y - 48;
 	bool isfalling = false;
 public:
 	CCoin(float x, float y, int type);

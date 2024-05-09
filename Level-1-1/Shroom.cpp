@@ -1,11 +1,10 @@
 #include "Shroom.h"
 
-CShroom::CShroom(float x, float y) :CGameObject(x, y)
+CShroom::CShroom(float x, float y, int dir) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = SHROOM_GRAVITY;
-	die_start = -1;
-	SetState(SHROOM_STATE_WALKING);
+	this->dir = dir;
 }
 
 void CShroom::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -39,13 +38,22 @@ void CShroom::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CShroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
-	vx += ax * dt;
-
-	if ((state == SHROOM_STATE_DIE) && (GetTickCount64() - die_start > SHROOM_DIE_TIMEOUT))
+	if (isgrowing)
 	{
-		isDeleted = true;
-		return;
+		if (y > maxheight)
+		{
+			y -= 0.05f * dt;
+		}
+		else
+		{
+			isgrowing = false;
+			vx = SHROOM_WALKING_SPEED * dir;
+		}
+	}
+	else
+	{
+		vy += ay * dt;
+		vx += ax * dt;
 	}
 
 	CGameObject::Update(dt, coObjects);
@@ -55,30 +63,11 @@ void CShroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CShroom::Render()
 {
-	int aniId = ID_ANI_SHROOM_WALKING;
-	if (state == SHROOM_STATE_DIE)
+	int ani = ID_ANI_SHROOM_WALKING;
+	if (isgrowing)
 	{
-		aniId = ID_ANI_SHROOM_DIE;
+		ani = ID_ANI_SHROOM_GROWING;
 	}
-
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	CAnimations::GetInstance()->Get(ani)->Render(x, y);
 	//RenderBoundingBox();
-}
-
-void CShroom::SetState(int state)
-{
-	CGameObject::SetState(state);
-	switch (state)
-	{
-	case SHROOM_STATE_DIE:
-		die_start = GetTickCount64();
-		y += (SHROOM_BBOX_HEIGHT - SHROOM_BBOX_HEIGHT_DIE) / 2;
-		vx = 0;
-		vy = 0;
-		ay = 0;
-		break;
-	case SHROOM_STATE_WALKING:
-		vx = -SHROOM_WALKING_SPEED;
-		break;
-	}
 }

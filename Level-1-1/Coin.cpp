@@ -43,7 +43,7 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else
 		{
-			if (y < maxheight + 40)
+			if (y < maxheight + 32)
 			{
 				y += vy * dt;
 			}

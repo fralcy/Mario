@@ -120,10 +120,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y, 1); break;
-	case OBJECT_TYPE_SHROOM: obj = new CShroom(x, y); break;
 	case OBJECT_TYPE_MYSTERY_BLOCK: {
 		int item = (int)atof(tokens[3].c_str());
-		obj = new CMysteryBlock(x, y, item); 
+		obj = new CMysteryBlock(x, y, item, MYSTERY_BLOCK_STATE_ACTIVE); 
 		break; }
 
 	case OBJECT_TYPE_PLATFORM:
@@ -307,7 +306,7 @@ void CPlayScene::Unload()
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 
-void CPlayScene::AddObj(int obj_type, float x, float y)
+void CPlayScene::AddObj(int obj_type, float x, float y, int p)
 {
 	CGameObject* obj = NULL;
 
@@ -318,7 +317,10 @@ void CPlayScene::AddObj(int obj_type, float x, float y)
 		break;
 
 	case OBJECT_TYPE_SHROOM:
-		obj = new CShroom(x, y);
+		obj = new CShroom(x, y, p);
+		break;
+	case OBJECT_TYPE_MYSTERY_BLOCK:
+		obj = new CMysteryBlock(x, y, 0, p);
 		break;
 
 	//case OBJECT_TYPE_LEAF:
