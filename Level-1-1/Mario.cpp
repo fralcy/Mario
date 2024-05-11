@@ -10,7 +10,7 @@
 #include "Shroom.h"
 #include "Platform.h"
 #include "MysteryBlock.h"
-
+#include "Leaf.h"
 #include "Collision.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -64,6 +64,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPlatform(e);
 	else if (dynamic_cast<CMysteryBlock*>(e->obj))
 		OnCollisionWithMysteryBlock(e);
+	else if (dynamic_cast<CLeaf*>(e->obj))
+		OnCollisionWithLeaf(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -139,18 +141,19 @@ void CMario::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 		if (mysteryblock->GetState() == MYSTERY_BLOCK_STATE_ACTIVE)
 		{
 			mysteryblock->SetState(MYSTERY_BLOCK_STATE_DIE);
-			if (mysteryblock->GetType()==1)
+			if (mysteryblock->GetType() == 1)
+			{
 				if (level != MARIO_LEVEL_BIG)
 				{
 					int dir = 0;
 					(x < mysteryblock->GetX()) ? dir = 1 : dir = -1;
 					CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_SHROOM, mysteryblock->GetX(), mysteryblock->GetY(), dir);
-					CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_MYSTERY_BLOCK, mysteryblock->GetX(), mysteryblock->GetY(), 0);
 				}
 				else
 				{
-
+					CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_LEAF, mysteryblock->GetX(), mysteryblock->GetY(), 0);
 				}
+			}	
 			else
 			{
 				CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_COIN, mysteryblock->GetX(), mysteryblock->GetY()-16, 0);
@@ -158,6 +161,11 @@ void CMario::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 			}
 		}
 	}
+}
+void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
+{
+	CLeaf* leaf = dynamic_cast<CLeaf*>(e->obj);
+	leaf->Delete();
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)

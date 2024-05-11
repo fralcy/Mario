@@ -1,10 +1,10 @@
 #include "Shroom.h"
 
-CShroom::CShroom(float x, float y, int dir) :CGameObject(x, y)
+CShroom::CShroom(float x, float y, int nx) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = SHROOM_GRAVITY;
-	this->dir = dir;
+	this->nx = nx;
 }
 
 void CShroom::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -38,7 +38,7 @@ void CShroom::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CShroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (isgrowing)
+	if (isspawning)
 	{
 		if (y > maxheight)
 		{
@@ -46,8 +46,8 @@ void CShroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else
 		{
-			isgrowing = false;
-			vx = SHROOM_WALKING_SPEED * dir;
+			isspawning = false;
+			vx = SHROOM_WALKING_SPEED * nx;
 		}
 	}
 	else
@@ -64,7 +64,7 @@ void CShroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CShroom::Render()
 {
 	int ani = ID_ANI_SHROOM_WALKING;
-	if (isgrowing)
+	if (isspawning)
 	{
 		ani = ID_ANI_SHROOM_GROWING;
 	}

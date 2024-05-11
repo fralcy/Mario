@@ -15,8 +15,7 @@ class CShroom : public CGameObject
 protected:
 	float ax;
 	float ay;
-	int dir;
-	bool isgrowing = true;
+	bool isspawning = true;
 	float maxheight = y - 16;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

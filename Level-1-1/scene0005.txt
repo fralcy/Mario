@@ -39,7 +39,7 @@ leaf.txt
 4	180	80
 
 #Goomba
-2	200	180
+
 
 #Shroom
 
@@ -52,7 +52,6 @@ leaf.txt
 7	64	140	0
 
 #Leaf
-8	80	100
 
 #Brick
 
