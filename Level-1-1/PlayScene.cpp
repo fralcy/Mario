@@ -12,6 +12,7 @@
 #include "Shroom.h"
 #include "Mysteryblock.h"
 #include "Leaf.h"
+#include "Tile.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -126,6 +127,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CMysteryBlock(x, y, item, MYSTERY_BLOCK_STATE_ACTIVE); 
 		break; }
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
+	case OBJECT_TYPE_TILE: {
+		int spriteid = (int)atof(tokens[3].c_str());
+		obj = new CTile(x, y, spriteid);
+		break; }
 	case OBJECT_TYPE_PLATFORM:
 	{
 

@@ -60,8 +60,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CShroom*>(e->obj))
 		OnCollisionWithShroom(e);
-	else if (dynamic_cast<CPlatform*>(e->obj))
-		OnCollisionWithPlatform(e);
 	else if (dynamic_cast<CMysteryBlock*>(e->obj))
 		OnCollisionWithMysteryBlock(e);
 	else if (dynamic_cast<CLeaf*>(e->obj))
@@ -121,14 +119,6 @@ void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
 	else
 	{
 		StartUntouchable();
-	}
-}
-
-void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
-{
-	if (e->ny > 0)
-	{
-		
 	}
 }
 
