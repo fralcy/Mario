@@ -13,6 +13,7 @@
 #include "Mysteryblock.h"
 #include "Leaf.h"
 #include "Tile.h"
+#include "Block.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -130,6 +131,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_TILE: {
 		int spriteid = (int)atof(tokens[3].c_str());
 		obj = new CTile(x, y, spriteid);
+		break; }
+	case OBJECT_TYPE_BLOCK:{
+		int spriteid = (int)atof(tokens[3].c_str());
+		obj = new CBlock(x, y, spriteid);
 		break; }
 	case OBJECT_TYPE_PLATFORM:
 	{
