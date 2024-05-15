@@ -9,8 +9,8 @@ void CBrick::Render()
 
 void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 {
-	l = x - LEAF_BBOX_WIDTH/2;
-	t = y - LEAF_BBOX_HEIGHT/2;
-	r = l + LEAF_BBOX_WIDTH;
-	b = t + LEAF_BBOX_HEIGHT;
+	l = x - BRICK_BBOX_WIDTH/2;
+	t = y - BRICK_BBOX_HEIGHT/2;
+	r = l + BRICK_BBOX_WIDTH;
+	b = t + BRICK_BBOX_HEIGHT;
 }
