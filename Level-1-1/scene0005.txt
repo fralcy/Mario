@@ -292,7 +292,7 @@ plant.txt
 #Coin
 4	1088	90
 #Fire_Plant
-11	376	90
+11	376	122	2
 #MARIO
 0	120	10
 
