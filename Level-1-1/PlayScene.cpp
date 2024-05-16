@@ -14,6 +14,7 @@
 #include "Leaf.h"
 #include "Tile.h"
 #include "Block.h"
+#include "FirePlant.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -136,6 +137,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int spriteid = (int)atof(tokens[3].c_str());
 		obj = new CBlock(x, y, spriteid);
 		break; }
+	case OBJECT_TYPE_FIRE_PLANT:
+		obj = new CFirePlant(x, y);
+		break;
 	case OBJECT_TYPE_PLATFORM:
 	{
 

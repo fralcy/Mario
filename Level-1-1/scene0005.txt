@@ -10,6 +10,7 @@ shroom.txt
 leaf.txt
 background.txt
 block.txt
+plant.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -290,6 +291,8 @@ block.txt
 9	1072	138	95000
 #Coin
 4	1088	90
+#Fire_Plant
+11	376	90
 #MARIO
 0	120	10
 
