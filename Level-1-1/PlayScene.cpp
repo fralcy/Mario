@@ -15,6 +15,7 @@
 #include "Tile.h"
 #include "Block.h"
 #include "FirePlant.h"
+#include "Fireball.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -140,6 +141,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_FIRE_PLANT: {
 		float vineLength = (float)(int)atof(tokens[3].c_str());
 		obj = new CFirePlant(x, y, vineLength);
+		break;
+	}
+	case OBJECT_TYPE_FIRE_BALL: {
+		int dir = (float)(int)atof(tokens[3].c_str());
+		obj = new CFireball(x, y, dir);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:

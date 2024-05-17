@@ -1,0 +1,21 @@
+#include "Fireball.h"
+CFireball::CFireball(float x, float y, int dir):CGameObject(x,y)
+{
+	
+}
+void CFireball::Render()
+{
+	CAnimations* animations = CAnimations::GetInstance();
+	animations->Get(ID_ANI_FIREBALL)->Render(x, y);
+}
+void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+
+}
+void CFireball::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	left = x - FIREBALL_SIZE / 2;
+	top = y - FIREBALL_SIZE / 2;
+	right = left + FIREBALL_SIZE;
+	bottom = top + FIREBALL_SIZE;
+}

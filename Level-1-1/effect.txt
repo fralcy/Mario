@@ -1,0 +1,13 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#Fireball
+32000	569	119	577	127	20
+32100	581	119	589	127	20
+32200	592	119	600	127	20
+32300	603	119	611	127	20
+
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+#Fireball
+32000	32000	250	32100	250	32200	250	32300	250

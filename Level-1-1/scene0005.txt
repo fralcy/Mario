@@ -11,6 +11,7 @@ leaf.txt
 background.txt
 block.txt
 plant.txt
+effect.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -63,6 +64,8 @@ plant.txt
 9	160	154	95000
 9	176	154	95000
 9	192	154	95000
+#Fireball
+12	160	106	1
 
 #MysteryBlock
 7	176	106	0
