@@ -8,12 +8,17 @@
 
 #define ID_ANI_PLANT_HEAD 31000
 
+#define WAITING_TIME 1000
+
+#define SAFE_DISTANCE 24
 class CFirePlant : public CGameObject
 {
 protected:
-	float pathLength;
+	float minHeight;
 	float maxHeight;
-	bool isHidden = true;
+	bool isHiding = false, isSpawning = true;
+	bool isWaiting = false;
+	ULONGLONG startWaiting;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
