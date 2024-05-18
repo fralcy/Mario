@@ -5,6 +5,13 @@
 
 #define FIREBALL_SPEED 0.05f
 
+#define DIR_LOWER_LEFT 1
+#define DIR_LEFT 2
+#define DIR_UPPER_LEFT 3
+#define DIR_UPPER_RIGHT 4
+#define DIR__RIGHT 5
+#define DIR_LOWER_RIGHT 6
+
 #define ID_ANI_FIREBALL 32000
 
 class CFireball : public CGameObject

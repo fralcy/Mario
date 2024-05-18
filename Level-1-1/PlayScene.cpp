@@ -144,7 +144,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 	case OBJECT_TYPE_FIRE_BALL: {
-		int dir = (float)(int)atof(tokens[3].c_str());
+		int dir = (int)atof(tokens[3].c_str());
 		obj = new CFireball(x, y, dir);
 		break;
 	}
