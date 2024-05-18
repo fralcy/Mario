@@ -1,6 +1,7 @@
 #include "FirePlant.h"
 #include "AssetIDs.h"
 #include "PlayScene.h"
+#include <cmath>
 CFirePlant::CFirePlant(float x, float y, float vineLength):CGameObject::CGameObject(x,y)
 {
 	this->minHeight = y;
@@ -10,36 +11,51 @@ CFirePlant::CFirePlant(float x, float y, float vineLength):CGameObject::CGameObj
 }
 void CFirePlant::Render()
 {
-	//Render head animations
+	//Get head animations
 	int headAniId = ID_ANI_PLANT_HEAD;
-	CAnimations::GetInstance()->Get(headAniId)->Render(x, y);
-	//Render vine
+	//Get vine sprite
 	CSprites* s = CSprites::GetInstance();
-	int vineSprite = ID_SPRITE_PLANT_VINE;
-	s->Get(vineSprite)->Draw(x, y + CELL_HEIGHT);
+    //Render
+    CAnimations::GetInstance()->Get(headAniId)->Render(x, y);
+	s->Get(ID_SPRITE_PLANT_VINE)->Draw(x, y + CELL_HEIGHT);
 }
 void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//Get Mario's Position
-	//CMario* player = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-    //float mx = player->GetX();
+    float mx, my;
+    CPlayScene* scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* player = (CMario*)scene->GetPlayer();
+    player->GetPosition(mx,my);
+    //Calculate distance to Mario
+    float dx = abs(x - mx);
+    //DebugOut(L"[INFO] x %d, mx %d, dx %d\n", x, mx, dx);
     //Wait after appearing or hiding
     if (isWaiting)
     {
-        if (GetTickCount64() - startWaiting < WAITING_TIME) return;
-        else isWaiting = false;
-        (y < minHeight) ? isHiding = true : isSpawning = true;
+        if (GetTickCount64() - startWaiting < WAITING_TIME)
+            return;
+        else
+            isWaiting = false;
     }
-
-    //Calculate distance to Mario
-    //float distance = abs(x - mx);
-    //DebugOut(L"[INFO] waiting %d, hiding %d, spawning %d\n",isWaiting, isHiding,isSpawning);
-
-    //Appear if Mario is far away or it's appearing
-    if (/*distance < SAFE_DISTANCE ||*/ isSpawning)
+    //Start appear or hide
+    if (!isWaiting)
+    {
+        if (y == minHeight && dx > SAFE_DISTANCE)
+        {
+            isSpawning = true;
+            isHiding = false;
+        }
+        else if (y == maxHeight)
+        {
+            isHiding = true;
+            isSpawning = false;
+        }
+    }
+    //Appear
+    if (isSpawning)
     {
         y -= vy * dt;
-        if (y <= maxHeight)
+        if (y < maxHeight)
         {
             y = maxHeight; // Ensure y doesn't go above maxHeight
             isSpawning = false;
@@ -47,12 +63,11 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
             startWaiting = GetTickCount64();
         }
     }
-
-    // Hide after appearing
-    if (isHiding)
+    //Hide
+    if(isHiding)
     {
         y += vy * dt;
-        if (y >= minHeight)
+        if (y > minHeight)
         {
             y = minHeight; // Ensure y doesn't go below minHeight
             isHiding = false;
@@ -62,7 +77,7 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     }
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 void CFirePlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
