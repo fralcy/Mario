@@ -2,12 +2,13 @@
 #include "AssetIDs.h"
 #include "PlayScene.h"
 #include <cmath>
+#include "Fireball.h"
 CFirePlant::CFirePlant(float x, float y, float vineLength):CGameObject::CGameObject(x,y)
 {
 	this->minHeight = y;
-    this->maxHeight = y - CELL_HEIGHT - vineLength * CELL_HEIGHT / 2;
+    this->maxHeight = y - 16 - vineLength * 8;
     startWaiting = 0;
-    mx = my = 1000;
+    mx = my = 0;
 }
 void CFirePlant::Render()
 {
@@ -29,8 +30,8 @@ void CFirePlant::Render()
         break;
     }
     //Render
-    CAnimations::GetInstance()->Get(headAniId)->Render(x, y - CELL_WIDTH / 2);
-    CSprites::GetInstance()->Get(ID_SPRITE_PLANT_VINE)->Draw(x, y + CELL_HEIGHT / 2);
+    CSprites::GetInstance()->Get(ID_SPRITE_PLANT_VINE)->Draw(x, y + 8);
+    CAnimations::GetInstance()->Get(headAniId)->Render(x, y - 6);
     RenderBoundingBox();
 }
 void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -59,9 +60,31 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     //Wait
     if (isWaiting)
     {
-        if (GetTickCount64() - startWaiting > WAITING_TIME)
-            isWaiting = false;
-        return;
+        if (GetTickCount64() - startWaiting < WAITING_TIME)
+            return;
+        isWaiting = false;
+        //Fire
+        if (y = maxHeight)
+        {
+            int dir = 0;
+            switch (state)
+            {
+            case STATE_AIM_LOWER_LEFT:
+                dir = (abs(x - mx) < DANGEROUS_DISTANCE) ? DIR_LOWER_LEFT : DIR_LEFT;
+                break;
+            case STATE_AIM_UPPER_LEFT:
+                dir = DIR_UPPER_LEFT;
+                break;
+            case STATE_AIM_UPPER_RIGHT:
+                dir = DIR_UPPER_RIGHT;
+                break;
+            case STATE_AIM_LOWER_RIGHT:
+                dir = (abs(x - mx) > DANGEROUS_DISTANCE) ? DIR_RIGHT : DIR_LOWER_RIGHT;
+                break;
+            }
+            CFireball* fire = new CFireball(x, y, dir);
+            scene->AddObj(fire);
+        }
     }
     //Start
     if (vy == 0)
@@ -95,13 +118,11 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
             startWaiting = GetTickCount64();
         }
     }
-	CGameObject::Update(dt, coObjects);
-	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 void CFirePlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x - CELL_WIDTH / 2;
-	top = y - CELL_HEIGHT / 2;
-	right = left + CELL_WIDTH;
-	bottom = top + CELL_HEIGHT * 2;
+	left = x - 8;
+	top = y - 8;
+	right = left + 16;
+    bottom = top + 30;
 }

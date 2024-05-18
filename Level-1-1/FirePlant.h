@@ -4,7 +4,7 @@
 #define CELL_WIDTH 16
 #define	CELL_HEIGHT 16
 
-#define PLANT_SPEED	0.025f
+#define PLANT_SPEED	0.02f
 
 #define STATE_AIM_LOWER_LEFT 1
 #define STATE_AIM_UPPER_LEFT 2
@@ -16,15 +16,16 @@
 #define ID_ANI_AIM_UPPER_RIGHT 31200
 #define ID_ANI_AIM_LOWER_RIGHT 31300
 
-#define WAITING_TIME 1000
+#define WAITING_TIME 2000
 
 #define SAFE_DISTANCE 24
+#define DANGEROUS_DISTANCE (SAFE_DISTANCE*4)
 class CFirePlant : public CGameObject
 {
 protected:
 	float minHeight;
 	float maxHeight;
-	bool isWaiting = false;
+	bool isWaiting = true;
 	float mx, my;
 	ULONGLONG startWaiting;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

@@ -9,7 +9,7 @@
 #define DIR_LEFT 2
 #define DIR_UPPER_LEFT 3
 #define DIR_UPPER_RIGHT 4
-#define DIR__RIGHT 5
+#define DIR_RIGHT 5
 #define DIR_LOWER_RIGHT 6
 
 #define ID_ANI_FIREBALL 32000
@@ -21,7 +21,6 @@ protected:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; }
 	virtual int IsBlocking() { return 0; }
 public:
 	CFireball(float x, float y, int dir);
