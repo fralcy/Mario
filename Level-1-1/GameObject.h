@@ -37,6 +37,8 @@ public:
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 	float GetX() const { return x; }
 	float GetY() const { return y; }
+	float GetVX() const { return vx; }
+	float GetVY() const { return vy; }
 	int GetState() { return this->state; }
 	virtual void Delete() { isDeleted = true;  }
 	bool IsDeleted() { return isDeleted; }
