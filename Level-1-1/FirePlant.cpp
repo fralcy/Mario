@@ -7,18 +7,15 @@ CFirePlant::CFirePlant(float x, float y, float vineLength):CGameObject::CGameObj
 {
 	this->minHeight = y;
     this->maxHeight = y - 16 - vineLength * 8;
-    startWaiting = 0;
+    startWaiting = GetTickCount64();
     mx = my = 0;
 }
 void CFirePlant::Render()
 {
     //Get head animations
-    int headAniId = 0;
+    int headAniId = ID_ANI_AIM_LOWER_LEFT;
     switch (state)
     {
-    case STATE_AIM_LOWER_LEFT:
-        headAniId = ID_ANI_AIM_LOWER_LEFT;
-        break;
     case STATE_AIM_UPPER_LEFT:
         headAniId = ID_ANI_AIM_UPPER_LEFT;
         break;
@@ -32,12 +29,16 @@ void CFirePlant::Render()
     //Render
     CSprites::GetInstance()->Get(ID_SPRITE_PLANT_VINE)->Draw(x, y + 8);
     CAnimations::GetInstance()->Get(headAniId)->Render(x, y - 6);
-    RenderBoundingBox();
+    //RenderBoundingBox();
 }
+void CFirePlant::OnNoCollision(DWORD dt)
+{
+    x += vx * dt;
+    y += vy * dt;
+};
 void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//Get Mario's Position
-    float mx, my;
     CPlayScene* scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* player = (CMario*)scene->GetPlayer();
     player->GetPosition(mx,my);
@@ -63,23 +64,23 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         if (GetTickCount64() - startWaiting < WAITING_TIME)
             return;
         isWaiting = false;
-        //Fire
-        if (y = maxHeight)
+        if (y <= maxHeight)
         {
+            //Fire
             int dir = 0;
             switch (state)
             {
             case STATE_AIM_LOWER_LEFT:
-                dir = (abs(x - mx) < DANGEROUS_DISTANCE) ? DIR_LOWER_LEFT : DIR_LEFT;
+                dir = (abs(x - mx) < DANGEROUS_DISTANCE) ? DIR_HEAVY_LOWER_LEFT : DIR_LIGHT_LOWER_LEFT;
                 break;
             case STATE_AIM_UPPER_LEFT:
-                dir = DIR_UPPER_LEFT;
+                dir = (abs(x - mx) < DANGEROUS_DISTANCE) ? DIR_HEAVY_UPPER_LEFT : DIR_LIGHT_UPPER_LEFT;
                 break;
             case STATE_AIM_UPPER_RIGHT:
-                dir = DIR_UPPER_RIGHT;
+                dir = (abs(x - mx) > DANGEROUS_DISTANCE) ? DIR_LIGHT_UPPER_RIGHT : DIR_HEAVY_UPPER_RIGHT;
                 break;
             case STATE_AIM_LOWER_RIGHT:
-                dir = (abs(x - mx) > DANGEROUS_DISTANCE) ? DIR_RIGHT : DIR_LOWER_RIGHT;
+                dir = (abs(x - mx) > DANGEROUS_DISTANCE) ? DIR_LIGHT_LOWER_RIGHT : DIR_HEAVY_LOWER_RIGHT;
                 break;
             }
             CFireball* fire = new CFireball(x, y, dir);
@@ -100,10 +101,8 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
             vy = PLANT_SPEED;
         }
     }
-    //Move
     else
     {
-        y += vy * dt;
         //Stop
         if (y <= maxHeight)
         {
@@ -118,6 +117,8 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
             startWaiting = GetTickCount64();
         }
     }
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 void CFirePlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {

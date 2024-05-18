@@ -16,8 +16,8 @@ public:
 	}
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b) {
-		l = x - 16 / 2;
-		t = y - 16 / 2;
+		l = x - static_cast<float>(16) / 2;
+		t = y - static_cast<float>(16) / 2;
 		r = l + 16;
 		b = t + 16;
 	}

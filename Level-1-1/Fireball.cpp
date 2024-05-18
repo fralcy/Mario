@@ -3,27 +3,35 @@ CFireball::CFireball(float x, float y, int dir):CGameObject(x,y)
 {
 	switch (dir)
 	{
-	case DIR_LOWER_LEFT:
+	case DIR_HEAVY_LOWER_LEFT:
 		vy = FIREBALL_SPEED;
 		vx = -FIREBALL_SPEED;
 		break;
-	case DIR_LEFT:
+	case DIR_LIGHT_LOWER_LEFT:
 		vy = FIREBALL_SPEED / 3;
 		vx = -FIREBALL_SPEED;
 		break;
-	case DIR_UPPER_LEFT:
+	case DIR_LIGHT_UPPER_LEFT:
+		vy = -FIREBALL_SPEED / 3;
+		vx = -FIREBALL_SPEED;
+		break;
+	case DIR_HEAVY_UPPER_LEFT:
 		vy = -FIREBALL_SPEED;
 		vx = -FIREBALL_SPEED;
 		break;
-	case DIR_UPPER_RIGHT:
+	case DIR_HEAVY_UPPER_RIGHT:
 		vy = -FIREBALL_SPEED;
 		vx = FIREBALL_SPEED;
 		break;
-	case DIR_RIGHT:
+	case DIR_LIGHT_UPPER_RIGHT:
+		vy = -FIREBALL_SPEED / 3;
+		vx = FIREBALL_SPEED;
+		break;
+	case DIR_LIGHT_LOWER_RIGHT:
 		vy = FIREBALL_SPEED / 3;
 		vx = FIREBALL_SPEED;
 		break;
-	case DIR_LOWER_RIGHT:
+	case DIR_HEAVY_LOWER_RIGHT:
 		vy = FIREBALL_SPEED;
 		vx = FIREBALL_SPEED;
 		break;
