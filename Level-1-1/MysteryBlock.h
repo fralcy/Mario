@@ -25,6 +25,5 @@ public:
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 1; }
 	int GetType() const { return type; }
-	float GetX() const { return x; }
-	float GetY() const { return y; }
+
 };

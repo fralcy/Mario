@@ -6,18 +6,26 @@ CFirePlant::CFirePlant(float x, float y, float vineLength):CGameObject::CGameObj
 {
 	this->minHeight = y;
     this->maxHeight = y - CELL_HEIGHT - vineLength * CELL_HEIGHT / 2;
-	vy = PLANT_SPEED;
     startWaiting = 0;
 }
 void CFirePlant::Render()
 {
-	//Get head animations
-	int headAniId = ID_ANI_PLANT_HEAD;
-	//Get vine sprite
-	CSprites* s = CSprites::GetInstance();
+    //Get head animations
+    int headAniId = ID_ANI_AIM_LOWER_LEFT;
+    switch (state)
+    {
+    case STATE_AIM_UPPER_LEFT:
+        headAniId = ID_ANI_AIM_UPPER_LEFT;
+    case STATE_AIM_UPPER_RIGHT:
+        headAniId = ID_ANI_AIM_UPPER_RIGHT;
+    case STATE_AIM_LOWER_RIGHT:
+        headAniId = ID_ANI_AIM_LOWER_RIGHT;
+    default:
+        break;
+    }
     //Render
     CAnimations::GetInstance()->Get(headAniId)->Render(x, y);
-	s->Get(ID_SPRITE_PLANT_VINE)->Draw(x, y + CELL_HEIGHT);
+    CSprites::GetInstance()->Get(ID_SPRITE_PLANT_VINE)->Draw(x, y + CELL_HEIGHT);
 }
 void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -26,51 +34,45 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     CPlayScene* scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* player = (CMario*)scene->GetPlayer();
     player->GetPosition(mx,my);
+    Aim();
     //Calculate distance to Mario
     float dx = abs(x - mx);
-    //DebugOut(L"[INFO] x %d, mx %d, dx %d\n", x, mx, dx);
-    //Wait after appearing or hiding
+    DebugOut(L"[INFO] %f %f %f %f %d\n", minHeight, y ,maxHeight, vy, isWaiting);
+    //Wait
     if (isWaiting)
     {
-        if (GetTickCount64() - startWaiting < WAITING_TIME)
-            return;
-        else
+        if (GetTickCount64() - startWaiting > WAITING_TIME)
             isWaiting = false;
+        return;
     }
-    //Start appear or hide
-    if (!isWaiting)
+    //Start
+    if (vy == 0)
     {
-        if (y == minHeight && dx > SAFE_DISTANCE)
+        if (y >= minHeight && dx > SAFE_DISTANCE)
         {
-            isSpawning = true;
-            isHiding = false;
+            y = minHeight;
+            vy = -PLANT_SPEED;
         }
-        else if (y == maxHeight)
+        else if (y <= maxHeight)
         {
-            isHiding = true;
-            isSpawning = false;
+            y = maxHeight;
+            vy = PLANT_SPEED;
         }
     }
-    //Appear
-    if (isSpawning)
+    //Move
+    else
     {
-        y -= vy * dt;
-        if (y < maxHeight)
+        y += vy * dt;
+        //Stop
+        if (y <= maxHeight)
         {
-            y = maxHeight; // Ensure y doesn't go above maxHeight
-            isSpawning = false;
+            vy = 0;
             isWaiting = true;
             startWaiting = GetTickCount64();
         }
-    }
-    //Hide
-    if(isHiding)
-    {
-        y += vy * dt;
-        if (y > minHeight)
+        else if (y >= minHeight)
         {
-            y = minHeight; // Ensure y doesn't go below minHeight
-            isHiding = false;
+            vy = 0;
             isWaiting = true;
             startWaiting = GetTickCount64();
         }
@@ -85,4 +87,8 @@ void CFirePlant::GetBoundingBox(float& left, float& top, float& right, float& bo
 	top = y - (CELL_HEIGHT / 2);
 	right = left + CELL_WIDTH;
 	bottom = top + (CELL_HEIGHT * 2);
+}
+void CFirePlant::Aim()
+{
+
 }

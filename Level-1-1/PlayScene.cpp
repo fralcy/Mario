@@ -118,7 +118,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
+		player = obj;  
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
