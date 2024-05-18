@@ -291,6 +291,7 @@ void CPlayScene::Update(DWORD dt)
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 
 	PurgeDeletedObjects();
+	StoreAddedbOjects();
 }
 
 void CPlayScene::Render()
@@ -329,40 +330,24 @@ void CPlayScene::Unload()
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 
-void CPlayScene::AddObj(int obj_type, float x, float y, int p)
+void CPlayScene::AddObj(CGameObject* obj)
 {
-	CGameObject* obj = NULL;
-
-	switch (obj_type)
-	{
-	case OBJECT_TYPE_COIN:
-		obj = new CCoin(x, y, 0);
-		break;
-
-	case OBJECT_TYPE_SHROOM:
-		obj = new CShroom(x, y, p);
-		break;
-	case OBJECT_TYPE_MYSTERY_BLOCK:
-		obj = new CMysteryBlock(x, y, 0, p);
-		break;
-
-	case OBJECT_TYPE_LEAF:
-		obj = new CLeaf(x, y);
-		break;
-
-	default:
-		DebugOut(L"[ERROR] Invalid dynamic object type: %d\n", obj_type);
-		return;
-	}
-
 	if (obj != NULL)
 	{
-		obj->SetPosition(x, y);
-		objects.push_back(obj);
+		addedObjects.push_back(obj);
 	}
 }
 
 bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+
+void CPlayScene::StoreAddedbOjects()
+{
+	for (int i = 0; i < addedObjects.size(); i++)
+	{
+		objects.push_back(addedObjects[i]);
+	}
+	addedObjects.clear();
+}
 
 void CPlayScene::PurgeDeletedObjects()
 {

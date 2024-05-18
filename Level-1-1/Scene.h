@@ -24,7 +24,6 @@ public:
 	virtual void Unload() = 0;
 	virtual void Update(DWORD dt) = 0;
 	virtual void Render() = 0;
-	virtual void AddObj(int obj_type, float x, float y, int dir) = 0;
 };
 typedef CScene * LPSCENE;
 

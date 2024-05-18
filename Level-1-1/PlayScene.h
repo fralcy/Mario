@@ -16,6 +16,7 @@ protected:
 	LPGAMEOBJECT player;					
 
 	vector<LPGAMEOBJECT> objects;
+	vector<LPGAMEOBJECT> addedObjects;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -32,12 +33,13 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-	virtual void AddObj(int obj_type, float x, float y, int dir);
+	virtual void AddObj(LPGAMEOBJECT obj);
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 
 	void Clear();
 	void PurgeDeletedObjects();
+	void StoreAddedbOjects();
 
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };

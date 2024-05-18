@@ -14,6 +14,7 @@
 #include "FirePlant.h"
 #include "Fireball.h"
 #include "Collision.h"
+#include "PlayScene.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -183,25 +184,30 @@ void CMario::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 	{
 		if (mysteryblock->GetState() == MYSTERY_BLOCK_STATE_ACTIVE)
 		{
+			CGameObject* obj = NULL;
 			mysteryblock->SetState(MYSTERY_BLOCK_STATE_DIE);
+			float x, y;
+			mysteryblock->GetPosition(x, y);
 			if (mysteryblock->GetType() == 1)
 			{
 				if (level != MARIO_LEVEL_BIG)
 				{
 					int dir = 0;
-					(x < mysteryblock->GetX()) ? dir = 1 : dir = -1;
-					CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_SHROOM, mysteryblock->GetX(), mysteryblock->GetY(), dir);
+					(nx < 0) ? dir = 1 : dir = -1;
+					obj = new CShroom(x, y, dir);
 				}
 				else
 				{
-					CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_LEAF, mysteryblock->GetX(), mysteryblock->GetY(), 0);
+					obj = new CLeaf(x, y);
 				}
 			}	
 			else
 			{
-				CGame::GetInstance()->GetCurrentScene()->AddObj(OBJECT_TYPE_COIN, mysteryblock->GetX(), mysteryblock->GetY()-16, 0);
+				obj = new CCoin(x, y, 0);
 				coin++;
 			}
+			LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+			scene->AddObj(obj);
 		}
 	}
 }
