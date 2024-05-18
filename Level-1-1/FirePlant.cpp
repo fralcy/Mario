@@ -29,8 +29,9 @@ void CFirePlant::Render()
         break;
     }
     //Render
-    CAnimations::GetInstance()->Get(headAniId)->Render(x, y);
-    CSprites::GetInstance()->Get(ID_SPRITE_PLANT_VINE)->Draw(x, y + CELL_HEIGHT);
+    CAnimations::GetInstance()->Get(headAniId)->Render(x, y - CELL_WIDTH / 2);
+    CSprites::GetInstance()->Get(ID_SPRITE_PLANT_VINE)->Draw(x, y + CELL_HEIGHT / 2);
+    RenderBoundingBox();
 }
 void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -54,7 +55,7 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         else
             SetState(STATE_AIM_LOWER_RIGHT);
     }
-    DebugOut(L"[INFO] %d %d %d\n", (mx < x) , (my > y), state);
+    //DebugOut(L"[INFO] %d %d %d\n", (mx < x) , (my > y), state);
     //Wait
     if (isWaiting)
     {
@@ -96,12 +97,11 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     }
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-	RenderBoundingBox();
 }
 void CFirePlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	left = x - (CELL_WIDTH / 2);
-	top = y - (CELL_HEIGHT / 2);
+	left = x - CELL_WIDTH / 2;
+	top = y - CELL_HEIGHT / 2;
 	right = left + CELL_WIDTH;
-	bottom = top + (CELL_HEIGHT * 2);
+	bottom = top + CELL_HEIGHT * 2;
 }
