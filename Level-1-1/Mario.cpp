@@ -12,6 +12,7 @@
 #include "MysteryBlock.h"
 #include "Leaf.h"
 #include "FirePlant.h"
+#include "Fireball.h"
 #include "Collision.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -67,6 +68,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithLeaf(e);
 	else if (dynamic_cast<CFirePlant*>(e->obj))
 		OnCollisionWithFirePlant(e);
+	else if (dynamic_cast<CFireball*>(e->obj))
+		OnCollisionWithFireBall(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -127,7 +130,30 @@ void CMario::OnCollisionWithFirePlant(LPCOLLISIONEVENT e)
 		}
 	}
 }
-
+void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
+{
+	CFireball* fire = dynamic_cast<CFireball*>(e->obj);
+	{
+		if (untouchable == 0)
+		{
+			if (level == MARIO_LEVEL_BIG)
+			{
+				SetLevel(MARIO_LEVEL_SMALL);
+				StartUntouchable();
+			}
+			else if (level == MARIO_LEVEL_RACCOON)
+			{
+				SetLevel(MARIO_LEVEL_BIG);
+				StartUntouchable();
+			}
+			else
+			{
+				DebugOut(L">>> Mario DIE >>> \n");
+				SetState(MARIO_STATE_DIE);
+			}
+		}
+	}
+}
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	CCoin* coin = dynamic_cast<CCoin*>(e->obj);

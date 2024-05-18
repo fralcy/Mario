@@ -8,7 +8,7 @@ CFireball::CFireball(float x, float y, int dir):CGameObject(x,y)
 		vx = -FIREBALL_SPEED;
 		break;
 	case DIR_LEFT:
-		vy = FIREBALL_SPEED / 2;
+		vy = FIREBALL_SPEED / 3;
 		vx = -FIREBALL_SPEED;
 		break;
 	case DIR_UPPER_LEFT:
@@ -20,7 +20,7 @@ CFireball::CFireball(float x, float y, int dir):CGameObject(x,y)
 		vx = FIREBALL_SPEED;
 		break;
 	case DIR__RIGHT:
-		vy = FIREBALL_SPEED / 2;
+		vy = FIREBALL_SPEED / 3;
 		vx = FIREBALL_SPEED;
 		break;
 	case DIR_LOWER_RIGHT:
@@ -38,6 +38,12 @@ void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	x += vx * dt;
 	y += vy * dt;
+	if (y > 260 || y < 0)
+	{
+		Delete();
+	}
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 void CFireball::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
