@@ -16,6 +16,7 @@
 #include "Block.h"
 #include "FirePlant.h"
 #include "Fireball.h"
+#include "Koopa.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -146,6 +147,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_FIRE_BALL: {
 		int dir = (int)atof(tokens[3].c_str());
 		obj = new CFireball(x, y, dir);
+		break;
+	}
+	case OBJECT_TYPE_KOOPA: {
+		int color = (int)atof(tokens[3].c_str());
+		obj = new CKoopa(x, y, color); break;
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:

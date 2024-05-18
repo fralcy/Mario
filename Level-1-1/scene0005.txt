@@ -5,7 +5,7 @@ coin.txt
 brick.txt
 platform.txt
 mysteryblock.txt
-goomba.txt
+enemy.txt
 shroom.txt
 leaf.txt
 background.txt
@@ -284,8 +284,7 @@ effect.txt
 9	1072	138	95000
 #Coin
 4	1088	90
-#Fire_Plant
-11	376	132	2
+#Fire_Plant:11|376|132|2
 #Pipe_1
 10	368	122	25000
 10	384	122	25100
@@ -293,9 +292,10 @@ effect.txt
 10	384	138	25300
 10	368	154	25200
 10	384	154	25300
-
+#Koopa
+13	592	108	1
 #MARIO
-0	300	10
+0	500	10
 
 #Platform
 5 	0	170	16	16	40	71000	72000	73000
