@@ -7,20 +7,25 @@ CFirePlant::CFirePlant(float x, float y, float vineLength):CGameObject::CGameObj
 	this->minHeight = y;
     this->maxHeight = y - CELL_HEIGHT - vineLength * CELL_HEIGHT / 2;
     startWaiting = 0;
+    mx = my = 1000;
 }
 void CFirePlant::Render()
 {
     //Get head animations
-    int headAniId = ID_ANI_AIM_LOWER_LEFT;
+    int headAniId = 0;
     switch (state)
     {
+    case STATE_AIM_LOWER_LEFT:
+        headAniId = ID_ANI_AIM_LOWER_LEFT;
+        break;
     case STATE_AIM_UPPER_LEFT:
         headAniId = ID_ANI_AIM_UPPER_LEFT;
+        break;
     case STATE_AIM_UPPER_RIGHT:
         headAniId = ID_ANI_AIM_UPPER_RIGHT;
+        break;
     case STATE_AIM_LOWER_RIGHT:
         headAniId = ID_ANI_AIM_LOWER_RIGHT;
-    default:
         break;
     }
     //Render
@@ -34,10 +39,22 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     CPlayScene* scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* player = (CMario*)scene->GetPlayer();
     player->GetPosition(mx,my);
-    Aim();
-    //Calculate distance to Mario
-    float dx = abs(x - mx);
-    DebugOut(L"[INFO] %f %f %f %f %d\n", minHeight, y ,maxHeight, vy, isWaiting);
+    //Aim
+    if (mx <= x)
+    {
+        if (my < y)
+            SetState(STATE_AIM_UPPER_LEFT);
+        else
+            SetState(STATE_AIM_LOWER_LEFT);
+    }
+    else
+    {
+        if (my < y)
+            SetState(STATE_AIM_UPPER_RIGHT);
+        else
+            SetState(STATE_AIM_LOWER_RIGHT);
+    }
+    DebugOut(L"[INFO] %d %d %d\n", (mx < x) , (my > y), state);
     //Wait
     if (isWaiting)
     {
@@ -48,7 +65,7 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     //Start
     if (vy == 0)
     {
-        if (y >= minHeight && dx > SAFE_DISTANCE)
+        if (y >= minHeight && abs(x - mx) > SAFE_DISTANCE)
         {
             y = minHeight;
             vy = -PLANT_SPEED;
@@ -79,7 +96,7 @@ void CFirePlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     }
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 void CFirePlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -87,8 +104,4 @@ void CFirePlant::GetBoundingBox(float& left, float& top, float& right, float& bo
 	top = y - (CELL_HEIGHT / 2);
 	right = left + CELL_WIDTH;
 	bottom = top + (CELL_HEIGHT * 2);
-}
-void CFirePlant::Aim()
-{
-
 }

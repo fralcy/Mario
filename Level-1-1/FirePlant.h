@@ -33,8 +33,6 @@ protected:
 
 	virtual int IsCollidable() { return 1; }
 	virtual int IsBlocking() { return 0; }
-	void Aim();
-
 public:
 	CFirePlant(float x, float y, float vineLength);// vine length in leaf number or half cells
 };
