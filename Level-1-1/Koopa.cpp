@@ -22,7 +22,7 @@ void CKoopa::Render()
 	int aniId = ID_ANI_KOOPA_WALKING_LEFT;
 	if (vx > 0) aniId = ID_ANI_KOOPA_WALKING_RIGHT;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CKoopa::OnNoCollision(DWORD dt)
