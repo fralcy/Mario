@@ -3,8 +3,8 @@
 #define GRAVITY 0.002f
 #define PATHFINDER_SPEED 0.025f
 
-#define WIDTH 16
-#define HEIGHT 24
+#define KOOPA_WIDTH 16
+#define KOOPA_HEIGHT 24
 
 class CPathfinder : public CGameObject
 {

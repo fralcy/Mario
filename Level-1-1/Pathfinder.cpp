@@ -2,10 +2,10 @@
 
 void CPathfinder::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-    left = x - WIDTH / 2;
-    top = y - HEIGHT / 2;
-    right = left + WIDTH;
-    bottom = top + HEIGHT;
+    left = x - KOOPA_WIDTH / 2;
+    top = y - KOOPA_HEIGHT / 2;
+    right = left + KOOPA_WIDTH;
+    bottom = top + KOOPA_HEIGHT;
 }
 
 void CPathfinder::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
