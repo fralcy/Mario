@@ -7,9 +7,10 @@
 
 #define WIDTH 16
 #define HEIGHT 24
-#define SHELL_HEIGHT 16
+#define SHELL_HEIGHT 14
 
-#define GOOMBA_DIE_TIMEOUT 500
+#define KOOPA_HIDE_TIME 4000
+#define KOOPA_RECOVER_TIME 2000
 
 #define STATE_WALKING 100
 #define STATE_SHELL 200
@@ -29,7 +30,7 @@ protected:
     float ax;
     float ay;
     CPathfinder* pathfinder;
-    ULONGLONG die_start;
+    ULONGLONG hide_start, recover_start;
 
     virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
     virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

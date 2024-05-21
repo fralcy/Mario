@@ -17,11 +17,11 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 }
 CKoopa::CKoopa(float x, float y, int color) : CGameObject(x, y)
 {
-    this->nx = (- 1);
+    this->nx = -1;
     this->color = color;
     this->ax = 0;
     this->ay = GRAVITY;
-    die_start = -1;
+    hide_start = recover_start = -1;
 
     pathfinder = new CPathfinder(x, y);
     LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
@@ -40,7 +40,32 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         pathfinder->SetPosition(x + (vx > 0 ? 16 : -16), y);
         pathfinder->SetSpeed(vx, 0);
     }
-
+    // Start recovering after hide for a while
+    if (vx == 0)
+    {
+        if (state == STATE_SHELL)
+        {
+            if (hide_start == -1)
+                hide_start = GetTickCount64();
+            else if (GetTickCount64() - hide_start > KOOPA_HIDE_TIME)
+            {
+                recover_start = GetTickCount64();
+                SetState(STATE_RECOVER);
+            }
+        }
+        else
+        {
+            if (GetTickCount64() - recover_start > KOOPA_RECOVER_TIME)
+            {
+                y = y - HEIGHT + SHELL_HEIGHT + 2;
+                SetState(STATE_WALKING);
+            }
+        }
+    }
+    else
+    {
+        hide_start = recover_start = -1;
+    }
     vy += ay * dt;
     vx += ax * dt;
 
@@ -104,6 +129,8 @@ void CKoopa::SetState(int state)
         break;
     case STATE_SHELL:
         vx = 0;
+        break;
+    case STATE_RECOVER:
         break;
     }
 }
