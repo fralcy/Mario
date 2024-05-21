@@ -194,4 +194,6 @@ public:
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void GetDamage();
+	int GetLevel() { return level; }
+	void AddCoin() { coin++; }
 };

@@ -1,5 +1,9 @@
 #include "Koopa.h"
 #include "PlayScene.h"
+#include "Mysteryblock.h"
+#include "Shroom.h"
+#include "Leaf.h"
+#include "Coin.h"
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
     left = x - KOOPA_WIDTH / 2;
@@ -115,8 +119,44 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
         nx = -nx;
 		vx = -vx;
 	}
+    if (dynamic_cast<CMysteryBlock*>(e->obj))
+        OnCollisionWithMysteryBlock(e);
 }
-
+void CKoopa::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
+{
+    CMysteryBlock* mysteryblock = dynamic_cast<CMysteryBlock*>(e->obj);
+    CPlayScene* scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+    CMario* player = (CMario*)scene->GetPlayer();
+    if (e->nx != 0)
+    {
+        if (mysteryblock->GetState() == MYSTERY_BLOCK_STATE_ACTIVE)
+        {
+            CGameObject* obj = NULL;
+            mysteryblock->SetState(MYSTERY_BLOCK_STATE_DIE);
+            float x, y;
+            mysteryblock->GetPosition(x, y);
+            if (mysteryblock->GetType() == 1)
+            {
+                if (player->GetLevel() != MARIO_LEVEL_BIG)
+                {
+                    int dir = 0;
+                    (e->nx < 0) ? dir = 1 : dir = -1;
+                    obj = new CShroom(x, y, dir);
+                }
+                else
+                {
+                    obj = new CLeaf(x, y);
+                }
+            }
+            else
+            {
+                obj = new CCoin(x, y, 0);
+                player->AddCoin();
+            }
+            scene->AddObj(obj);
+        }
+    }
+}
 void CKoopa::SetState(int state)
 {
     CGameObject::SetState(state);

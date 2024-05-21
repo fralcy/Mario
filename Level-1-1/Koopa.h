@@ -42,6 +42,7 @@ protected:
     virtual void OnNoCollision(DWORD dt);
 
     virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+    void OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e);
 
 public:
     CKoopa(float x, float y, int color);
