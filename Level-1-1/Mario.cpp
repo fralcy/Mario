@@ -161,26 +161,36 @@ void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+	if (koopa->GetState() != STATE_SHELL)
 	{
-		if (untouchable == 0)
+		if (e->ny < 0)
 		{
-			if (level == MARIO_LEVEL_BIG)
+			koopa->SetState(STATE_SHELL);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else
+		{
+			if (untouchable == 0)
 			{
-				SetLevel(MARIO_LEVEL_SMALL);
-				StartUntouchable();
-			}
-			else if (level == MARIO_LEVEL_RACCOON)
-			{
-				SetLevel(MARIO_LEVEL_BIG);
-				StartUntouchable();
-			}
-			else
-			{
-				DebugOut(L">>> Mario DIE >>> \n");
-				SetState(MARIO_STATE_DIE);
+				if (level == MARIO_LEVEL_BIG)
+				{
+					SetLevel(MARIO_LEVEL_SMALL);
+					StartUntouchable();
+				}
+				else if (level == MARIO_LEVEL_RACCOON)
+				{
+					SetLevel(MARIO_LEVEL_BIG);
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
 			}
 		}
 	}
+	
 }
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
