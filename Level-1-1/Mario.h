@@ -134,6 +134,7 @@
 
 
 #define MARIO_UNTOUCHABLE_TIME 2500
+#define MARIO_KICKING_TIME	250
 
 class CMario : public CGameObject
 {
@@ -144,8 +145,8 @@ class CMario : public CGameObject
 
 	int level; 
 	int untouchable; 
-	ULONGLONG untouchable_start;
-	BOOLEAN isOnPlatform;
+	ULONGLONG untouchable_start, isKicking_start;
+	BOOLEAN isOnPlatform, isKicking;
 	int coin; 
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
@@ -191,6 +192,7 @@ public:
 
 	void SetLevel(int l);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+	void StartKicking() { isKicking = 1; isKicking_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void GetDamage();

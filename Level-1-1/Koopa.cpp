@@ -125,7 +125,7 @@ void CKoopa::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
     CMysteryBlock* mysteryblock = dynamic_cast<CMysteryBlock*>(e->obj);
     if (e->nx != 0 && mysteryblock->GetState() == MYSTERY_BLOCK_STATE_ACTIVE)
     {
-        mysteryblock->SpawnItem(-e->nx);
+        mysteryblock->SpawnItem((int) - e->nx);
     }
 }
 void CKoopa::SetState(int state)

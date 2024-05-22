@@ -23,5 +23,5 @@ public:
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 1; }
 	int GetType() const { return type; }
-	void SpawnItem(float dir);
+	void SpawnItem(int dir);
 };

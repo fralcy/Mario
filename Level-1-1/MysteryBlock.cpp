@@ -27,7 +27,7 @@ void CMysteryBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
 	r = l + MYSTERY_BLOCK_BBOX_WIDTH;
 	b = t + MYSTERY_BLOCK_BBOX_HEIGHT;
 }
-void CMysteryBlock::SpawnItem(float dir)
+void CMysteryBlock::SpawnItem(int dir)
 {
 	CPlayScene* scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* player = (CMario*)scene->GetPlayer();
