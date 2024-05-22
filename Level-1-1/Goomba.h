@@ -50,4 +50,6 @@ protected:
 public: 	
 	CGoomba(float x, float y, int type);
 	virtual void SetState(int state);
+	int GetType() { return type; }
+	float AdjustY();
 };
