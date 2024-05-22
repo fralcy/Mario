@@ -1,4 +1,6 @@
 #include "Goomba.h"
+#include "PlayScene.h"
+#include "Mario.h"
 
 CGoomba::CGoomba(float x, float y, int type):CGameObject(x, y)
 {
@@ -40,6 +42,10 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0 )
 	{
 		vy = 0;
+		if (e->ny < 0 && hop_count == 0)  // Goomba lands on the ground
+		{
+			ChangeDirection();
+		}
 	}
 	else if (e->nx != 0)
 	{
@@ -58,6 +64,18 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		return;
 	}
 
+	if (state == GOOMBA_STATE_WINGED)
+	{
+		if (GetTickCount64() - fly_start > PARAGOOMBA_HOP_DELAY)
+		{
+			canFly = true;
+			fly_start = -1;
+		}
+		if (canFly)
+		{
+			Fly();
+		}
+	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -82,13 +100,13 @@ void CGoomba::Render()
 			aniId = ID_ANI_PARAGOOMBA_WALKING;
 			break;
 		case GOOMBA_STATE_WINGED:
-			aniId = ID_ANI_PARAGOOMBA_WALING_2;
+			if (vy == 0)
+				aniId = ID_ANI_PARAGOOMBA_WALING_2;
+			else
+				aniId = ID_ANI_PARAGOOMBA_FLYING;
 			break;
 		case GOOMBA_STATE_STOMPED:
 			aniId = ID_ANI_PARAGOOMBA_STOMPED;
-			break;
-		case GOOMBA_STATE_FLYING:
-			aniId = ID_ANI_PARAGOOMBA_FLYING;
 		}
 	}
 
@@ -110,12 +128,46 @@ void CGoomba::SetState(int state)
 			ay = 0; 
 			break;
 		case GOOMBA_STATE_WALKING:
+			break;
 		case GOOMBA_STATE_WINGED:
+			hop_count = 0;
+			canFly = true;
 			break;
 	}
 }
 float CGoomba::AdjustY()
 {
-	if (state != GOOMBA_STATE_WINGED) return y;
-	else return y - 1.5f;
+	if (state == GOOMBA_STATE_WINGED) return y - 1.5f;
+	//else if (state == GOOMBA_STATE_FLYING) return y - 4.0f;
+	else return y;
+}
+void CGoomba::Fly()
+{
+	canFly = false;          // Reset canfly flag
+	fly_start = GetTickCount64();  // Reset fly start time
+
+	// Hopping logic
+	if (hop_count < 3)
+	{
+		vy = -PARAGOOMBA_HOPPING_SPEED;  // Hop
+		hop_count++;
+	}
+	else
+	{
+		vy = -PARAGOOMBA_FLYING_SPEED;  // Fly after three hops
+		hop_count = 0;
+	}
+}
+void CGoomba::ChangeDirection()
+{
+	CPlayScene* scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* player = (CMario*)scene->GetPlayer();
+	if (x > player->GetX())
+	{
+		vx = -GOOMBA_WALKING_SPEED;
+	}
+	else
+	{
+		vx = GOOMBA_WALKING_SPEED;
+	}
 }
