@@ -69,5 +69,5 @@ void CShroom::Render()
 		ani = ID_ANI_SHROOM_GROWING;
 	}
 	CAnimations::GetInstance()->Get(ani)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }

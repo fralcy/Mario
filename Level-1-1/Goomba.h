@@ -3,27 +3,39 @@
 
 #define GOOMBA_GRAVITY 0.002f
 #define GOOMBA_WALKING_SPEED 0.05f
-
+#define PARAGOOMBA_HOPPING_SPEED 0.15f
+#define PARAGOOMBA_FLYING_SPEED 0.3f
 
 #define GOOMBA_BBOX_WIDTH 16
 #define GOOMBA_BBOX_HEIGHT 14
 #define GOOMBA_BBOX_HEIGHT_DIE 7
 
 #define GOOMBA_DIE_TIMEOUT 500
+#define PARAGOOMBA_FLY_DELAY 500
+
+#define GOOMBA_TYPE_NORMAL 0
+#define GOOMBA_TYPE_WINGED 1
 
 #define GOOMBA_STATE_WALKING 100
-#define GOOMBA_STATE_DIE 200
+#define GOOMBA_STATE_STOMPED 200
+#define GOOMBA_STATE_WINGED 300
+#define GOOMBA_STATE_FLYING 400
 
 #define ID_ANI_GOOMBA_WALKING 5000
-#define ID_ANI_GOOMBA_DIE 5001
+#define ID_ANI_GOOMBA_STOMPED 5001
+#define ID_ANI_PARAGOOMBA_WALKING 5002
+#define ID_ANI_PARAGOOMBA_WALING_2 5003
+#define ID_ANI_PARAGOOMBA_FLYING 5004
+#define ID_ANI_PARAGOOMBA_STOMPED 5005
 
 class CGoomba : public CGameObject
 {
 protected:
 	float ax;				
 	float ay; 
-
-	ULONGLONG die_start;
+	int type;
+	int hop_count;
+	ULONGLONG die_start, fly_start;
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
@@ -36,6 +48,6 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public: 	
-	CGoomba(float x, float y);
+	CGoomba(float x, float y, int type);
 	virtual void SetState(int state);
 };
