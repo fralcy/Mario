@@ -173,36 +173,11 @@ void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 {
+	float x = this->x;
 	CMysteryBlock* mysteryblock  = dynamic_cast<CMysteryBlock*>(e->obj);
-	if (e->ny > 0)
+	if (e->ny > 0 && mysteryblock->GetState() == MYSTERY_BLOCK_STATE_ACTIVE)
 	{
-		if (mysteryblock->GetState() == MYSTERY_BLOCK_STATE_ACTIVE)
-		{
-			CGameObject* obj = NULL;
-			mysteryblock->SetState(MYSTERY_BLOCK_STATE_DIE);
-			float x, y;
-			mysteryblock->GetPosition(x, y);
-			if (mysteryblock->GetType() == 1)
-			{
-				if (level != MARIO_LEVEL_BIG)
-				{
-					int dir = 0;
-					(e->nx < 0) ? dir = 1 : dir = -1;
-					obj = new CShroom(x, y, dir);
-				}
-				else
-				{
-					obj = new CLeaf(x, y);
-				}
-			}	
-			else
-			{
-				obj = new CCoin(x, y, 0);
-				coin++;
-			}
-			LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-			scene->AddObj(obj);
-		}
+		mysteryblock->SpawnItem((x < mysteryblock->GetX()) ? 1.0f : -1.0f);
 	}
 }
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)

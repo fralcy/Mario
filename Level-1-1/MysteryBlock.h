@@ -1,8 +1,6 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Animation.h"
-#include "Animations.h"
 
 #define ID_ANI_MYSTERY_BLOCK 7000
 #define ID_ANI_MYSTERY_BLOCK_DIE 7001
@@ -25,5 +23,5 @@ public:
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 1; }
 	int GetType() const { return type; }
-
+	void SpawnItem(float dir);
 };
