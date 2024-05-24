@@ -66,10 +66,21 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (state == GOOMBA_STATE_WINGED)
 	{
-		if (GetTickCount64() - fly_start > PARAGOOMBA_HOP_DELAY)
+		if (hop_count <3)
 		{
-			canFly = true;
-			fly_start = -1;
+			if (GetTickCount64() - fly_start > PARAGOOMBA_HOP_DELAY)
+			{
+				canFly = true;
+				fly_start = -1;
+			}
+		}
+		else
+		{
+			if (GetTickCount64() - fly_start > PARAGOOMBA_FLY_DELAY)
+			{
+				canFly = true;
+				fly_start = -1;
+			}
 		}
 		if (canFly)
 		{
