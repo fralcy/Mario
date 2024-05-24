@@ -17,6 +17,7 @@
 #include "FirePlant.h"
 #include "Fireball.h"
 #include "Koopa.h"
+#include "Spawner.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -176,6 +177,30 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		break;
 	}
+
+	case OBJECT_TYPE_SPAWNER:
+	{
+		float r = (float)atof(tokens[3].c_str());
+		float b = (float)atof(tokens[4].c_str());
+		int obj_type = 0, p = 0;
+		float obj_x = 0, obj_y = 0;
+		vector<LPGAMEOBJECT> objs;
+		int obj_count = atoi(tokens[5].c_str()), i = 6, j = 0;
+		for (; j < obj_count; j++)
+		{
+			obj_type = atoi(tokens[i++].c_str());
+			obj_x = (float)atof(tokens[i++].c_str());
+			obj_y = (float)atof(tokens[i++].c_str());
+			switch (obj_type)
+			{
+			case OBJECT_TYPE_GOOMBA:
+				p = atoi(tokens[i++].c_str());
+				obj = new CGoomba(obj_x, obj_y, p);
+			}
+		}
+		obj = new CSpawner(x, y, r, b, objs);
+	}
+	break;
 
 	case OBJECT_TYPE_PORTAL:
 	{

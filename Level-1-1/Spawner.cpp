@@ -2,10 +2,10 @@
 #include "PlayScene.h"
 CSpawner::CSpawner(float l, float t, float r, float b, vector<LPGAMEOBJECT> objects)
 {
-	x = l;
-	y = t;
 	width = r - l;
 	height = b - t;
+	x = (l + r)/2;
+	y = (t + b)/2;
 }
 
 void CSpawner::RenderBoundingBox()
