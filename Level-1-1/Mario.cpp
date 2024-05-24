@@ -14,6 +14,8 @@
 #include "FirePlant.h"
 #include "Fireball.h"
 #include "Koopa.h"
+#include "Spawner.h"
+
 #include "Collision.h"
 #include "PlayScene.h"
 
@@ -79,6 +81,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFireBall(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CSpawner*>(e->obj))
+		OnCollisionWithSpawner(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -215,6 +219,16 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 	{
 		SetLevel(MARIO_LEVEL_RACCOON);
 	}
+	else
+	{
+		StartUntouchable();
+	}
+}
+
+void CMario::OnCollisionWithSpawner(LPCOLLISIONEVENT e)
+{
+	CSpawner* s = (CSpawner*)e->obj;
+	s->SpawnEnemies();
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -453,7 +467,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 	
 	DebugOutTitle(L"Coins: %d", coin);
 }

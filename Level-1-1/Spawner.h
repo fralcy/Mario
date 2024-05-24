@@ -16,6 +16,8 @@ public:
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 
 	void RenderBoundingBox(void);
-
+	int IsCollidable() { return (objects.size() > 0) ? 1 : 0; }
 	int IsBlocking() { return 0; }
+
+	void SpawnEnemies();
 };

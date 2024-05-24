@@ -1,11 +1,13 @@
 #include "Spawner.h"
+#include "Game.h"
 #include "PlayScene.h"
 CSpawner::CSpawner(float l, float t, float r, float b, vector<LPGAMEOBJECT> objects)
 {
+	this->objects = objects;
+	x = l;
+	y = t;
 	width = r - l;
 	height = b - t;
-	x = (l + r)/2;
-	y = (t + b)/2;
 }
 
 void CSpawner::RenderBoundingBox()
@@ -40,4 +42,14 @@ void CSpawner::GetBoundingBox(float& l, float& t, float& r, float& b)
 	t = y - height / 2;
 	r = x + width / 2;
 	b = y + height / 2;
+}
+
+void CSpawner::SpawnEnemies()
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	for (int i = 0; i < objects.size(); i++)
+	{
+		scene->AddObj(objects[i]);
+	}
+	objects.clear();
 }

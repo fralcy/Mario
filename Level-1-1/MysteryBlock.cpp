@@ -37,7 +37,7 @@ void CMysteryBlock::SpawnItem(int dir)
     GetPosition(x, y);
     if (type == 1)
     {
-        if (player->GetLevel() != MARIO_LEVEL_BIG)
+        if (player->GetLevel() == MARIO_LEVEL_SMALL)
         {
             obj = new CShroom(x, y, dir);
         }

@@ -196,7 +196,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			case OBJECT_TYPE_GOOMBA:
 				p = atoi(tokens[i++].c_str());
 				obj = new CGoomba(obj_x, obj_y, p);
+				break;
 			}
+			objs.push_back(obj);
 		}
 		obj = new CSpawner(x, y, r, b, objs);
 	}

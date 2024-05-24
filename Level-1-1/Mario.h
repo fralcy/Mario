@@ -158,6 +158,7 @@ class CMario : public CGameObject
 	void OnCollisionWithFirePlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireBall(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithSpawner(LPCOLLISIONEVENT e);
 	int GetAniIdBig();
 	int GetAniIdSmall();
 	int GetAniIdRaccoon();
@@ -171,8 +172,8 @@ public:
 		ay = MARIO_GRAVITY; 
 
 		level = MARIO_LEVEL_SMALL;
-		untouchable = 0;
-		untouchable_start = -1;
+		untouchable = isKicking = 0;
+		untouchable_start = isKicking_start = -1;
 		isOnPlatform = false;
 		coin = 0;
 	}
