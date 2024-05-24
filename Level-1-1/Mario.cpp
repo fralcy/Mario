@@ -192,7 +192,7 @@ void CMario::Pick(CKoopa* koopa)
 }
 void CMario::Throw()
 {
-
+	hold_obj->SetState(KOOPA_STATE_SHELL);
 	hold_obj->SetSpeed(KOOPA_SPINNING_SPEED * nx, 0);
 	hold_obj = NULL;
 }

@@ -235,4 +235,6 @@ public:
 	void AddCoin() { coin++; }
 	bool IsHolding() { return (hold_obj) ? 1 : 0; }
 	void Throw();
+	void Drop() { hold_obj = NULL; }
+	CKoopa* GetHoldObj() { return hold_obj; }
 };

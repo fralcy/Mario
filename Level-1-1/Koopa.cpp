@@ -34,6 +34,18 @@ CKoopa::CKoopa(float x, float y, int color) : CGameObject(x, y)
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+    //Get player
+    LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+    CMario* player = (CMario*)scene->GetPlayer();
+    //No gravity if player is holding this
+    if (player->GetHoldObj() == this)
+    {
+        this->ay = 0;
+    }
+    else
+    {
+        this->ay = GRAVITY;
+    }
     // Check if the pathfinder is falling off the platform
     if (state == KOOPA_STATE_WALKING) if(pathfinder->GetVY() > 0 && vy == 0) // Pathfinder is falling
     {
@@ -61,6 +73,12 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
             {
                 y = y - KOOPA_HEIGHT + KOOPA_SHELL_HEIGHT + 2;
                 SetState(KOOPA_STATE_WALKING);
+                //If player is holding this
+                if (player->GetHoldObj() == this)
+                {
+                    player->GetDamage(); //Damage player
+                    player->Drop(); //Leave player's hands
+                }
             }
         }
     }
