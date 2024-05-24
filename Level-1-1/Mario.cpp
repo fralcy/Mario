@@ -37,7 +37,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		isKicking_start = 0;
 		isKicking = 0;
 	}
-
+	if (hold_obj) hold_obj->SetPosition(x, y - 8);
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -158,16 +158,21 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	}
 	else
 	{
+		if ((state == MARIO_STATE_RUNNING_LEFT || state == MARIO_STATE_RUNNING_RIGHT) && !hold_obj && e->nx != 0 && e->ny == 0)
+		{
+			Pick(koopa);
+			return;
+		} 
 		if (koopa->GetVX() == 0)
 		{
 			StartKicking();
 			if (e->nx > 0)
 			{
-				state = MARIO_STATE_KICK_LEFT;
+				state = MARIO_STATE_KICKING_LEFT;
 			}
 			else if (e->nx < 0)
 			{
-				state = MARIO_STATE_KICK_RIGHT;
+				state = MARIO_STATE_KICKING_RIGHT;
 			}
 			koopa->SetSpeed(KOOPA_SPINNING_SPEED * nx, 0);
 		}
@@ -180,6 +185,16 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			GetDamage();
 		}
 	}
+}
+void CMario::Pick(CKoopa* koopa)
+{
+	hold_obj = koopa;
+}
+void CMario::Throw()
+{
+
+	hold_obj->SetSpeed(KOOPA_SPINNING_SPEED * nx, 0);
+	hold_obj = NULL;
 }
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
@@ -245,7 +260,14 @@ int CMario::GetAniIdSmall()
 	int aniId = -1;
 	if (!isOnPlatform)
 	{
-		if (abs(ax) == MARIO_ACCEL_RUN_X)
+/*		if (hold_obj)
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_MARIO_SMALL_JUMP_HOLD_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_SMALL_JUMP_HOLD_LEFT;
+		}
+		else */if (abs(ax) == MARIO_ACCEL_RUN_X)
 		{
 			if (nx >= 0)
 				aniId = ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT;
@@ -261,7 +283,24 @@ int CMario::GetAniIdSmall()
 		}
 	}
 	else
-		if (isSitting)
+/*		if (hold_obj)
+		{
+			if (vx == 0)
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_SMALL_HOLD_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_SMALL_HOLD_LEFT;
+			}
+			else
+			{
+				if (vx > 0)
+					aniId = ID_ANI_MARIO_SMALL_HOLD_MOVE_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_SMALL_HOLD_MOVE_LEFT;
+			}
+		}
+		else*/ if (isSitting)
 		{
 			if (nx > 0)
 				aniId = ID_ANI_MARIO_SIT_RIGHT;
@@ -354,7 +393,7 @@ int CMario::GetAniIdBig()
 			}
 			else if (vx > 0)
 			{
-				if (state == MARIO_STATE_KICK_RIGHT)
+				if (state == MARIO_STATE_KICKING_RIGHT)
 					aniId = ID_ANI_MARIO_KICK_RIGHT;
 				else if (ax < 0)
 					aniId = ID_ANI_MARIO_BRACE_RIGHT;
@@ -366,7 +405,7 @@ int CMario::GetAniIdBig()
 			}
 			else // vx < 0
 			{
-				if (state == MARIO_STATE_KICK_LEFT)
+				if (state == MARIO_STATE_KICKING_LEFT)
 					aniId = ID_ANI_MARIO_KICK_LEFT;
 				else if (ax > 0)
 					aniId = ID_ANI_MARIO_BRACE_LEFT;
@@ -425,7 +464,7 @@ int CMario::GetAniIdRaccoon()
 			}
 			else if (vx > 0)
 			{
-				if (state == MARIO_STATE_KICK_RIGHT)
+				if (state == MARIO_STATE_KICKING_RIGHT)
 					aniId = ID_ANI_MARIO_RACCOON_KICK_RIGHT;
 				else if (ax < 0)
 					aniId = ID_ANI_MARIO_RACCOON_BRACE_RIGHT;
@@ -436,7 +475,7 @@ int CMario::GetAniIdRaccoon()
 			}
 			else // vx < 0
 			{
-				if (state == MARIO_STATE_KICK_LEFT)
+				if (state == MARIO_STATE_KICKING_LEFT)
 					aniId = ID_ANI_MARIO_RACCOON_KICK_LEFT;
 				else if (ax > 0)
 					aniId = ID_ANI_MARIO_RACCOON_BRACE_LEFT;
@@ -466,8 +505,7 @@ void CMario::Render()
 		aniId = GetAniIdRaccoon();
 
 	animations->Get(aniId)->Render(x, y);
-
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	
 	DebugOutTitle(L"Coins: %d", coin);
 }
