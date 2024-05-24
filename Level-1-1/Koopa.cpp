@@ -112,7 +112,7 @@ void CKoopa::Render()
         break;
     }
     CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-    RenderBoundingBox();
+    //RenderBoundingBox();
 }
 
 void CKoopa::OnNoCollision(DWORD dt)
