@@ -1,10 +1,14 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Goomba.h"
+#include "FirePlant.h"
+#include "Koopa.h"
+#include "Mysteryblock.h"
 
-#define HITBOX_WIDTH 20
-#define HITBOX_HEIGHT 10
-#define	HITBOX_TIMEOUT 100
+#define HITBOX_WIDTH 1
+#define HITBOX_HEIGHT 20
+#define	HITBOX_TIMEOUT 200
 
 class CHitbox: public CGameObject {
 protected:
@@ -14,16 +18,19 @@ public:
 	void Render() {
 		RenderBoundingBox();
 	}
-	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
-		if (GetTickCount64() - time_start > HITBOX_TIMEOUT) Delete();
-		CGameObject::Update(dt, coObjects);
-		CCollision::GetInstance()->Process(this, dt, coObjects);
-	}
+	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b) {
 		l = x - HITBOX_WIDTH / 2;
 		t = y - HITBOX_HEIGHT / 2;
 		r = l + HITBOX_WIDTH;
 		b = t + HITBOX_HEIGHT;
 	}
-	int IsBlocking() { return 0; }
+	int IsBlocking() { return 1; }
+
+	void OnNoCollision(DWORD dt);
+	void OnCollisionWith(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithFirePlant(LPCOLLISIONEVENT e);
+	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e);
 };

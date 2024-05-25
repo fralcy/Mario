@@ -291,7 +291,7 @@ effect.txt
 
 #Goomba
 #2	240	154	0
-#2	544	154	0
+2	544	154	0
 #Fire_Plant
 #11	376	132	2
 #Pipe_1

@@ -37,6 +37,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		isKicking_start = 0;
 		isKicking = 0;
 	}
+	if (GetTickCount64() - isAttacking_start > MARIO_ATTACKING_TIME)
+	{
+		isAttacking_start = 0;
+		isAttacking = 0;
+	}
 	if (hold_obj)
 	{
 		switch (level)
@@ -639,6 +644,10 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
+		break;
+	case MARIO_STATE_ATTACK_RIGHT:
+	case MARIO_STATE_ATTACK_LEFT:
+		Attack();
 		break;
 	}
 

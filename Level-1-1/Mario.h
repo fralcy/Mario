@@ -173,6 +173,7 @@
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_KICKING_TIME	200
+#define MARIO_ATTACKING_TIME	100
 
 class CMario : public CGameObject
 {
@@ -238,6 +239,7 @@ public:
 	void SetLevel(int l);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartKicking() { isKicking = 1; isKicking_start = GetTickCount64(); }
+	void Attack() { isAttacking = 1; isAttacking_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void GetDamage();

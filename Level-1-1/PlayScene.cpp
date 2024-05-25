@@ -18,6 +18,7 @@
 #include "Fireball.h"
 #include "Koopa.h"
 #include "Spawner.h"
+#include "Hitbox.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -367,7 +368,7 @@ void CPlayScene::Unload()
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 
-void CPlayScene::AddObj(CGameObject* obj)
+void CPlayScene::AddObj(LPGAMEOBJECT obj)
 {
 	if (obj != NULL)
 	{
