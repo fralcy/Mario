@@ -29,13 +29,13 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			{
 				mario->SetState(MARIO_STATE_ATTACK_RIGHT);
 				attack = new CHitbox(mario->GetX(), mario->GetY() + 4);
-				attack->SetSpeed(0.085f, 0);
+				attack->SetSpeed(0.1f, 0);
 			}
 			else
 			{
 				mario->SetState(MARIO_STATE_ATTACK_LEFT);
 				attack = new CHitbox(mario->GetX(), mario->GetY() + 4);
-				attack->SetSpeed(-0.085f, 0);
+				attack->SetSpeed(-0.1f, 0);
 			}
 			scene->AddObj(attack);
 		}

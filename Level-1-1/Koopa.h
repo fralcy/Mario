@@ -45,6 +45,7 @@ protected:
     void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
     void OnCollisionWithPlant(LPCOLLISIONEVENT e);
     void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
+    void OnCollisionWithHitbox(LPCOLLISIONEVENT e);
 public:
     CKoopa(float x, float y, int color);
     virtual void SetState(int state);

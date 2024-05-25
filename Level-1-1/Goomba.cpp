@@ -1,6 +1,7 @@
 #include "Goomba.h"
 #include "PlayScene.h"
 #include "Mario.h"
+#include "Hitbox.h"
 
 CGoomba::CGoomba(float x, float y, int type):CGameObject(x, y)
 {
@@ -36,6 +37,8 @@ void CGoomba::OnNoCollision(DWORD dt)
 
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CHitbox*>(e->obj))
+		OnCollisionWithHitbox(e);
 	if (!e->obj->IsBlocking()) return; 
 	if (dynamic_cast<CGoomba*>(e->obj)) return; 
 
@@ -51,6 +54,10 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
+}
+void CGoomba::OnCollisionWithHitbox(LPCOLLISIONEVENT e)
+{
+	Delete();
 }
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)

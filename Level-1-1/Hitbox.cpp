@@ -14,22 +14,10 @@ void CHitbox::OnNoCollision(DWORD dt)
 }
 void CHitbox::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CGoomba*>(e->obj))
-		OnCollisionWithGoomba(e);
-	else if (dynamic_cast<CKoopa*>(e->obj))
-		OnCollisionWithKoopa(e);
-	else if (dynamic_cast<CFirePlant*>(e->obj))
+	if (dynamic_cast<CFirePlant*>(e->obj))
 		OnCollisionWithFirePlant(e);
 	else if (dynamic_cast<CMysteryBlock*>(e->obj))
 		OnCollisionWithMysteryBlock(e);
-}
-void CHitbox::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
-{
-	e->obj->Delete();
-}
-void CHitbox::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
-{
-	e->obj->Delete();
 }
 void CHitbox::OnCollisionWithFirePlant(LPCOLLISIONEVENT e)
 {

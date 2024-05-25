@@ -7,7 +7,7 @@
 #include "Mysteryblock.h"
 
 #define HITBOX_WIDTH 1
-#define HITBOX_HEIGHT 20
+#define HITBOX_HEIGHT 10
 #define	HITBOX_TIMEOUT 200
 
 class CHitbox: public CGameObject {
@@ -25,12 +25,11 @@ public:
 		r = l + HITBOX_WIDTH;
 		b = t + HITBOX_HEIGHT;
 	}
-	int IsBlocking() { return 1; }
+	int IsCollidable() { return 1; }
+	int IsBlocking() { return 0; }
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
-	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
-	void OnCollisionWithFirePlant(LPCOLLISIONEVENT e);
-	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e);
+	void OnCollisionWithFirePlant(LPCOLLISIONEVENT e);
 };
