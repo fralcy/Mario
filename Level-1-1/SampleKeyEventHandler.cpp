@@ -5,11 +5,13 @@
 
 #include "Mario.h"
 #include "PlayScene.h"
+#include "Hitbox.h"
 
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer(); 
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario *)scene->GetPlayer(); 
 
 	switch (KeyCode)
 	{
@@ -19,16 +21,36 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_S:
 		mario->SetState(MARIO_STATE_JUMP);
 		break;
+	case DIK_A:
+		if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
+		{
+			LPGAMEOBJECT attack = NULL;
+			if (mario->GetNX() >= 0)
+			{
+				mario->SetState(MARIO_STATE_ATTACK_RIGHT);
+				attack = new CHitbox(mario->GetX() + 12, mario->GetY() + 4);
+			}
+			else
+			{
+				mario->SetState(MARIO_STATE_ATTACK_LEFT);
+				attack = new CHitbox(mario->GetX() - 12, mario->GetY() + 4);
+			}
+			scene->AddObj(attack);
+		}
+		break;
 	case DIK_1:
 		mario->SetLevel(MARIO_LEVEL_SMALL);
 		break;
 	case DIK_2:
 		mario->SetLevel(MARIO_LEVEL_BIG);
 		break;
+	case DIK_3:
+		mario->SetLevel(MARIO_LEVEL_RACCOON);
+		break;
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
 		break;
-	case DIK_R: // reset
+	case DIK_R:
 		//Reload();
 		break;
 	}

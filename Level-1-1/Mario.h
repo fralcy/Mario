@@ -38,6 +38,8 @@
 #define MARIO_STATE_KICKING_RIGHT	700
 #define MARIO_STATE_KICKING_LEFT	800
 
+#define MARIO_STATE_ATTACK_RIGHT	900
+#define MARIO_STATE_ATTACK_LEFT		1000
 
 #pragma region ANIMATION_ID
 
@@ -144,6 +146,9 @@
 #define ID_ANI_MARIO_RACCOON_SIT_RIGHT 2300
 #define ID_ANI_MARIO_RACCOON_SIT_LEFT 2301
 
+#define ID_ANI_MARIO_RACCOON_ATTACK_RIGHT 2300
+#define ID_ANI_MARIO_RACCOON_ATTACK_LEFT 2301
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -180,8 +185,8 @@ class CMario : public CGameObject
 
 	int level; 
 	int untouchable; 
-	ULONGLONG untouchable_start, isKicking_start;
-	BOOLEAN isOnPlatform, isKicking;
+	ULONGLONG untouchable_start, isKicking_start, isAttacking_start;
+	BOOLEAN isOnPlatform, isKicking, isAttacking;
 	int coin; 
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
@@ -211,6 +216,8 @@ public:
 		level = MARIO_LEVEL_SMALL;
 		untouchable = isKicking = 0;
 		untouchable_start = isKicking_start = -1;
+		isAttacking = 0;
+		isAttacking_start = -1;
 		isOnPlatform = false;
 		coin = 0;
 	}
@@ -240,4 +247,5 @@ public:
 	void Throw();
 	void Drop() { hold_obj = NULL; }
 	CKoopa* GetHoldObj() { return hold_obj; }
+	int GetNX() { return nx; }
 };
