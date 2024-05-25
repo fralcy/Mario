@@ -1,6 +1,7 @@
 #include "Koopa.h"
 #include "PlayScene.h"
 #include "Mysteryblock.h"
+#include "FirePlant.h"
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -123,8 +124,16 @@ void CKoopa::OnNoCollision(DWORD dt)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+    if (dynamic_cast<CMysteryBlock*>(e->obj))
+        OnCollisionWithMysteryBlock(e);
+    else if (dynamic_cast<CGoomba*>(e->obj))
+        OnCollisionWithGoomba(e);
+    else if (dynamic_cast<CFirePlant*>(e->obj))
+        OnCollisionWithPlant(e);
+    else if (dynamic_cast<CKoopa*>(e->obj))
+        OnCollisionWithKoopa(e);
     if (!e->obj->IsBlocking()) return;
-    if (dynamic_cast<CKoopa*>(e->obj)) return;
+    
 
     if (e->ny != 0)
     {
@@ -135,8 +144,6 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
         nx = -nx;
 		vx = -vx;
 	}
-    if (dynamic_cast<CMysteryBlock*>(e->obj))
-        OnCollisionWithMysteryBlock(e);
 }
 void CKoopa::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 {
@@ -145,6 +152,22 @@ void CKoopa::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
     {
         mysteryblock->SpawnItem((int) - e->nx);
     }
+}
+void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+{
+    CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+    if (e->nx != 0 && goomba->GetState() != GOOMBA_STATE_STOMPED)
+    {
+        goomba->SetState(GOOMBA_STATE_STOMPED);
+    }
+}
+void CKoopa::OnCollisionWithPlant(LPCOLLISIONEVENT e)
+{
+    e->obj->Delete();
+}
+void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
+{
+    e->obj->Delete();
 }
 void CKoopa::SetState(int state)
 {
