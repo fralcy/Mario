@@ -462,7 +462,14 @@ int CMario::GetAniIdBig()
 int CMario::GetAniIdRaccoon()
 {
 	int aniId = -1;
-	if (!isOnPlatform)
+	if (isAttacking)
+	{
+		if (nx >= 0)
+			aniId = ID_ANI_MARIO_RACCOON_ATTACK_RIGHT;
+		else
+			aniId = ID_ANI_MARIO_RACCOON_ATTACK_LEFT;
+	}
+	else if (!isOnPlatform)
 	{
 		if (hold_obj)
 		{
