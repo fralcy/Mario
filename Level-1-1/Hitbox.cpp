@@ -1,9 +1,21 @@
 #include "Hitbox.h"
-#include "debug.h"
+#include "PlayScene.h"
+#include "Mario.h"
 
 void CHitbox::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	if (GetTickCount64() - time_start > HITBOX_TIMEOUT)
 		Delete();
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)scene->GetPlayer();
+	if (vx > 0)
+	{
+		vx = HITBOX_SPEED + mario->GetVX();
+	}
+	else
+	{
+		vx = -HITBOX_SPEED + mario->GetVX();
+	}
+	vy = mario->GetVY();
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

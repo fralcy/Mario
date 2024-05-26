@@ -22,20 +22,21 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MARIO_STATE_JUMP);
 		break;
 	case DIK_A:
-		if (mario->GetLevel() == MARIO_LEVEL_RACCOON)
+		DebugOut(L"%d", mario->CanAttack());
+		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->CanAttack())
 		{
 			LPGAMEOBJECT attack = NULL;
 			if (mario->GetNX() >= 0)
 			{
 				mario->SetState(MARIO_STATE_ATTACK_RIGHT);
 				attack = new CHitbox(mario->GetX(), mario->GetY() + 4);
-				attack->SetSpeed(0.1f, 0);
+				attack->SetSpeed(HITBOX_SPEED + mario->GetVX(), 0);
 			}
 			else
 			{
 				mario->SetState(MARIO_STATE_ATTACK_LEFT);
 				attack = new CHitbox(mario->GetX(), mario->GetY() + 4);
-				attack->SetSpeed(-0.1f, 0);
+				attack->SetSpeed(-HITBOX_SPEED + mario->GetVX(), 0);
 			}
 			scene->AddObj(attack);
 		}

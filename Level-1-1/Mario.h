@@ -174,6 +174,7 @@
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_KICKING_TIME	200
 #define MARIO_ATTACKING_TIME	300
+#define MARIO_ATTACK_DELAY_TIME	600
 
 class CMario : public CGameObject
 {
@@ -187,7 +188,7 @@ class CMario : public CGameObject
 	int level; 
 	int untouchable; 
 	ULONGLONG untouchable_start, isKicking_start, isAttacking_start;
-	BOOLEAN isOnPlatform, isKicking, isAttacking;
+	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack;
 	int coin; 
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
@@ -239,7 +240,7 @@ public:
 	void SetLevel(int l);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartKicking() { isKicking = 1; isKicking_start = GetTickCount64(); }
-	void Attack() { isAttacking = 1; isAttacking_start = GetTickCount64(); }
+	void Attack() { isAttacking = 1; canAttack = 0; isAttacking_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void GetDamage();
@@ -250,4 +251,5 @@ public:
 	void Drop() { hold_obj = NULL; }
 	CKoopa* GetHoldObj() { return hold_obj; }
 	int GetNX() { return nx; }
+	bool CanAttack() { return canAttack; }
 };
