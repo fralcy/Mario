@@ -19,7 +19,14 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MARIO_STATE_SIT);
 		break;
 	case DIK_S:
-		mario->SetState(MARIO_STATE_JUMP);
+		if (mario->CanFly())
+		{
+			mario->SetState(MARIO_STATE_FLY);
+		}
+		else
+		{
+			mario->SetState(MARIO_STATE_JUMP);
+		}
 		break;
 	case DIK_A:
 		DebugOut(L"%d", mario->CanAttack());

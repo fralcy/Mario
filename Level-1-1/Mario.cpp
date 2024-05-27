@@ -482,19 +482,36 @@ int CMario::GetAniIdRaccoon()
 			else
 				aniId = ID_ANI_MARIO_RACCOON_JUMP_HOLD_LEFT;
 		}
+		else if (vy < 0)
+		{
+			if (abs(ax) == MARIO_ACCEL_RUN_X)
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_LEFT;
+			}
+			else
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT;
+			}
+		}
 		else if (abs(ax) == MARIO_ACCEL_RUN_X)
 		{
 			if (nx >= 0)
-				aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_RIGHT;
+				aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_RIGHT_DOWN;
 			else
-				aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_LEFT;
+				aniId = ID_ANI_MARIO_RACCOON_JUMP_RUN_LEFT_DOWN;
 		}
 		else
 		{
 			if (nx >= 0)
-				aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT;
+				aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT_DOWN;
 			else
-				aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT;
+				aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT_DOWN;
 		}
 	}
 	else
@@ -660,6 +677,12 @@ void CMario::SetState(int state)
 	case MARIO_STATE_ATTACK_LEFT:
 		if (!canAttack) return;
 		Attack();
+		break;
+	case MARIO_STATE_FLY:
+		if (!isOnPlatform)
+		{
+			vy = -MARIO_FLY_SPEED_Y;
+		}
 		break;
 	}
 
