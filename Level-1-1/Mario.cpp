@@ -23,7 +23,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
+	DebugOut(L"%d", isFloating);
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 	// reset untouchable timer if untouchable time has passed
@@ -46,6 +46,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			isAttacking_start = 0;
 		}
 	}
+	if (GetTickCount64() - isFloating_start > MARIO_FLOATING_TIME)
+	{
+		isFloating_start = 0;
+		isFloating = false;
+	}
 	if (hold_obj)
 	{
 		switch (level)
@@ -61,7 +66,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//hold_obj->Render();
 	}
 	isOnPlatform = false;
-
+	if (!isFloating) ay = MARIO_GRAVITY;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -473,6 +478,13 @@ int CMario::GetAniIdRaccoon()
 		else
 			aniId = ID_ANI_MARIO_RACCOON_ATTACK_LEFT;
 	}
+	else if (isFloating)
+	{
+		if (nx >= 0)
+			aniId = ID_ANI_MARIO_RACCOON_FLOAT_RIGHT;
+		else
+			aniId = ID_ANI_MARIO_RACCOON_FLOAT_LEFT;
+	}
 	else if (!isOnPlatform)
 	{
 		if (hold_obj)
@@ -640,6 +652,7 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_RELEASE_JUMP:
+		if (isFloating) break;
 		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
 		break;
 
@@ -682,6 +695,15 @@ void CMario::SetState(int state)
 		if (!isOnPlatform)
 		{
 			vy = -MARIO_FLY_SPEED_Y;
+		}
+		break;
+	case MARIO_STATE_FLOAT:
+		if (!isOnPlatform)
+		{
+			isFloating = true;
+			isFloating_start = GetTickCount64();
+			ay = 0;
+			vy = MARIO_FLOAT_SPEED;
 		}
 		break;
 	}

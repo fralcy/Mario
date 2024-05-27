@@ -17,6 +17,7 @@
 #define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
 #define MARIO_FLY_SPEED_Y		0.5f
+#define MARIO_FLOAT_SPEED		0.05f
 
 #define MARIO_GRAVITY			0.002f
 
@@ -159,6 +160,8 @@
 #define ID_ANI_MARIO_RACCOON_ATTACK_RIGHT 2400
 #define ID_ANI_MARIO_RACCOON_ATTACK_LEFT 2401
 
+#define ID_ANI_MARIO_RACCOON_FLOAT_RIGHT 2500
+#define ID_ANI_MARIO_RACCOON_FLOAT_LEFT 2501
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -185,6 +188,7 @@
 #define MARIO_KICKING_TIME	200
 #define MARIO_ATTACKING_TIME	300
 #define MARIO_ATTACK_DELAY_TIME	600
+#define MARIO_FLOATING_TIME	150
 
 class CMario : public CGameObject
 {
@@ -197,8 +201,8 @@ class CMario : public CGameObject
 
 	int level; 
 	int untouchable; 
-	ULONGLONG untouchable_start, isKicking_start, isAttacking_start;
-	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack;
+	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start;
+	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating;
 	int coin; 
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
@@ -228,9 +232,12 @@ public:
 		level = MARIO_LEVEL_SMALL;
 		untouchable = isKicking = 0;
 		untouchable_start = isKicking_start = -1;
+		canAttack = true;
 		isAttacking = 0;
 		isAttacking_start = -1;
 		isOnPlatform = false;
+		isFloating = 0;
+		isFloating_start = -1;
 		coin = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -263,4 +270,5 @@ public:
 	int GetNX() { return nx; }
 	bool CanAttack() { return canAttack; }
 	bool CanFly() { return level == MARIO_LEVEL_RACCOON && abs(vx) == MARIO_RUNNING_SPEED && !isOnPlatform;	}
+	bool CanFloat() { return !isFloating && !isOnPlatform; }
 };

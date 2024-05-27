@@ -23,13 +23,16 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		{
 			mario->SetState(MARIO_STATE_FLY);
 		}
+		else if (mario->CanFloat())
+		{
+			mario->SetState(MARIO_STATE_FLOAT);
+		}
 		else
 		{
 			mario->SetState(MARIO_STATE_JUMP);
 		}
 		break;
 	case DIK_A:
-		DebugOut(L"%d", mario->CanAttack());
 		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->CanAttack())
 		{
 			LPGAMEOBJECT attack = NULL;
