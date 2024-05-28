@@ -72,6 +72,9 @@
 #define ID_ANI_MARIO_JUMP_WALK_RIGHT 700
 #define ID_ANI_MARIO_JUMP_WALK_LEFT 701
 
+#define ID_ANI_MARIO_JUMP_WALK_RIGHT_DOWN 725
+#define ID_ANI_MARIO_JUMP_WALK_LEFT_DOWN 726
+
 #define ID_ANI_MARIO_JUMP_HOLD_RIGHT 750
 #define ID_ANI_MARIO_JUMP_HOLD_LEFT 751
 
@@ -268,7 +271,7 @@ public:
 	void Drop() { hold_obj = NULL; }
 	CKoopa* GetHoldObj() { return hold_obj; }
 	int GetNX() { return nx; }
-	bool CanAttack() { return canAttack; }
+	bool CanAttack() { return level == MARIO_LEVEL_RACCOON && canAttack && !isSitting; }
 	bool CanFly() { return level == MARIO_LEVEL_RACCOON && abs(vx) == MARIO_RUNNING_SPEED && !isOnPlatform;	}
 	bool CanFloat() { return level == MARIO_LEVEL_RACCOON && !isFloating && !isOnPlatform; }
 };

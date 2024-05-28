@@ -33,7 +33,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		}
 		break;
 	case DIK_A:
-		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->CanAttack())
+		if (mario->CanAttack())
 		{
 			LPGAMEOBJECT attack = NULL;
 			if (mario->GetNX() >= 0)
