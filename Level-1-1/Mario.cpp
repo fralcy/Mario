@@ -23,7 +23,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-	DebugOut(L"%d", isFloating);
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 	// reset untouchable timer if untouchable time has passed
@@ -230,7 +229,7 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	if (coin->GetType() == 1)
 	{
 		e->obj->Delete();
-		coin++;
+		AddCoin();
 	}
 }
 void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
