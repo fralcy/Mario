@@ -270,5 +270,5 @@ public:
 	int GetNX() { return nx; }
 	bool CanAttack() { return canAttack; }
 	bool CanFly() { return level == MARIO_LEVEL_RACCOON && abs(vx) == MARIO_RUNNING_SPEED && !isOnPlatform;	}
-	bool CanFloat() { return !isFloating && !isOnPlatform; }
+	bool CanFloat() { return level == MARIO_LEVEL_RACCOON && !isFloating && !isOnPlatform; }
 };

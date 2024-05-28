@@ -704,6 +704,17 @@ void CMario::SetState(int state)
 			isFloating_start = GetTickCount64();
 			ay = 0;
 			vy = MARIO_FLOAT_SPEED;
+			vx = 0;
+			if (nx >= 0)
+			{
+				maxVx = MARIO_WALKING_SPEED;
+				ax = MARIO_ACCEL_WALK_X;
+			}
+			else
+			{
+				maxVx = -MARIO_WALKING_SPEED;
+				ax = -MARIO_ACCEL_WALK_X;
+			}
 		}
 		break;
 	}

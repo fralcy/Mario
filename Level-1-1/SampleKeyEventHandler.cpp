@@ -64,7 +64,8 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MARIO_STATE_DIE);
 		break;
 	case DIK_R:
-		//Reload();
+		scene->Unload();
+		scene->Load();
 		break;
 	}
 }
