@@ -333,7 +333,7 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cx < 0) cx = 0;
 	if (!player->NeedTracking() || cy >0) cy = 0;
-	DebugOut(L"%f, %f, %d, %f\n", cx, cy, player->NeedTracking(), player->GetY());
+
 	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();

@@ -242,6 +242,7 @@ public:
 		isOnPlatform = false;
 		isFloating = 0;
 		isFloating_start = -1;
+		needTracking = true;
 		coin = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

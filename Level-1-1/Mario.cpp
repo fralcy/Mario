@@ -279,8 +279,8 @@ void CMario::OnCollisionWithMapBound(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		if (e->ny < 0)
-			SetState(MARIO_STATE_DIE);
-		else 
+			/*SetState(MARIO_STATE_DIE);
+		else*/ if (e->ny > 0)
 			vy = 0;
 	}
 	else if (e->nx != 0)
