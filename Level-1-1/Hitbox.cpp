@@ -1,6 +1,7 @@
 #include "Hitbox.h"
 #include "PlayScene.h"
 #include "Mario.h"
+#include "Effect.h"
 
 void CHitbox::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	if (GetTickCount64() - time_start > HITBOX_TIMEOUT)
@@ -30,9 +31,18 @@ void CHitbox::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFirePlant(e);
 	else if (dynamic_cast<CMysteryBlock*>(e->obj))
 		OnCollisionWithMysteryBlock(e);
+	else if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CKoopa*>(e->obj))
+		OnCollisionWithKoopa(e);
 }
 void CHitbox::OnCollisionWithFirePlant(LPCOLLISIONEVENT e)
 {
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	float x, y;
+	e->obj->GetPosition(x, y);
+	CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
+	scene->AddObj(hit);
 	e->obj->Delete();
 }
 void CHitbox::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
@@ -42,4 +52,22 @@ void CHitbox::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 	{
 		mysteryblock->SpawnItem((int)-e->nx);
 	}
+}
+void CHitbox::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	float x, y;
+	e->obj->GetPosition(x, y);
+	CEffect* hit = new CEffect (x, y, ID_SPRITE_HIT);
+	scene->AddObj(hit);
+	e->obj->Delete();
+}
+void CHitbox::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
+{
+	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	float x, y;
+	e->obj->GetPosition(x, y);
+	CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
+	scene->AddObj(hit);
+	e->obj->Delete();
 }

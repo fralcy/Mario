@@ -133,8 +133,6 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
         OnCollisionWithPlant(e);
     else if (dynamic_cast<CKoopa*>(e->obj))
         OnCollisionWithKoopa(e);
-    else if (dynamic_cast<CHitbox*>(e->obj))
-        OnCollisionWithHitbox(e);
     if (!e->obj->IsBlocking()) return;
     
 
@@ -171,10 +169,6 @@ void CKoopa::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
     e->obj->Delete();
-}
-void CKoopa::OnCollisionWithHitbox(LPCOLLISIONEVENT e)
-{
-    Delete();
 }
 void CKoopa::SetState(int state)
 {

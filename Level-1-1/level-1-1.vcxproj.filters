@@ -206,5 +206,8 @@
     <ClInclude Include="Hitbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

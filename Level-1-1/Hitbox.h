@@ -33,4 +33,6 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e);
 	void OnCollisionWithFirePlant(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 };

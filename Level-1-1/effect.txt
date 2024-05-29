@@ -6,6 +6,8 @@
 32200	592	119	600	127	20
 32300	603	119	611	127	20
 
+#Hit
+22000	519	67	534	82	20
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]

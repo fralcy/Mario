@@ -37,12 +37,10 @@ void CGoomba::OnNoCollision(DWORD dt)
 
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CHitbox*>(e->obj))
-		OnCollisionWithHitbox(e);
-	if (!e->obj->IsBlocking()) return; 
-	if (dynamic_cast<CGoomba*>(e->obj)) return; 
+	if (!e->obj->IsBlocking()) return;
+	if (dynamic_cast<CGoomba*>(e->obj)) return;
 
-	if (e->ny != 0 )
+	if (e->ny != 0)
 	{
 		vy = 0;
 		if (e->ny < 0 && hop_count == 0)  // Goomba lands on the ground
@@ -54,10 +52,6 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
-}
-void CGoomba::OnCollisionWithHitbox(LPCOLLISIONEVENT e)
-{
-	Delete();
 }
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
