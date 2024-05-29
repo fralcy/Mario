@@ -205,7 +205,7 @@ class CMario : public CGameObject
 	int level; 
 	int untouchable; 
 	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start;
-	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating;
+	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking;
 	int coin; 
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
@@ -275,4 +275,5 @@ public:
 	bool CanAttack() { return level == MARIO_LEVEL_RACCOON && canAttack && !isSitting; }
 	bool CanFly() { return level == MARIO_LEVEL_RACCOON && abs(vx) == MARIO_RUNNING_SPEED && !isOnPlatform;	}
 	bool CanFloat() { return level == MARIO_LEVEL_RACCOON && !isFloating && !isOnPlatform; }
+	bool NeedTracking() { return needTracking; }
 };

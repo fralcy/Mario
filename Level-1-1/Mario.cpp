@@ -64,6 +64,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 		//hold_obj->Render();
 	}
+	if (needTracking && y >= 115) needTracking = false;
 	isOnPlatform = false;
 	if (!isFloating) ay = MARIO_GRAVITY;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -725,6 +726,7 @@ void CMario::SetState(int state)
 		if (!isOnPlatform)
 		{
 			vy = -MARIO_FLY_SPEED_Y;
+			needTracking = true;
 		}
 		break;
 	case MARIO_STATE_FLOAT:

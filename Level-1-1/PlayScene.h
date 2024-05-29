@@ -13,7 +13,7 @@ class CPlayScene: public CScene
 {
 protected: 
 	// A play scene has to have player, right? 
-	LPGAMEOBJECT player;					
+	CMario* player;					
 
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> addedObjects;
