@@ -19,6 +19,7 @@
 #include "Koopa.h"
 #include "Spawner.h"
 #include "Hitbox.h"
+#include "MapBound.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -204,7 +205,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CSpawner(x, y, r, b, objs);
 	}
 	break;
-
+	case OBJECT_TYPE_MAPBOUND:
+	{
+		float r = (float)atof(tokens[3].c_str());
+		float b = (float)atof(tokens[4].c_str());
+		obj = new CMapBound(x, y, r, b);
+	}
+	break;
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = (float)atof(tokens[3].c_str());

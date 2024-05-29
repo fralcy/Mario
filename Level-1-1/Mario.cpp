@@ -15,7 +15,7 @@
 #include "Fireball.h"
 #include "Koopa.h"
 #include "Spawner.h"
-
+#include "MapBound.h"
 #include "Collision.h"
 #include "PlayScene.h"
 
@@ -87,7 +87,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = 0;
 	}
-	
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
@@ -109,6 +108,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopa(e);
 	else if (dynamic_cast<CSpawner*>(e->obj))
 		OnCollisionWithSpawner(e);
+	else if (dynamic_cast<CMapBound*>(e->obj))
+		OnCollisionWithMapBound(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -271,6 +272,26 @@ void CMario::OnCollisionWithSpawner(LPCOLLISIONEVENT e)
 {
 	CSpawner* s = (CSpawner*)e->obj;
 	s->SpawnEnemies();
+}
+void CMario::OnCollisionWithMapBound(LPCOLLISIONEVENT e)
+{
+	if (e->ny != 0)
+	{
+		if (e->ny < 0)
+			SetState(MARIO_STATE_DIE);
+		else 
+			vy = 0;
+	}
+	else if (e->nx != 0)
+	{
+		vx = 0;
+		if (e->nx > 0)
+			x += 8;
+		else
+			x -= 8;
+	}
+
+	DebugOut(L"%f, %f\n", e->nx, e->ny);
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)

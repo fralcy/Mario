@@ -220,6 +220,7 @@ class CMario : public CGameObject
 	void Pick(CKoopa* koopa);
 
 	void OnCollisionWithSpawner(LPCOLLISIONEVENT e);
+	void OnCollisionWithMapBound(LPCOLLISIONEVENT e);
 	int GetAniIdBig();
 	int GetAniIdSmall();
 	int GetAniIdRaccoon();

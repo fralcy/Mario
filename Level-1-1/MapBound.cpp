@@ -1,16 +1,14 @@
-#include "Spawner.h"
-#include "Game.h"
-#include "PlayScene.h"
-CSpawner::CSpawner(float l, float t, float r, float b, vector<LPGAMEOBJECT> objects)
+#include "MapBound.h"
+#include "Textures.h"
+CMapBound::CMapBound(float l, float t, float r, float b)
 {
-	this->objects = objects;
 	x = l;
 	y = t;
 	width = r - l;
 	height = b - t;
 }
 
-void CSpawner::RenderBoundingBox()
+void CMapBound::RenderBoundingBox()
 {
 	D3DXVECTOR3 p(x, y, 0);
 	RECT rect;
@@ -31,25 +29,15 @@ void CSpawner::RenderBoundingBox()
 	CGame::GetInstance()->Draw(x - cx, y - cy, bbox, nullptr, BBOX_ALPHA, rect.right - 1, rect.bottom - 1);
 }
 
-void CSpawner::Render()
+void CMapBound::Render()
 {
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
-void CSpawner::GetBoundingBox(float& l, float& t, float& r, float& b)
+void CMapBound::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x - width / 2;
 	t = y - height / 2;
 	r = x + width / 2;
 	b = y + height / 2;
-}
-
-void CSpawner::SpawnEnemies()
-{
-	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-	for (int i = 0; i < objects.size(); i++)
-	{
-		scene->AddObj(objects[i]);
-	}
-	objects.clear();
 }

@@ -2,9 +2,6 @@
 
 #include "GameObject.h"
 
-/*
-	Object that triggers scene switching
-*/
 class CSpawner : public CGameObject
 {
 	float width;
@@ -15,7 +12,7 @@ public:
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 
-	void RenderBoundingBox(void);
+	void RenderBoundingBox();
 	int IsCollidable() { return (objects.size() > 0) ? 1 : 0; }
 	int IsBlocking() { return 0; }
 

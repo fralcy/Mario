@@ -162,6 +162,7 @@
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapBound.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Mysteryblock.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="Leaf.h" />
+    <ClInclude Include="MapBound.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mysteryblock.h" />
     <ClInclude Include="Pathfinder.h" />
