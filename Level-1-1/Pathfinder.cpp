@@ -36,5 +36,5 @@ void CPathfinder::OnCollisionWith(LPCOLLISIONEVENT e)
 CPathfinder::CPathfinder(float x, float y): CGameObject(x,y)
 {
     this->ax = 0;
-    this->ay = GRAVITY;
+    this->ay = KOOPA_GRAVITY;
 }

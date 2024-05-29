@@ -187,9 +187,8 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		if ((state == MARIO_STATE_RUNNING_LEFT || state == MARIO_STATE_RUNNING_RIGHT) && !hold_obj && e->nx != 0 && e->ny == 0)
 		{
 			Pick(koopa);
-			return;
 		} 
-		if (koopa->GetVX() == 0)
+		else if (koopa->GetVX() == 0)
 		{
 			StartKicking();
 			if (e->nx > 0)
@@ -215,6 +214,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 void CMario::Pick(CKoopa* koopa)
 {
 	hold_obj = koopa;
+	koopa->SetState(KOOPA_STATE_SHELL);
 }
 void CMario::Throw()
 {

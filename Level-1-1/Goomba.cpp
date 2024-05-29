@@ -1,7 +1,6 @@
 #include "Goomba.h"
 #include "PlayScene.h"
 #include "Mario.h"
-#include "Hitbox.h"
 
 CGoomba::CGoomba(float x, float y, int type):CGameObject(x, y)
 {

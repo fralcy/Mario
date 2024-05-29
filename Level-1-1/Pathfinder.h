@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#define GRAVITY 0.002f
+#define KOOPA_GRAVITY 0.002f
 #define PATHFINDER_SPEED 0.025f
 
 #define KOOPA_WIDTH 16

@@ -2,13 +2,13 @@
 #include "PlayScene.h"
 #include "Mysteryblock.h"
 #include "FirePlant.h"
-#include "Hitbox.h"
+#include "Effect.h"
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
     left = x - KOOPA_WIDTH / 2;
     right = left + KOOPA_WIDTH;
-    if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_RECOVER)
+    if (state != KOOPA_STATE_WALKING)
     {
         top = y - KOOPA_SHELL_HEIGHT / 2;
         bottom = top + KOOPA_SHELL_HEIGHT;
@@ -24,7 +24,7 @@ CKoopa::CKoopa(float x, float y, int color) : CGameObject(x, y)
     this->nx = -1;
     this->color = color;
     this->ax = 0;
-    this->ay = GRAVITY;
+    this->ay = KOOPA_GRAVITY;
     hide_start = recover_start = -1;
 
     pathfinder = new CPathfinder(x, y);
@@ -46,7 +46,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     }
     else
     {
-        this->ay = GRAVITY;
+        this->ay = KOOPA_GRAVITY;
     }
     // Check if the pathfinder is falling off the platform
     if (state == KOOPA_STATE_WALKING) if(pathfinder->GetVY() > 0 && vy == 0) // Pathfinder is falling
@@ -59,7 +59,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     // Start recovering after hide for a while
     if (vx == 0)
     {
-        if (state == KOOPA_STATE_SHELL)
+        if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_KNOCKED)
         {
             if (hide_start == -1)
                 hide_start = GetTickCount64();
@@ -69,7 +69,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
                 SetState(KOOPA_STATE_RECOVER);
             }
         }
-        else
+        else if (state == KOOPA_STATE_RECOVER)
         {
             if (GetTickCount64() - recover_start > KOOPA_RECOVER_TIME)
             {
@@ -89,8 +89,8 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         hide_start = recover_start = -1;
     }
     vy += ay * dt;
-    vx += ax * dt;
-
+    vx += ax * dt;        
+    DebugOut(L"%f, %f", vx, vy);
     CGameObject::Update(dt, coObjects);
     CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -111,6 +111,11 @@ void CKoopa::Render()
         break;
     case KOOPA_STATE_RECOVER:
         aniId = ID_ANI_KOOPA_RECOVER;
+        break;
+    case KOOPA_STATE_KNOCKED:
+        if (vx == 0) aniId = ID_ANI_KOOPA_SHELL;
+        else if (nx < 0) aniId = ID_ANI_KOOPA_SPINNING_LEFT;
+        else aniId = ID_ANI_KOOPA_SPINNING_RIGHT;
         break;
     }
     CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -139,15 +144,23 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
     if (e->ny != 0)
     {
         vy = 0;
+        if (isKnocking) 
+        {
+            vx = 0;
+            isKnocking = false;
+        }
     }
     else if (e->nx != 0)
     {
         nx = -nx;
 		vx = -vx;
+        pathfinder->SetSpeed(vx, 0);
+        pathfinder->SetPosition(x + 16 * nx, y);
 	}
 }
 void CKoopa::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 {
+    if (!(state == KOOPA_STATE_SHELL || state == KOOPA_STATE_KNOCKED) || vx == 0) return;
     CMysteryBlock* mysteryblock = dynamic_cast<CMysteryBlock*>(e->obj);
     if (e->nx != 0 && mysteryblock->GetState() == MYSTERY_BLOCK_STATE_ACTIVE)
     {
@@ -156,18 +169,32 @@ void CKoopa::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 }
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
-    CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-    if (e->nx != 0 && goomba->GetState() != GOOMBA_STATE_STOMPED)
-    {
-        goomba->SetState(GOOMBA_STATE_STOMPED);
-    }
+    if (!(state == KOOPA_STATE_SHELL || state == KOOPA_STATE_KNOCKED) || vx == 0) return;
+    float x, y;
+    e->obj->GetPosition(x, y);
+    LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+    CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
+    scene->AddObj(hit);
+    e->obj->Delete();
 }
 void CKoopa::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
+    if (!(state == KOOPA_STATE_SHELL || state == KOOPA_STATE_KNOCKED) || vx == 0) return;
+    float x, y;
+    e->obj->GetPosition(x, y);
+    LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+    CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
+    scene->AddObj(hit);
     e->obj->Delete();
 }
 void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
+    if (!(state == KOOPA_STATE_SHELL || state == KOOPA_STATE_KNOCKED) || vx == 0) return;
+    float x, y;
+    e->obj->GetPosition(x, y);
+    LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+    CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
+    scene->AddObj(hit);
     e->obj->Delete();
 }
 void CKoopa::SetState(int state)
@@ -184,6 +211,9 @@ void CKoopa::SetState(int state)
         vx = 0;
         break;
     case KOOPA_STATE_RECOVER:
+        break;
+    case KOOPA_STATE_KNOCKED:
+        isKnocking = true;
         break;
     }
 }

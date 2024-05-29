@@ -65,9 +65,11 @@ void CHitbox::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 void CHitbox::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+	CKoopa* koopa = (CKoopa*)e->obj;
 	float x, y;
-	e->obj->GetPosition(x, y);
+	koopa->GetPosition(x, y);
 	CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
 	scene->AddObj(hit);
-	e->obj->Delete();
+	koopa->SetState(KOOPA_STATE_KNOCKED);
+	koopa->SetSpeed(KOOPA_KNOCKED_SPEED_X * -e->nx, -KOOPA_KNOCKED_SPEED_Y);
 }
