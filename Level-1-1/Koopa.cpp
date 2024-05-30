@@ -160,7 +160,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 }
 void CKoopa::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 {
-    if (!(state == KOOPA_STATE_SHELL || state == KOOPA_STATE_KNOCKED) || vx == 0) return;
+    if (state == KOOPA_STATE_WALKING || vx == 0) return;
     CMysteryBlock* mysteryblock = dynamic_cast<CMysteryBlock*>(e->obj);
     if (e->nx != 0 && mysteryblock->GetState() == MYSTERY_BLOCK_STATE_ACTIVE)
     {
@@ -169,7 +169,7 @@ void CKoopa::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 }
 void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
-    if (!(state == KOOPA_STATE_SHELL || state == KOOPA_STATE_KNOCKED) || vx == 0) return;
+    if (state == KOOPA_STATE_WALKING || vx == 0)  return;
     float x, y;
     e->obj->GetPosition(x, y);
     LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
@@ -179,7 +179,7 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 }
 void CKoopa::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
-    if (!(state == KOOPA_STATE_SHELL || state == KOOPA_STATE_KNOCKED) || vx == 0) return;
+    if (state == KOOPA_STATE_WALKING || vx == 0)  return;
     float x, y;
     e->obj->GetPosition(x, y);
     LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
@@ -189,7 +189,7 @@ void CKoopa::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 }
 void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
-    if (!(state == KOOPA_STATE_SHELL || state == KOOPA_STATE_KNOCKED) || vx == 0) return;
+    if (state == KOOPA_STATE_WALKING || vx == 0)  return;
     float x, y;
     e->obj->GetPosition(x, y);
     LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();

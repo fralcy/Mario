@@ -186,7 +186,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	}
 	else
 	{
-		if ((state == MARIO_STATE_RUNNING_LEFT || state == MARIO_STATE_RUNNING_RIGHT) && !hold_obj && e->nx != 0 && e->ny == 0)
+		if ((state == MARIO_STATE_RUNNING_LEFT || state == MARIO_STATE_RUNNING_RIGHT) && !hold_obj && e->nx != 0 && e->ny == 0 && koopa->GetVX() == 0)
 		{
 			Pick(koopa);
 		} 
@@ -220,7 +220,7 @@ void CMario::Pick(CKoopa* koopa)
 }
 void CMario::Throw()
 {
-	hold_obj->SetState(KOOPA_STATE_SHELL);
+	//hold_obj->SetState(KOOPA_STATE_SHELL);
 	hold_obj->SetSpeed(KOOPA_SPINNING_SPEED * nx, 0);
 	hold_obj = NULL;
 	StartKicking();
@@ -252,6 +252,7 @@ void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
 	{
 		life++;
 	}
+	shroom->Delete();
 }
 
 void CMario::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
@@ -286,8 +287,8 @@ void CMario::OnCollisionWithMapBound(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		if (e->ny < 0)
-			/*SetState(MARIO_STATE_DIE);
-		else*/ if (e->ny > 0)
+			SetState(MARIO_STATE_DIE);
+		else if (e->ny > 0)
 			vy = 0;
 	}
 	else if (e->nx != 0)
