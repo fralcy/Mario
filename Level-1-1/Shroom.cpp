@@ -1,10 +1,11 @@
 #include "Shroom.h"
 
-CShroom::CShroom(float x, float y, int nx) :CGameObject(x, y)
+CShroom::CShroom(float x, float y, int nx, int type) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = SHROOM_GRAVITY;
 	this->nx = nx;
+	this->type = type;
 }
 
 void CShroom::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -63,10 +64,10 @@ void CShroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CShroom::Render()
 {
-	int ani = ID_ANI_SHROOM_WALKING;
-	if (isspawning)
+	int ani = ID_ANI_SHROOM_RED;
+	if (type == SHROOM_TYPE_GREEN)
 	{
-		ani = ID_ANI_SHROOM_GROWING;
+		ani = ID_ANI_SHROOM_GREEN;
 	}
 	CAnimations::GetInstance()->Get(ani)->Render(x, y);
 	//RenderBoundingBox();

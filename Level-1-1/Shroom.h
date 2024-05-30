@@ -7,8 +7,11 @@
 #define SHROOM_BBOX_WIDTH 16
 #define SHROOM_BBOX_HEIGHT 14
 
-#define ID_ANI_SHROOM_GROWING 6000
-#define ID_ANI_SHROOM_WALKING 6001
+#define ID_ANI_SHROOM_RED 6000
+#define ID_ANI_SHROOM_GREEN 6001
+
+#define SHROOM_TYPE_RED	1
+#define SHROOM_TYPE_GREEN 2
 
 class CShroom : public CGameObject
 {
@@ -17,6 +20,7 @@ protected:
 	float ay;
 	bool isspawning = true;
 	float maxheight = y - 16;
+	int type;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -29,5 +33,6 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public:
-	CShroom(float x, float y, int dir);
+	CShroom(float x, float y, int dir, int type);
+	int GetType() { return type; }
 };

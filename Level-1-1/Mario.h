@@ -207,6 +207,7 @@ class CMario : public CGameObject
 	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start;
 	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking;
 	int coin; 
+	int life;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -244,6 +245,7 @@ public:
 		isFloating_start = -1;
 		needTracking = true;
 		coin = 0;
+		life = 4;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

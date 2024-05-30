@@ -236,14 +236,21 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 }
 void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
 {
-	e->obj->Delete();
-	if (level == MARIO_LEVEL_SMALL)
+	CShroom* shroom = (CShroom*) e->obj;
+	if (shroom->GetType() == SHROOM_TYPE_RED)
 	{
-		SetLevel(MARIO_LEVEL_BIG);
+		if (level == MARIO_LEVEL_SMALL)
+		{
+			SetLevel(MARIO_LEVEL_BIG);
+		}
+		else
+		{
+			StartUntouchable();
+		}
 	}
 	else
 	{
-		StartUntouchable();
+		life++;
 	}
 }
 
@@ -637,7 +644,7 @@ void CMario::Render()
 	animations->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 	
-	DebugOutTitle(L"Coins: %d", coin);
+	DebugOutTitle(L"Coins: %d - Life: %d", coin, life);
 }
 
 void CMario::SetState(int state)

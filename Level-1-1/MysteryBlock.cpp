@@ -39,12 +39,16 @@ void CMysteryBlock::SpawnItem(int dir)
     {
         if (player->GetLevel() == MARIO_LEVEL_SMALL)
         {
-            obj = new CShroom(x, y, dir);
+            obj = new CShroom(x, y, dir, SHROOM_TYPE_RED);
         }
         else
         {
             obj = new CLeaf(x, y);
         }
+    }
+    else if (type == 2)
+    {
+        obj = new CShroom(x, y, dir, SHROOM_TYPE_GREEN);
     }
     else
     {
