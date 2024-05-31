@@ -324,7 +324,6 @@ void CPlayScene::Update(DWORD dt)
 	if (player == NULL) return; 
 
 	// Update camera to follow mario
-	float cx, cy;
 	player->GetPosition(cx, cy);
 
 	CGame *game = CGame::GetInstance();
@@ -343,7 +342,10 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	{
+		if (abs(objects[i]->GetX() - cx) < 16 * 20 && abs(objects[i]->GetY() - cy) < 16 * 10 || dynamic_cast<CPlatform*>(objects[i]))
+			objects[i]->Render();
+	}
 }
 
 /*
