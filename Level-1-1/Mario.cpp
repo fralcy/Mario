@@ -45,6 +45,58 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			isAttacking_start = 0;
 		}
 	}
+	//check if mario is running on platform
+	if ((state != MARIO_STATE_RUNNING_LEFT && state != MARIO_STATE_RUNNING_RIGHT) || !isOnPlatform)
+	{
+		isRunning = false;
+	}
+	//prepare speed to fly when running
+	if (isRunning)
+	{
+		if (p_meter_start == 0)
+		{
+			p_meter_start = GetTickCount64();
+		}
+		if (GetTickCount64() - p_meter_start > MARIO_FLY_PREPARE_TIME / 7)
+		{
+			if (p_meter < 7) 
+			{
+				p_meter++;
+				p_meter_start = 0;
+			}
+		}
+	}
+	else
+	{
+		if (p_meter_start == 0)
+		{
+			p_meter_start = GetTickCount64();
+		}
+		if (GetTickCount64() - p_meter_start > MARIO_FLY_PREPARE_TIME / 7)
+		{
+			if (p_meter > 0)
+			{
+				p_meter--;
+				p_meter_start = 0;
+			}
+		}
+	}
+	//can fly after run for a while
+	if (p_meter == 7)
+	{
+		canFly = true;
+		canFly_start = GetTickCount64();
+	}
+	//disable fly after a while
+	if (canFly)
+	{
+		if (GetTickCount64() - canFly_start > MARIO_CAN_FLY_TIME)
+		{
+			canFly = false;
+			canFly_start = 0;
+		}
+	}
+
 	if (GetTickCount64() - isFloating_start > MARIO_FLOATING_TIME)
 	{
 		isFloating_start = 0;
@@ -81,12 +133,18 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
-		if (e->ny < 0) isOnPlatform = true;
+		if (e->ny < 0) 
+		{
+			isOnPlatform = true;
+			canFly = false;
+		}
 	}
 	else 
 	if (e->nx != 0 && e->obj->IsBlocking())
 	{
 		vx = 0;
+		isRunning = false;
+		if (p_meter > 0) p_meter--;
 	}
 
 	if (dynamic_cast<CGoomba*>(e->obj))
@@ -298,6 +356,7 @@ void CMario::OnCollisionWithMapBound(LPCOLLISIONEVENT e)
 			x += 8;
 		else
 			x -= 8;
+		isRunning = false;
 	}
 
 	DebugOut(L"%f, %f\n", e->nx, e->ny);
@@ -645,7 +704,7 @@ void CMario::Render()
 	animations->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 	
-	DebugOutTitle(L"Coins: %d - Life: %d", coin, life);
+	DebugOutTitle(L"Coins: %d - Life: %d - P-Speed: %d - isRunning: %d - CanFly: %d", coin, life, p_meter, isRunning, canFly);
 }
 
 void CMario::SetState(int state)
@@ -660,12 +719,14 @@ void CMario::SetState(int state)
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
+		isRunning = true;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		if (isSitting) break;
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
+		isRunning = true;
 		break;
 	case MARIO_STATE_WALKING_RIGHT:
 		if (isSitting) break;

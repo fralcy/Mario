@@ -8,8 +8,8 @@
 
 #include "Koopa.h"
 
-#define MARIO_WALKING_SPEED		0.1f
-#define MARIO_RUNNING_SPEED		0.2f
+#define MARIO_WALKING_SPEED		0.09f
+#define MARIO_RUNNING_SPEED		0.18f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
 #define MARIO_ACCEL_RUN_X	0.0007f
@@ -192,6 +192,9 @@
 #define MARIO_ATTACKING_TIME	300
 #define MARIO_ATTACK_DELAY_TIME	600
 #define MARIO_FLOATING_TIME	150
+#define MARIO_FLY_PREPARE_TIME 2000
+#define MARIO_CAN_FLY_TIME 7500
+
 
 class CMario : public CGameObject
 {
@@ -204,10 +207,11 @@ class CMario : public CGameObject
 
 	int level; 
 	int untouchable; 
-	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start;
-	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking;
+	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start, p_meter_start, canFly_start;
+	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking, isRunning, canFly;
 	int coin; 
 	int life;
+	int p_meter;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -246,6 +250,8 @@ public:
 		needTracking = true;
 		coin = 0;
 		life = 4;
+		p_meter = 0;
+		canFly = false;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -276,7 +282,7 @@ public:
 	CKoopa* GetHoldObj() { return hold_obj; }
 	int GetNX() { return nx; }
 	bool CanAttack() { return level == MARIO_LEVEL_RACCOON && canAttack && !isSitting; }
-	bool CanFly() { return level == MARIO_LEVEL_RACCOON && abs(vx) == MARIO_RUNNING_SPEED && !isOnPlatform;	}
+	bool CanFly() { return level == MARIO_LEVEL_RACCOON && canFly && !isOnPlatform; }
 	bool CanFloat() { return level == MARIO_LEVEL_RACCOON && !isFloating && !isOnPlatform; }
 	bool NeedTracking() { return needTracking; }
 };

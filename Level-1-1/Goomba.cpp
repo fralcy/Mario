@@ -42,7 +42,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		vy = 0;
-		if (e->ny < 0 && hop_count == 0)  // Goomba lands on the ground
+		if (e->ny < 0 && hop_count == 0 && state == GOOMBA_STATE_WINGED)  // Goomba lands on the ground
 		{
 			ChangeDirection();
 		}
