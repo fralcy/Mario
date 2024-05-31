@@ -343,7 +343,7 @@ void CPlayScene::Render()
 {
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (abs(objects[i]->GetX() - cx) < 16 * 20 && abs(objects[i]->GetY() - cy) < 16 * 10 || dynamic_cast<CPlatform*>(objects[i]))
+		if (abs(objects[i]->GetX() - cx) < 16 * 20 && abs(objects[i]->GetY() - cy) < 16 * 14 || dynamic_cast<CPlatform*>(objects[i]))
 			objects[i]->Render();
 	}
 }

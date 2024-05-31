@@ -53,13 +53,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//prepare speed to fly when running
 	if (isRunning)
 	{
-		if (p_meter_start == 0)
+		if (p_meter < 7)
 		{
-			p_meter_start = GetTickCount64();
-		}
-		if (GetTickCount64() - p_meter_start > MARIO_FLY_PREPARE_TIME / 7)
-		{
-			if (p_meter < 7) 
+			if (p_meter_start == 0)
+			{
+				p_meter_start = GetTickCount64();
+			}
+			if (GetTickCount64() - p_meter_start > MARIO_FLY_PREPARE_TIME / 7)
 			{
 				p_meter++;
 				p_meter_start = 0;
@@ -68,13 +68,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	else
 	{
-		if (p_meter_start == 0)
+		if (p_meter > 0)
 		{
-			p_meter_start = GetTickCount64();
-		}
-		if (GetTickCount64() - p_meter_start > MARIO_FLY_PREPARE_TIME / 7)
-		{
-			if (p_meter > 0)
+			if (p_meter_start == 0)
+			{
+				p_meter_start = GetTickCount64();
+			}
+			if (GetTickCount64() - p_meter_start > MARIO_FLY_PREPARE_TIME / 7)
 			{
 				p_meter--;
 				p_meter_start = 0;
