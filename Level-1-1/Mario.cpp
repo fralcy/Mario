@@ -11,7 +11,7 @@
 #include "Platform.h"
 #include "MysteryBlock.h"
 #include "Leaf.h"
-#include "FirePlant.h"
+#include "Venus.h"
 #include "Fireball.h"
 #include "Koopa.h"
 #include "Spawner.h"
@@ -159,7 +159,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithMysteryBlock(e);
 	else if (dynamic_cast<CLeaf*>(e->obj))
 		OnCollisionWithLeaf(e);
-	else if (dynamic_cast<CFirePlant*>(e->obj))
+	else if (dynamic_cast<CVenus*>(e->obj))
 		OnCollisionWithFirePlant(e);
 	else if (dynamic_cast<CFireball*>(e->obj))
 		OnCollisionWithFireBall(e);
@@ -215,7 +215,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithFirePlant(LPCOLLISIONEVENT e)
 {
-	CFirePlant* plant = dynamic_cast<CFirePlant*>(e->obj);
+	CVenus* plant = dynamic_cast<CVenus*>(e->obj);
 	{
 		GetDamage();
 	}

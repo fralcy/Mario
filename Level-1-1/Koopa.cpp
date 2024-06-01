@@ -1,7 +1,7 @@
 #include "Koopa.h"
 #include "PlayScene.h"
 #include "Mysteryblock.h"
-#include "FirePlant.h"
+#include "Venus.h"
 #include "Effect.h"
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -134,7 +134,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
         OnCollisionWithMysteryBlock(e);
     else if (dynamic_cast<CGoomba*>(e->obj))
         OnCollisionWithGoomba(e);
-    else if (dynamic_cast<CFirePlant*>(e->obj))
+    else if (dynamic_cast<CVenus*>(e->obj))
         OnCollisionWithPlant(e);
     else if (dynamic_cast<CKoopa*>(e->obj))
         OnCollisionWithKoopa(e);

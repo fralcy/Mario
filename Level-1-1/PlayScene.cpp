@@ -14,7 +14,7 @@
 #include "Leaf.h"
 #include "Tile.h"
 #include "Block.h"
-#include "FirePlant.h"
+#include "Venus.h"
 #include "Fireball.h"
 #include "Koopa.h"
 #include "Spawner.h"
@@ -29,6 +29,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 {
 	player = NULL;
 	key_handler = new CSampleKeyHandler(this);
+	cx = cy = 0;
 }
 
 
@@ -146,9 +147,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int spriteid = (int)atof(tokens[3].c_str());
 		obj = new CBlock(x, y, spriteid);
 		break; }
-	case OBJECT_TYPE_FIRE_PLANT: {
+	case OBJECT_TYPE_PLANT: {
 		float vineLength = (float)(int)atof(tokens[3].c_str());
-		obj = new CFirePlant(x, y, vineLength);
+		int canFire = (int)atof(tokens[4].c_str());
+		int headColor = (int)atof(tokens[5].c_str());
+		obj = new CVenus(x, y, vineLength, canFire, headColor);
 		break;
 	}
 	case OBJECT_TYPE_FIRE_BALL: {

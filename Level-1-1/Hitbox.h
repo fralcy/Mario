@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 #include "Goomba.h"
-#include "FirePlant.h"
+#include "Venus.h"
 #include "Koopa.h"
 #include "Mysteryblock.h"
 

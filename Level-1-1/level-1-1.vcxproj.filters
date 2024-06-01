@@ -84,7 +84,7 @@
     <ClCompile Include="Leaf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FirePlant.cpp">
+    <ClCompile Include="Venus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Fireball.cpp">
@@ -191,7 +191,7 @@
     <ClInclude Include="Block.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FirePlant.h">
+    <ClInclude Include="Venus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Fireball.h">
