@@ -18,20 +18,41 @@ void CVenus::Render()
     int headAniId = 0;
     if (canFire)
     {
-        switch (state)
+        if (headColor == VENUS_HEAD_RED)
         {
-        case STATE_AIM_LOWER_LEFT:
-            headAniId = ID_ANI_AIM_LOWER_LEFT;
-            break;
-        case STATE_AIM_UPPER_LEFT:
-            headAniId = ID_ANI_AIM_UPPER_LEFT;
-            break;
-        case STATE_AIM_UPPER_RIGHT:
-            headAniId = ID_ANI_AIM_UPPER_RIGHT;
-            break;
-        case STATE_AIM_LOWER_RIGHT:
-            headAniId = ID_ANI_AIM_LOWER_RIGHT;
-            break;
+            switch (state)
+            {
+            case STATE_AIM_LOWER_LEFT:
+                headAniId = ID_ANI_AIM_LOWER_LEFT_RED;
+                break;
+            case STATE_AIM_UPPER_LEFT:
+                headAniId = ID_ANI_AIM_UPPER_LEFT_RED;
+                break;
+            case STATE_AIM_UPPER_RIGHT:
+                headAniId = ID_ANI_AIM_UPPER_RIGHT_RED;
+                break;
+            case STATE_AIM_LOWER_RIGHT:
+                headAniId = ID_ANI_AIM_LOWER_RIGHT_RED;
+                break;
+            }
+        }
+        else
+        {
+            switch (state)
+            {
+            case STATE_AIM_LOWER_LEFT:
+                headAniId = ID_ANI_AIM_LOWER_LEFT_GREEN;
+                break;
+            case STATE_AIM_UPPER_LEFT:
+                headAniId = ID_ANI_AIM_UPPER_LEFT_GREEN;
+                break;
+            case STATE_AIM_UPPER_RIGHT:
+                headAniId = ID_ANI_AIM_UPPER_RIGHT_GREEN;
+                break;
+            case STATE_AIM_LOWER_RIGHT:
+                headAniId = ID_ANI_AIM_LOWER_RIGHT_GREEN;
+                break;
+            }
         }
     }
     else
