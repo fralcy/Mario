@@ -265,7 +265,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		{
 			koopa->SetSpeed(0, 0);
 		}
-		else
+		else if (abs(koopa->GetVX()) == KOOPA_SPINNING_SPEED)
 		{
 			GetDamage();
 		}

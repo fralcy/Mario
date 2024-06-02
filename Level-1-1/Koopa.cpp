@@ -98,25 +98,51 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CKoopa::Render()
 {
     int aniId = 0;
-    switch (state)
+    if (color == KOOPA_COLOR_RED)
     {
-    case KOOPA_STATE_WALKING:
-        if (nx < 0) aniId = ID_ANI_KOOPA_WALKING_LEFT;
-        else aniId = ID_ANI_KOOPA_WALKING_RIGHT;
-        break;
-    case KOOPA_STATE_SHELL:
-        if (vx == 0) aniId = ID_ANI_KOOPA_SHELL;
-        else if (nx < 0) aniId = ID_ANI_KOOPA_SPINNING_LEFT;
-        else aniId = ID_ANI_KOOPA_SPINNING_RIGHT;
-        break;
-    case KOOPA_STATE_RECOVER:
-        aniId = ID_ANI_KOOPA_RECOVER;
-        break;
-    case KOOPA_STATE_KNOCKED:
-        if (vx == 0) aniId = ID_ANI_KOOPA_SHELL;
-        else if (nx < 0) aniId = ID_ANI_KOOPA_SPINNING_LEFT;
-        else aniId = ID_ANI_KOOPA_SPINNING_RIGHT;
-        break;
+        switch (state)
+        {
+        case KOOPA_STATE_WALKING:
+            if (nx < 0) aniId = ID_ANI_KOOPA_WALKING_LEFT_RED;
+            else aniId = ID_ANI_KOOPA_WALKING_RIGHT_RED;
+            break;
+        case KOOPA_STATE_SHELL:
+            if (vx == 0) aniId = ID_ANI_KOOPA_SHELL_RED;
+            else if (nx < 0) aniId = ID_ANI_KOOPA_SPINNING_LEFT_RED;
+            else aniId = ID_ANI_KOOPA_SPINNING_RIGHT_RED;
+            break;
+        case KOOPA_STATE_RECOVER:
+            aniId = ID_ANI_KOOPA_RECOVER_RED;
+            break;
+        case KOOPA_STATE_KNOCKED:
+            if (vx == 0) aniId = ID_ANI_KOOPA_SHELL_RED;
+            else if (nx < 0) aniId = ID_ANI_KOOPA_SPINNING_LEFT_RED;
+            else aniId = ID_ANI_KOOPA_SPINNING_RIGHT_RED;
+            break;
+        }
+    }
+    else
+    {
+        switch (state)
+        {
+        case KOOPA_STATE_WALKING:
+            if (nx < 0) aniId = ID_ANI_KOOPA_WALKING_LEFT_GREEN;
+            else aniId = ID_ANI_KOOPA_WALKING_RIGHT_GREEN;
+            break;
+        case KOOPA_STATE_SHELL:
+            if (vx == 0) aniId = ID_ANI_KOOPA_SHELL_GREEN;
+            else if (nx < 0) aniId = ID_ANI_KOOPA_SPINNING_LEFT_GREEN;
+            else aniId = ID_ANI_KOOPA_SPINNING_RIGHT_GREEN;
+            break;
+        case KOOPA_STATE_RECOVER:
+            aniId = ID_ANI_KOOPA_RECOVER_GREEN;
+            break;
+        case KOOPA_STATE_KNOCKED:
+            if (vx == 0) aniId = ID_ANI_KOOPA_SHELL_GREEN;
+            else if (nx < 0) aniId = ID_ANI_KOOPA_SPINNING_LEFT_GREEN;
+            else aniId = ID_ANI_KOOPA_SPINNING_RIGHT_GREEN;
+            break;
+        }
     }
     CAnimations::GetInstance()->Get(aniId)->Render(x, y);
     //RenderBoundingBox();
