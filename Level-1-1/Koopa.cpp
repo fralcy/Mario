@@ -50,7 +50,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
         this->ay = KOOPA_GRAVITY;
     }
     // Check if the pathfinder is falling off the platform
-    if (state == KOOPA_STATE_WALKING) if(pathfinder->GetVY() > 0 && vy == 0) // Pathfinder is falling
+    if (state == KOOPA_STATE_WALKING && type == KOOPA_TYPE_NORMAL) if(pathfinder->GetVY() > 0 && vy == 0) // Pathfinder is falling
     {
         vx = -vx; // Turn Koopa back
         nx = -nx;
@@ -88,6 +88,14 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     else
     {
         hide_start = recover_start = -1;
+    }
+    //if koopa has wings and is on platform
+    if (type == KOOPA_TYPE_WINGED && state == KOOPA_STATE_WALKING)
+    {
+        if (GetTickCount64() - fly_start > KOOPA_FLY_DELAY_TIME)
+        {
+            Fly();
+        }
     }
     vy += ay * dt;
     vx += ax * dt;        
@@ -251,4 +259,10 @@ void CKoopa::SetState(int state)
         isKnocking = true;
         break;
     }
+}
+void CKoopa::Fly()
+{
+    fly_start = GetTickCount64();
+    vx = (nx < 0) ? -KOOPA_FLYING_SPEED_X : KOOPA_FLYING_SPEED_X;
+    vy = -KOOPA_FLYING_SPEED_Y;
 }

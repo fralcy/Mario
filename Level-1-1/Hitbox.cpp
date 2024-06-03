@@ -70,6 +70,7 @@ void CHitbox::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	koopa->GetPosition(x, y);
 	CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
 	scene->AddObj(hit);
+	koopa->SetType(KOOPA_TYPE_NORMAL);
 	koopa->SetState(KOOPA_STATE_KNOCKED);
 	koopa->SetSpeed(KOOPA_KNOCKED_SPEED_X * -e->nx, -KOOPA_KNOCKED_SPEED_Y);
 }
