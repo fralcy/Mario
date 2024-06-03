@@ -19,10 +19,11 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
         bottom = top + KOOPA_HEIGHT;
     }
 }
-CKoopa::CKoopa(float x, float y, int color) : CGameObject(x, y)
+CKoopa::CKoopa(float x, float y, int color, int type) : CGameObject(x, y)
 {
     this->nx = -1;
     this->color = color;
+    this->type = type;
     this->ax = 0;
     this->ay = KOOPA_GRAVITY;
     hide_start = recover_start = -1;
@@ -126,8 +127,16 @@ void CKoopa::Render()
         switch (state)
         {
         case KOOPA_STATE_WALKING:
-            if (nx < 0) aniId = ID_ANI_KOOPA_WALKING_LEFT_GREEN;
-            else aniId = ID_ANI_KOOPA_WALKING_RIGHT_GREEN;
+            if (type == KOOPA_TYPE_NORMAL)
+            {
+                if (nx < 0) aniId = ID_ANI_KOOPA_WALKING_LEFT_GREEN;
+                else aniId = ID_ANI_KOOPA_WALKING_RIGHT_GREEN;
+            }
+            else
+            {
+                if (nx < 0) aniId = ID_ANI_PARAKOOPA_WALKING_LEFT_GREEN;
+                else aniId = ID_ANI_PARAKOOPA_WALKING_RIGHT_GREEN;
+            }
             break;
         case KOOPA_STATE_SHELL:
             if (vx == 0) aniId = ID_ANI_KOOPA_SHELL_GREEN;

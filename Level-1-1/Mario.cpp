@@ -230,6 +230,19 @@ void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+	if (koopa->GetType() == KOOPA_TYPE_WINGED)
+	{
+		if (e->ny < 0)
+		{
+			koopa->SetType(KOOPA_TYPE_NORMAL);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else
+		{
+			GetDamage();
+		}
+		return;
+	}
 	if (koopa->GetState() == KOOPA_STATE_WALKING)
 	{
 		if (e->ny < 0)

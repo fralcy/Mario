@@ -21,6 +21,7 @@
 #define KOOPA_STATE_SHELL 200
 #define KOOPA_STATE_RECOVER 300
 #define KOOPA_STATE_KNOCKED 400
+#define KOOPA_STATE_FLY 500
 
 #define ID_ANI_KOOPA_WALKING_LEFT_RED 33110
 #define ID_ANI_KOOPA_WALKING_RIGHT_RED 33120
@@ -29,19 +30,25 @@
 #define ID_ANI_KOOPA_SPINNING_RIGHT_RED 33150
 #define ID_ANI_KOOPA_RECOVER_RED 33160
 
-#define ID_ANI_KOOPA_WALKING_LEFT_GREEN 33210
-#define ID_ANI_KOOPA_WALKING_RIGHT_GREEN 33220
-#define ID_ANI_KOOPA_SHELL_GREEN 33230
-#define ID_ANI_KOOPA_SPINNING_LEFT_GREEN 33240
-#define ID_ANI_KOOPA_SPINNING_RIGHT_GREEN 33250
-#define ID_ANI_KOOPA_RECOVER_GREEN 33260
+#define ID_ANI_KOOPA_WALKING_LEFT_GREEN 33200
+#define ID_ANI_KOOPA_WALKING_RIGHT_GREEN 33210
+#define ID_ANI_KOOPA_SHELL_GREEN 33220
+#define ID_ANI_KOOPA_SPINNING_LEFT_GREEN 33230
+#define ID_ANI_KOOPA_SPINNING_RIGHT_GREEN 33240
+#define ID_ANI_KOOPA_RECOVER_GREEN 33250
+#define ID_ANI_PARAKOOPA_WALKING_LEFT_GREEN 33260
+#define ID_ANI_PARAKOOPA_WALKING_RIGHT_GREEN 33270
 
 #define KOOPA_COLOR_RED 1
 #define KOOPA_COLOR_GREEN 2
+
+#define KOOPA_TYPE_NORMAL 0
+#define KOOPA_TYPE_WINGED 1
 class CKoopa : public CGameObject
 {
 protected:
     int color;
+    int type;
     float ax;
     float ay;
     CPathfinder* pathfinder;
@@ -61,7 +68,9 @@ protected:
     void OnCollisionWithPlant(LPCOLLISIONEVENT e);
     void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 public:
-    CKoopa(float x, float y, int color);
+    CKoopa(float x, float y, int color, int type);
     virtual void SetState(int state);
     void Render();
+    int GetType() { return type; }
+    void SetType(int type) { this->type = type; }
 };

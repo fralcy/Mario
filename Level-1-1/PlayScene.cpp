@@ -161,7 +161,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_KOOPA: {
 		int color = (int)atof(tokens[3].c_str());
-		obj = new CKoopa(x, y, color); break;
+		int type = (int)atof(tokens[4].c_str());
+		obj = new CKoopa(x, y, color, type); break;
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:
