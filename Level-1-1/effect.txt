@@ -9,6 +9,9 @@
 #Hit
 22000	519	67	534	82	20
 
+#BRICK BROKEN
+20100	457	115	472	130	20
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 #Fireball

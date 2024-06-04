@@ -244,9 +244,14 @@ void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 }
 void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
-    if (e->nx != 0 && vx != 0 && state == KOOPA_STATE_SHELL)
+    if (e->nx != 0 && vx != 0 && state != KOOPA_STATE_WALKING && !isKnocking)
     {
+        LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
         CBrick* brick = (CBrick*)e->obj;
+        float x, y;
+        brick->GetPosition(x, y);
+        CEffect* broken = new CEffect(x, y, ID_SPRITE_BRICK_BROKEN);
+        scene->AddObj(broken);
         brick->Delete();
     }
 }

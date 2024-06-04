@@ -78,6 +78,15 @@ void CHitbox::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 }
 void CHitbox::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
-	CBrick* brick = (CBrick*)e->obj;
-	brick->Delete();
+	if (e->nx != 0 && e->ny == 0)
+	{
+		DebugOut(L"%f, %f \n", e->nx, e->ny);
+		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+		CBrick* brick = (CBrick*)e->obj;
+		float x, y;
+		brick->GetPosition(x, y);
+		CEffect* broken = new CEffect(x, y, ID_SPRITE_BRICK_BROKEN);
+		scene->AddObj(broken);
+		brick->Delete();
+	}
 }

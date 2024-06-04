@@ -14,6 +14,7 @@
 #include "Venus.h"
 #include "Fireball.h"
 #include "Koopa.h"
+#include "Effect.h"
 #include "Spawner.h"
 #include "MapBound.h"
 #include "Collision.h"
@@ -353,7 +354,12 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	if (e->ny > 0 && level != MARIO_LEVEL_SMALL)
 	{
+		LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 		CBrick* brick = (CBrick*)e->obj;
+		float x, y;
+		brick->GetPosition(x, y);
+		CEffect* broken = new CEffect(x, y, ID_SPRITE_BRICK_BROKEN);
+		scene->AddObj(broken);
 		brick->Delete();
 	}
 }

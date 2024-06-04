@@ -124,6 +124,7 @@
 #pragma endregion 
 
 #define ID_SPRITE_BRICK 20000
+#define ID_SPRITE_BRICK_BROKEN 20100
 
 #define ID_SPRITE_HIT 22000
 

@@ -8,8 +8,8 @@
 
 #define HITBOX_WIDTH 1
 #define HITBOX_HEIGHT 10
-#define	HITBOX_TIMEOUT 150
-#define HITBOX_SPEED 0.1f
+#define	HITBOX_TIMEOUT 50
+#define HITBOX_SPEED 0.3f
 
 class CHitbox: public CGameObject {
 protected:
