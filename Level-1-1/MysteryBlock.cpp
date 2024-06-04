@@ -3,6 +3,8 @@
 #include "Shroom.h"
 #include "Leaf.h"
 #include "Coin.h"
+#include "Switchblock.h"
+#include "Brick.h"
 
 CMysteryBlock::CMysteryBlock(float x, float y, int type, int state) : CGameObject(x, y)
 {	
@@ -11,11 +13,25 @@ CMysteryBlock::CMysteryBlock(float x, float y, int type, int state) : CGameObjec
 }
 void CMysteryBlock::Render()
 {
-	int aniId = ID_ANI_MYSTERY_BLOCK;
-	if (state == MYSTERY_BLOCK_STATE_DIE)
+	int aniId = 0;
+	if (state == MYSTERY_BLOCK_STATE_ACTIVE)
 	{
-		aniId = ID_ANI_MYSTERY_BLOCK_DIE;
+        switch (type)
+        {    
+        case 0:
+        case 1:
+            aniId = ID_ANI_MYSTERY_BLOCK;
+            break;
+        case 2:
+        case 3:
+            aniId = ID_ANI_BRICK;
+            break;
+        }
 	}
+    else
+    {
+        aniId = ID_ANI_MYSTERY_BLOCK_DIE;
+    }
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }
@@ -49,6 +65,10 @@ void CMysteryBlock::SpawnItem(int dir)
     else if (type == 2)
     {
         obj = new CShroom(x, y, dir, SHROOM_TYPE_GREEN);
+    }
+    else if (type == 3)
+    {
+        obj = new CSwitchBlock(x, y - 16);
     }
     else
     {
