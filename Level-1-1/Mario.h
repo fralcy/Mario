@@ -222,6 +222,7 @@ class CMario : public CGameObject
 	void OnCollisionWithFirePlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireBall(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 	void Pick(CKoopa* koopa);
 
 	void OnCollisionWithSpawner(LPCOLLISIONEVENT e);
@@ -250,8 +251,11 @@ public:
 		needTracking = true;
 		coin = 0;
 		life = 4;
+		isRunning = 0;
 		p_meter = 0;
+		p_meter_start = 0;
 		canFly = false;
+		canFly_start = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

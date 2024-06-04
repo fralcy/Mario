@@ -4,7 +4,7 @@
 
 #define KOOPA_GRAVITY 0.002f
 
-#define KOOPA_WALKING_SPEED 0.025f
+#define KOOPA_WALKING_SPEED 0.02f
 #define KOOPA_SPINNING_SPEED 0.2f
 #define KOOPA_FLYING_SPEED_X 0.05f
 #define KOOPA_FLYING_SPEED_Y 0.4f
@@ -69,6 +69,7 @@ protected:
     void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
     void OnCollisionWithPlant(LPCOLLISIONEVENT e);
     void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
+    void OnCollisionWithBrick(LPCOLLISIONEVENT e);
     void Fly();
 public:
     CKoopa(float x, float y, int color, int type);

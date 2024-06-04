@@ -165,6 +165,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFireBall(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CSpawner*>(e->obj))
 		OnCollisionWithSpawner(e);
 	else if (dynamic_cast<CMapBound*>(e->obj))
@@ -347,7 +349,14 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 		StartUntouchable();
 	}
 }
-
+void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	if (e->ny > 0 && level != MARIO_LEVEL_SMALL)
+	{
+		CBrick* brick = (CBrick*)e->obj;
+		brick->Delete();
+	}
+}
 void CMario::OnCollisionWithSpawner(LPCOLLISIONEVENT e)
 {
 	CSpawner* s = (CSpawner*)e->obj;

@@ -35,6 +35,8 @@ void CHitbox::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
 }
 void CHitbox::OnCollisionWithFirePlant(LPCOLLISIONEVENT e)
 {
@@ -73,4 +75,9 @@ void CHitbox::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	koopa->SetType(KOOPA_TYPE_NORMAL);
 	koopa->SetState(KOOPA_STATE_KNOCKED);
 	koopa->SetSpeed(KOOPA_KNOCKED_SPEED_X * -e->nx, -KOOPA_KNOCKED_SPEED_Y);
+}
+void CHitbox::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	CBrick* brick = (CBrick*)e->obj;
+	brick->Delete();
 }

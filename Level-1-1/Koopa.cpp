@@ -54,7 +54,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     {
         vx = -vx; // Turn Koopa back
         nx = -nx;
-        pathfinder->SetPosition(x + (vx > 0 ? 16 : -16), y);
+        pathfinder->SetPosition(x + 8 * nx, y);
         pathfinder->SetSpeed(vx, 0);
     }
     // Start recovering after hide for a while
@@ -181,6 +181,8 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
         OnCollisionWithPlant(e);
     else if (dynamic_cast<CKoopa*>(e->obj))
         OnCollisionWithKoopa(e);
+    else if (dynamic_cast<CBrick*>(e->obj))
+        OnCollisionWithBrick(e);
     if (!e->obj->IsBlocking()) return;
     
 
@@ -198,7 +200,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
         nx = -nx;
 		vx = -vx;
         pathfinder->SetSpeed(vx, 0);
-        pathfinder->SetPosition(x + 16 * nx, y);
+        pathfinder->SetPosition(x + 8 * nx, y);
 	}
 }
 void CKoopa::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
@@ -240,6 +242,14 @@ void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
     scene->AddObj(hit);
     e->obj->Delete();
 }
+void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+    if (e->nx != 0 && vx != 0 && state == KOOPA_STATE_SHELL)
+    {
+        CBrick* brick = (CBrick*)e->obj;
+        brick->Delete();
+    }
+}
 void CKoopa::SetState(int state)
 {
     CGameObject::SetState(state);
@@ -248,7 +258,7 @@ void CKoopa::SetState(int state)
     case KOOPA_STATE_WALKING:
         vx = KOOPA_WALKING_SPEED * nx;
         pathfinder->SetSpeed(vx, 0);
-        pathfinder->SetPosition(x + 16 * nx, y);
+        pathfinder->SetPosition(x + 8 * nx, y);
         break;
     case KOOPA_STATE_SHELL:
         vx = 0;
