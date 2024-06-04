@@ -154,6 +154,8 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="Fireball.cpp" />
+    <ClCompile Include="Switchblock.cpp" />
+    <ClCompile Include="Switchblock.h" />
     <ClCompile Include="Venus.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />

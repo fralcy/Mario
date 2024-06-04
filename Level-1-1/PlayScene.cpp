@@ -11,6 +11,7 @@
 #include "Platform.h"
 #include "Shroom.h"
 #include "Mysteryblock.h"
+#include "Switchblock.h"
 #include "Leaf.h"
 #include "Tile.h"
 #include "Block.h"
@@ -138,6 +139,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int item = (int)atof(tokens[3].c_str());
 		obj = new CMysteryBlock(x, y, item, MYSTERY_BLOCK_STATE_ACTIVE); 
 		break; }
+	case OBJECT_TYPE_SWITCH_BLOCK: {
+		obj = new CSwitchBlock(x, y);
+		break;
+	}
 	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
 	case OBJECT_TYPE_TILE: {
 		int spriteid = (int)atof(tokens[3].c_str());

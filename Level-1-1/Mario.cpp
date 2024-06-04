@@ -10,6 +10,7 @@
 #include "Shroom.h"
 #include "Platform.h"
 #include "MysteryBlock.h"
+#include "Switchblock.h"
 #include "Leaf.h"
 #include "Venus.h"
 #include "Fireball.h"
@@ -158,6 +159,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithShroom(e);
 	else if (dynamic_cast<CMysteryBlock*>(e->obj))
 		OnCollisionWithMysteryBlock(e);
+	else if (dynamic_cast<CSwitchBlock*>(e->obj))
+		OnCollisionWithSwitchBlock(e);
 	else if (dynamic_cast<CLeaf*>(e->obj))
 		OnCollisionWithLeaf(e);
 	else if (dynamic_cast<CVenus*>(e->obj))
@@ -336,6 +339,15 @@ void CMario::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 	if (e->ny > 0 && mysteryblock->GetState() == MYSTERY_BLOCK_STATE_ACTIVE)
 	{
 		mysteryblock->SpawnItem((x < mysteryblock->GetX()) ? 1 : -1);
+	}
+}
+void CMario::OnCollisionWithSwitchBlock(LPCOLLISIONEVENT e)
+{
+	CSwitchBlock* switchblock = dynamic_cast<CSwitchBlock*>(e->obj);
+	if (e->ny < 0 && switchblock->GetState()==SWITCH_BLOCK_STATE_UNPRESSED)
+	{
+		switchblock->SetState(SWITCH_BLOCK_STATE_PRESSED);
+		switchblock->SwitchItem();
 	}
 }
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
