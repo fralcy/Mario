@@ -1,11 +1,11 @@
 #include "MapBound.h"
 #include "Textures.h"
-CMapBound::CMapBound(float l, float t, float r, float b)
+CMapBound::CMapBound(float x, float y, float w, float h)
 {
-	x = l;
-	y = t;
-	width = r - l;
-	height = b - t;
+	this->x = x;
+	this->y = y;
+	width = w;
+	height = h;
 }
 
 void CMapBound::RenderBoundingBox()
