@@ -347,7 +347,7 @@ void CMario::OnCollisionWithSwitchBlock(LPCOLLISIONEVENT e)
 	if (e->ny < 0 && switchblock->GetState()==SWITCH_BLOCK_STATE_UNPRESSED)
 	{
 		switchblock->SetState(SWITCH_BLOCK_STATE_PRESSED);
-		switchblock->SwitchItem();
+		switchblock->SwitchObjects();
 	}
 }
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)

@@ -134,7 +134,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CGoomba(x, y, type);
 		break;
 	}
-	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
+	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); switchableObjects.push_back(obj); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y, 1); break;
 	case OBJECT_TYPE_MYSTERY_BLOCK: {
 		int item = (int)atof(tokens[3].c_str());
@@ -328,6 +328,7 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 0; i < objects.size(); i++)
 	{
+		if (!dynamic_cast<CMario*>(objects[i]))
 		coObjects.push_back(objects[i]);
 	}
 
@@ -347,10 +348,10 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetBackBufferHeight() / 2;
 	if (cx < 0) cx = 0;
 	if (cx > 2550) cx = 2550;
-	if (cy > 0 && cy < 160) cy = 0;
+	if (!player->NeedTracking() && cy < 160 || cy > 0 && cy < 160) cy = 0;
 	else if (cy > 160 && cy < 295) cy = 230;
 	if (cy == 230) cx = 2240;
-
+	if (cy < -240) cy = -240;
 	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
@@ -391,6 +392,7 @@ void CPlayScene::Unload()
 		delete objects[i];
 
 	objects.clear();
+	switchableObjects.clear();
 	player = NULL;
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
@@ -414,6 +416,8 @@ void CPlayScene::StoreAddedbOjects()
 	}
 	addedObjects.clear();
 }
+
+
 
 void CPlayScene::PurgeDeletedObjects()
 {

@@ -17,6 +17,7 @@ protected:
 
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> addedObjects;
+	vector<LPGAMEOBJECT> switchableObjects;
 
 	float cx, cy;
 
@@ -42,7 +43,7 @@ public:
 	void Clear();
 	void PurgeDeletedObjects();
 	void StoreAddedbOjects();
-
+	vector<LPGAMEOBJECT> GetSwitchableObjects() { return switchableObjects; }
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 };
 
