@@ -5,8 +5,7 @@ coin.txt
 platform.txt
 mysteryblock.txt
 enemy.txt
-shroom.txt
-leaf.txt
+item.txt
 background.txt
 block.txt
 plant.txt
@@ -720,6 +719,7 @@ effect.txt
 9	2800	154	99300
 9	2800	138	99300
 9	2800	122	99100
+17	2712	82
 #Map bound
 30	0	-35	10	450
 30	1500	190	3000	10
@@ -754,4 +754,4 @@ effect.txt
 10	2272	170	100000
 5	2272	170	16	16	37	71000	72000	73000
 #MARIO
-0	2280	-126
+0	2650	50

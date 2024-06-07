@@ -20,6 +20,7 @@
 #include "Fireball.h"
 #include "Koopa.h"
 #include "Pipe.h"
+#include "Goal.h"
 #include "Spawner.h"
 #include "Hitbox.h"
 #include "MapBound.h"
@@ -203,6 +204,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float desX = (float)atof(tokens[5].c_str());
 		float desY = (float)atof(tokens[6].c_str());
 		obj = new CPipe(x, y, w, h, desX, desY);
+		break;
+	}
+	case OBJECT_TYPE_GOAL:
+	{
+		obj = new CGoal(x, y);
 		break;
 	}
 	case OBJECT_TYPE_SPAWNER:
