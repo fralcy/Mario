@@ -16,6 +16,7 @@
 #include "Fireball.h"
 #include "Koopa.h"
 #include "Effect.h"
+#include "Pipe.h"
 #include "Spawner.h"
 #include "MapBound.h"
 #include "Collision.h"
@@ -175,6 +176,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithSpawner(e);
 	else if (dynamic_cast<CMapBound*>(e->obj))
 		OnCollisionWithMapBound(e);
+	else if (dynamic_cast<CPipe*>(e->obj))
+		OnCollisionWithPipe(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -294,6 +297,21 @@ void CMario::Pick(CKoopa* koopa)
 {
 	hold_obj = koopa;
 	koopa->SetState(KOOPA_STATE_SHELL);
+}
+void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
+{
+	CPipe* pipe = dynamic_cast<CPipe*>(e->obj);
+	float desX, desY;
+	pipe->GetDestinationPosition(desX, desY);
+	if (e->ny < 0)
+	{
+
+	}
+	else
+	{
+
+	}
+	SetPosition(desX, desY);
 }
 void CMario::Throw()
 {

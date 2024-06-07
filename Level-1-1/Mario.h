@@ -225,7 +225,7 @@ class CMario : public CGameObject
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 	void Pick(CKoopa* koopa);
-
+	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
 	void OnCollisionWithSpawner(LPCOLLISIONEVENT e);
 	void OnCollisionWithMapBound(LPCOLLISIONEVENT e);
 	int GetAniIdBig();

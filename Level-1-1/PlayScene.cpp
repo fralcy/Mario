@@ -19,6 +19,7 @@
 #include "Venus.h"
 #include "Fireball.h"
 #include "Koopa.h"
+#include "Pipe.h"
 #include "Spawner.h"
 #include "Hitbox.h"
 #include "MapBound.h"
@@ -195,7 +196,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		break;
 	}
-
+	case OBJECT_TYPE_PIPE:
+	{
+		float w = (float)atof(tokens[3].c_str());
+		float h = (float)atof(tokens[4].c_str());
+		float desX = (float)atof(tokens[5].c_str());
+		float desY = (float)atof(tokens[6].c_str());
+		obj = new CPipe(x, y, w, h, desX, desY);
+		break;
+	}
 	case OBJECT_TYPE_SPAWNER:
 	{
 		float r = (float)atof(tokens[3].c_str());
