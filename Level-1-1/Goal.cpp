@@ -22,20 +22,28 @@ void CGoal::Render()
 
 void CGoal::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (wait_start == 0)
+	if (!isCollected)
 	{
-		wait_start = GetTickCount64();
+		if (wait_start == 0)
+		{
+			wait_start = GetTickCount64();
+		}
+		else
+		{
+			if (GetTickCount64() - wait_start > GOAL_CHANGE_DELAY)
+			{
+				srand((unsigned int)time(0));
+				item += rand() % 2 + 1;
+				if (item > 3) item -= 3;
+				wait_start = 0;
+			}
+		}
 	}
 	else
 	{
-		if (GetTickCount64()-wait_start>GOAL_CHANGE_DELAY)
-		{
-			srand((unsigned int)time(0));
-			item += rand() % 2 + 1;
-			if (item > 3) item -= 3;
-			wait_start = 0;
-		}
+		vy = -GOAL_FLY_SPEED;
 	}
+	y += vy * dt;
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

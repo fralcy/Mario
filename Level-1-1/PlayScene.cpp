@@ -423,6 +423,16 @@ void CPlayScene::AddObj(LPGAMEOBJECT obj)
 
 bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
 
+void CPlayScene::DeletMapBound()
+{
+	//delete all map bound when ending play scene
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		if (dynamic_cast<CMapBound*>(objects[i]))
+			objects[i]->Delete();
+	}
+}
+
 void CPlayScene::StoreAddedbOjects()
 {
 	for (int i = 0; i < addedObjects.size(); i++)

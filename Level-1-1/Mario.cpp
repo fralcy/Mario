@@ -17,6 +17,7 @@
 #include "Koopa.h"
 #include "Effect.h"
 #include "Pipe.h"
+#include "Goal.h"
 #include "Spawner.h"
 #include "MapBound.h"
 #include "Collision.h"
@@ -178,6 +179,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithMapBound(e);
 	else if (dynamic_cast<CPipe*>(e->obj))
 		OnCollisionWithPipe(e);
+	else if (dynamic_cast<CGoal*>(e->obj))
+		OnCollisionWithGoal(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -312,6 +315,17 @@ void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 
 	}
 	SetPosition(desX, desY);
+}
+void CMario::OnCollisionWithGoal(LPCOLLISIONEVENT e)
+{
+	CGoal* goal = (CGoal*)e->obj;
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	scene->GetKeyEventHandler()->ToggleEnabled();
+	SetSpeed(0, MARIO_JUMP_SPEED_Y / 2);
+	SetState(MARIO_STATE_WALKING_RIGHT);
+	goal->Collect();
+	cards.push_back(goal->GetItem());
+	scene->DeletMapBound();
 }
 void CMario::Throw()
 {

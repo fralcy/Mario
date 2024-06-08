@@ -10,15 +10,19 @@
 #define ID_ANI_STAR		6200
 
 #define GOAL_CHANGE_DELAY 500
+
+#define GOAL_FLY_SPEED 0.035f
 class CGoal : public CGameObject {
 protected:
 	int item = 0;
 	ULONGLONG wait_start = 0;
+	bool isCollected = false;
 public:
 	CGoal(float x, float y) :CGameObject(x, y) {};
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
+	void Collect() { isCollected = true; }
 	int GetItem() const { return item; }
 };

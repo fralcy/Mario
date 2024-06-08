@@ -20,7 +20,6 @@ protected:
 	vector<LPGAMEOBJECT> switchableObjects;
 
 	float cx, cy;
-
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 
@@ -37,7 +36,6 @@ public:
 	virtual void Render();
 	virtual void Unload();
 	virtual void AddObj(LPGAMEOBJECT obj);
-
 	LPGAMEOBJECT GetPlayer() { return player; }
 
 	void Clear();
@@ -45,6 +43,7 @@ public:
 	void StoreAddedbOjects();
 	vector<LPGAMEOBJECT> GetSwitchableObjects() { return switchableObjects; }
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
+	void DeletMapBound();
 };
 
 typedef CPlayScene* LPPLAYSCENE;

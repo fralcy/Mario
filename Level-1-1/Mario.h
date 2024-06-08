@@ -212,6 +212,7 @@ class CMario : public CGameObject
 	int coin; 
 	int life;
 	int p_meter;
+	vector<int> cards;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -226,6 +227,7 @@ class CMario : public CGameObject
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 	void Pick(CKoopa* koopa);
 	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoal(LPCOLLISIONEVENT e);
 	void OnCollisionWithSpawner(LPCOLLISIONEVENT e);
 	void OnCollisionWithMapBound(LPCOLLISIONEVENT e);
 	int GetAniIdBig();
