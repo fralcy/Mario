@@ -2,8 +2,6 @@
 [ASSETS]
 mario.txt
 block.txt
-coin.txt
-enemy.txt
 platform.txt
 item.txt
 #
@@ -24,5 +22,3 @@ item.txt
 
 #Platform
 5	0	170	16	16	20	71000	72000	73000
-
-#Portal 

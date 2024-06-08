@@ -1,6 +1,10 @@
 #pragma once
 
 #include "KeyEventHandler.h"
+
+#define SCENE_TYPE_INTRO 0
+#define SCENE_TYPE_MAP 1
+#define SCENE_TYPE_PLAY 2
 /*
 *  Abstract class for a game scene
 */
