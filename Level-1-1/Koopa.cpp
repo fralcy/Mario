@@ -54,7 +54,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
     {
         vx = -vx; // Turn Koopa back
         nx = -nx;
-        pathfinder->SetPosition(x + 8 * nx, y);
+        pathfinder->SetPosition(x + KOOPA_WIDTH / 2 * nx, y);
         pathfinder->SetSpeed(vx, 0);
     }
     // Start recovering after hide for a while
@@ -263,7 +263,7 @@ void CKoopa::SetState(int state)
     case KOOPA_STATE_WALKING:
         vx = KOOPA_WALKING_SPEED * nx;
         pathfinder->SetSpeed(vx, 0);
-        pathfinder->SetPosition(x + 8 * nx, y);
+        pathfinder->SetPosition(x + KOOPA_WIDTH / 2 * nx, y);
         break;
     case KOOPA_STATE_SHELL:
         vx = 0;

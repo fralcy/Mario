@@ -31,7 +31,7 @@ void CMapBound::RenderBoundingBox()
 
 void CMapBound::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CMapBound::GetBoundingBox(float& l, float& t, float& r, float& b)

@@ -33,7 +33,7 @@ void CSpawner::RenderBoundingBox()
 
 void CSpawner::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CSpawner::GetBoundingBox(float& l, float& t, float& r, float& b)

@@ -27,6 +27,8 @@ void CHitbox::OnNoCollision(DWORD dt)
 }
 void CHitbox::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (e->obj->IsBlocking() && !dynamic_cast<CMysteryBlock*>(e->obj) && !dynamic_cast<CBrick*>(e->obj))
+		Delete();
 	if (dynamic_cast<CVenus*>(e->obj))
 		OnCollisionWithFirePlant(e);
 	else if (dynamic_cast<CMysteryBlock*>(e->obj))

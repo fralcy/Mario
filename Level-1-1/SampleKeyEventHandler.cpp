@@ -40,13 +40,13 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			if (mario->GetNX() >= 0)
 			{
 				mario->SetState(MARIO_STATE_ATTACK_RIGHT);
-				attack = new CHitbox(mario->GetX(), mario->GetY() + 4);
+				attack = new CHitbox(mario->GetX() - mario->GetNX() * 4, mario->GetY());
 				attack->SetSpeed(HITBOX_SPEED + mario->GetVX(), 0);
 			}
 			else
 			{
 				mario->SetState(MARIO_STATE_ATTACK_LEFT);
-				attack = new CHitbox(mario->GetX(), mario->GetY() + 4);
+				attack = new CHitbox(mario->GetX() - mario->GetNX() * 4, mario->GetY());
 				attack->SetSpeed(-HITBOX_SPEED + mario->GetVX(), 0);
 			}
 			scene->AddObj(attack);
