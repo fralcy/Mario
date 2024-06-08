@@ -49,6 +49,53 @@ void CMapScene::_ParseSection_ASSETS(string line)
 	LoadAssets(path.c_str());
 }
 
+void CMapScene::_ParseSection_OBJECTS(string line)
+{
+	vector<string> tokens = split(line);
+
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	CGameObject* obj = NULL;
+
+	switch (object_type)
+	{
+	case OBJECT_TYPE_MARIO:
+		if (player != NULL)
+		{
+			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			return;
+		}
+		obj = new CMario(x, y);
+		player = (CMario*)obj;
+
+		DebugOut(L"[INFO] Player object has been created!\n");
+		break;
+	case OBJECT_TYPE_TILE: {
+		int spriteid = (int)atof(tokens[3].c_str());
+		obj = new CTile(x, y, spriteid);
+		break;
+	}
+	case OBJECT_TYPE_LINE: {
+		int length = (int)atof(tokens[3].c_str());
+		int spriteId = (int)atof(tokens[4].c_str());
+		obj = new CLine(x, y, length, spriteId); break;
+		break;
+	}
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return;
+	}
+	// General object setup
+	obj->SetPosition(x, y);
+
+
+	objects.push_back(obj);
+}
+
 void CMapScene::_ParseSection_ANIMATIONS(string line)
 {
 	vector<string> tokens = split(line);
@@ -106,7 +153,8 @@ void CMapScene::LoadAssets(LPCWSTR assetFile)
 
 CMapScene::CMapScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
-
+	player = NULL;
+	key_handler = NULL;
 }
 
 void CMapScene::Load()
@@ -155,6 +203,8 @@ void CMapScene::Update(DWORD dt)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
+	cx = cy = 0;
+	CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
 void CMapScene::Render()

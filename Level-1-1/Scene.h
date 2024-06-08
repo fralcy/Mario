@@ -14,7 +14,7 @@ protected:
 	LPKEYEVENTHANDLER key_handler;
 	int id;
 	LPCWSTR sceneFilePath;
-
+	float cx, cy;
 public: 
 	CScene(int id, LPCWSTR filePath)
 	{

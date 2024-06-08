@@ -19,7 +19,6 @@ protected:
 	vector<LPGAMEOBJECT> addedObjects;
 	vector<LPGAMEOBJECT> switchableObjects;
 
-	float cx, cy;
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 

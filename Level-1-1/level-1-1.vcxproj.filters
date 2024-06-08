@@ -117,6 +117,9 @@
     <ClCompile Include="MapScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MapMario.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -240,6 +243,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MapScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapMario.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapKeyEventHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

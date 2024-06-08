@@ -465,8 +465,10 @@ void CGame::_ParseSection_SCENES(string line)
 	{
 	case SCENE_TYPE_INTRO:
 		scene = new CPlayScene(id, path);
+		break;
 	case SCENE_TYPE_MAP:
 		scene = new CMapScene(id, path);
+		break;
 	default:
 		scene = new CPlayScene(id, path);
 		break;

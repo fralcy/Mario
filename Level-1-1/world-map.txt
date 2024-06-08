@@ -11,14 +11,7 @@ item.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	20	10
-
-#COIN
-4	100	120
-4	120	120
-4	140	120
-4	160	120
-4	180	120
+0	20	100
 
 #Platform
 5	0	170	16	16	20	71000	72000	73000
