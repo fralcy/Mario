@@ -215,7 +215,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		float r = (float)atof(tokens[3].c_str());
 		float b = (float)atof(tokens[4].c_str());
-		int obj_type = 0, p = 0;
+		int obj_type = 0, p = 0, p2 = 0;
 		float obj_x = 0, obj_y = 0;
 		vector<LPGAMEOBJECT> objs;
 		int obj_count = atoi(tokens[5].c_str()), i = 6, j = 0;
@@ -229,6 +229,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			case OBJECT_TYPE_GOOMBA:
 				p = atoi(tokens[i++].c_str());
 				obj = new CGoomba(obj_x, obj_y, p);
+				break;
+			case OBJECT_TYPE_KOOPA:
+				p = atoi(tokens[i++].c_str());
+				p2 = atoi(tokens[i++].c_str());
+				obj = new CKoopa(obj_x, obj_y, p, p2);
 				break;
 			}
 			objs.push_back(obj);
@@ -355,18 +360,21 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 
-	// Update camera to follow mario
-	player->GetPosition(cx, cy);
+	if (player->GetState() != MARIO_STATE_DIE)
+	{
+		// Update camera to follow mario
+		player->GetPosition(cx, cy);
+		CGame* game = CGame::GetInstance();
+		cx -= game->GetBackBufferWidth() / 2;
+		cy -= game->GetBackBufferHeight() / 2;
+		if (cx < 0) cx = 0;
+		if (cx > 2550) cx = 2550;
+		if (!player->NeedTracking() && cy < 160 || cy > 0 && cy < 160) cy = 0;
+		else if (cy > 160 && cy < 295) cy = 230;
+		if (cy < -240) cy = -240;
+		if (cy == 230) cx = 2240;
+	}
 
-	CGame *game = CGame::GetInstance();
-	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
-	if (cx < 0) cx = 0;
-	if (cx > 2550) cx = 2550;
-	if (!player->NeedTracking() && cy < 160 || cy > 0 && cy < 160) cy = 0;
-	else if (cy > 160 && cy < 295) cy = 230;
-	if (cy == 230) cx = 2240;
-	if (cy < -240) cy = -240;
 	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
