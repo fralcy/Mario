@@ -417,7 +417,8 @@ void CPlayScene::Unload()
 	objects.clear();
 	switchableObjects.clear();
 	player = NULL;
-
+	CSprites::GetInstance()->Clear();
+	CAnimations::GetInstance()->Clear();
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 

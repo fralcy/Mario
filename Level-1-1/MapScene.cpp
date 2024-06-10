@@ -227,5 +227,7 @@ void CMapScene::Unload()
 
 	objects.clear();
 	player = NULL;
+	CSprites::GetInstance()->Clear();
+	CAnimations::GetInstance()->Clear();
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
