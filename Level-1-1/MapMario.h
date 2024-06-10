@@ -5,6 +5,10 @@
 #define MARIO_LEVEL_RACCOON 3
 
 #define MAP_MARIO_SPEED 0.2f
+
+#define ID_ANI_MAP_MAIRO_SMALL	3001
+#define ID_ANI_MAP_MAIRO_BIG	3002
+#define ID_ANI_MAP_MAIRO_RACCOON	3003
 class CMapMario : public CGameObject
 {
 	int level;
@@ -17,7 +21,9 @@ public:
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	int IsBlocking() { return 0; }
+	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithLevel(LPCOLLISIONEVENT e);
+	int GetSelectedLevelId() { return selectedLevelId; }
 };

@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include "debug.h"
 #include "MapScene.h"
+#include "MapKeyEventHandler.h"
 
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_ASSETS	1
@@ -63,17 +64,22 @@ void CMapScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
+	case OBJECT_TYPE_MAP_MARIO:
 		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMario(x, y);
-		player = (CMario*)obj;
+		obj = new CMapMario(x, y, 1);
+		player = (CMapMario*)obj;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
+	case OBJECT_TYPE_BLOCK: {
+		int spriteid = (int)atof(tokens[3].c_str());
+		obj = new CBlock(x, y, spriteid);
+		break;
+	}
 	case OBJECT_TYPE_TILE: {
 		int spriteid = (int)atof(tokens[3].c_str());
 		obj = new CTile(x, y, spriteid);
@@ -154,7 +160,7 @@ void CMapScene::LoadAssets(LPCWSTR assetFile)
 CMapScene::CMapScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
 	player = NULL;
-	key_handler = NULL;
+	key_handler = new CMapKeyHandler(this);
 }
 
 void CMapScene::Load()
@@ -203,8 +209,7 @@ void CMapScene::Update(DWORD dt)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
-	cx = cy = 0;
-	CGame::GetInstance()->SetCamPos(cx, cy);
+	CGame::GetInstance()->SetCamPos(0, 0);
 }
 
 void CMapScene::Render()
@@ -221,6 +226,6 @@ void CMapScene::Unload()
 		delete objects[i];
 
 	objects.clear();
-
+	player = NULL;
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }

@@ -156,6 +156,7 @@
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="MapKeyEventHandler.cpp" />
     <ClCompile Include="MapMario.cpp" />
     <ClCompile Include="MapScene.cpp" />
     <ClCompile Include="Pipe.cpp" />

@@ -5,12 +5,13 @@
 #include "GameObject.h"
 #include "Tile.h"
 #include "Line.h"
-#include "Mario.h"
+#include "Block.h"
+#include "MapMario.h"
 class CMapScene : public CScene
 {
 protected:
 	// A play scene has to have player, right?
-	CMario* player;
+	CMapMario* player;
 	vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_SPRITES(string line);
@@ -28,6 +29,8 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+
+	LPGAMEOBJECT GetPlayer() { return player; }
 };
 
 typedef CMapScene* LPMAPSCENE;

@@ -3,15 +3,15 @@
 mario.txt
 block.txt
 platform.txt
-item.txt
+background.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 6 = Shroom
 # See OBJECT_TYPE constants in AssetIDs.h
 
-# MARIO
-0	20	100
+#MAP
+15	0	0	20	99400
 
-#Platform
-5	0	170	16	16	20	71000	72000	73000
+# MARIO
+40	50	50
