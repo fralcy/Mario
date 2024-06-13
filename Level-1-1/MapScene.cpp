@@ -64,17 +64,40 @@ void CMapScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MAP_MARIO:
+	case OBJECT_TYPE_MAP_MARIO:{
 		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMapMario(x, y, 1);
+		CNode* start = NULL;
+		for (int i = 0; i < objects.size(); i++)
+		{
+			if (dynamic_cast<CNode*>(objects[i]))
+			{
+				start = (CNode*)objects[i];
+				if (start->GetType() == -1)
+				{
+					break;
+				}
+			}
+		}
+		obj = new CMapMario(x, y, 1, start);
 		player = (CMapMario*)obj;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
+	}
+	case OBJECT_TYPE_NODE:{
+		int l = atoi(tokens[3].c_str());
+		int r = atoi(tokens[4].c_str());
+		int u = atoi(tokens[5].c_str());
+		int d = atoi(tokens[6].c_str());
+		int type = atoi(tokens[7].c_str());
+		int sceneId = atoi(tokens[8].c_str());
+		obj = new CNode(x, y, l, r, u, d, type, sceneId);
+		break;
+	}
 	case OBJECT_TYPE_BLOCK: {
 		int spriteid = (int)atof(tokens[3].c_str());
 		obj = new CBlock(x, y, spriteid);
@@ -203,7 +226,8 @@ void CMapScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		coObjects.push_back(objects[i]);
+		if (!dynamic_cast<CMapMario*>(objects[i]))
+			coObjects.push_back(objects[i]);
 	}
 	for (size_t i = 0; i < objects.size(); i++)
 	{

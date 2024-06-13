@@ -201,6 +201,7 @@
     <ClInclude Include="MapMario.h" />
     <ClInclude Include="MapScene.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="Switchblock.h" />
     <ClInclude Include="Venus.h" />

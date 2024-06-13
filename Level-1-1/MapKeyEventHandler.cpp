@@ -15,28 +15,35 @@ void CMapKeyHandler::OnKeyDown(int KeyCode)
 {
 	LPMAPSCENE scene = (LPMAPSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMapMario* mario = (CMapMario*)scene->GetPlayer();
+	int l, r, u, d;
+	mario->GetCurrentNode()->GetMovableDirs(l, r, u, d);
+	DebugOut(L"%d, %d, %d, %d\n", l, r, u, d);
 	switch (KeyCode)
 	{
 	case DIK_LEFT:
-		mario->SetSpeed(-MAP_MARIO_SPEED, 0);
+		if (l == 1)
+			mario->SetSpeed(-MAP_MARIO_SPEED, 0);
 		break;
 	case DIK_RIGHT:
-		mario->SetSpeed(MAP_MARIO_SPEED, 0);
+		if (r == 1)
+			mario->SetSpeed(MAP_MARIO_SPEED, 0);
 		break;
 	case DIK_UP:
-		mario->SetSpeed(0, -MAP_MARIO_SPEED);
+		if (u == 1)
+			mario->SetSpeed(0, -MAP_MARIO_SPEED);
 		break;
 	case DIK_DOWN:
-		mario->SetSpeed(0, MAP_MARIO_SPEED);
+		if (d == 1)
+			mario->SetSpeed(0, MAP_MARIO_SPEED);
 		break;
 	case DIK_R:
 		scene->Unload();
 		scene->Load();
 		break;
 	case DIK_S:
-		int selectedLevelId = mario->GetSelectedLevelId();
-		if (selectedLevelId != 0)
-			CGame::GetInstance()->InitiateSwitchScene(selectedLevelId);
+		int selectedSceneId = mario->GetCurrentNode()->GetSceneId();
+		if (selectedSceneId != -1)
+			CGame::GetInstance()->InitiateSwitchScene(selectedSceneId);
 		break;
 	}
 }

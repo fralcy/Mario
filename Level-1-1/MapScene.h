@@ -6,6 +6,7 @@
 #include "Tile.h"
 #include "Line.h"
 #include "Block.h"
+#include "Node.h"
 #include "MapMario.h"
 class CMapScene : public CScene
 {

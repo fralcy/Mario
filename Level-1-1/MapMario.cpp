@@ -1,5 +1,5 @@
 #include "MapMario.h"
-
+#include "debug.h"
 void CMapMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
@@ -7,10 +7,24 @@ void CMapMario::OnNoCollision(DWORD dt)
 }
 void CMapMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	
+	if (dynamic_cast<CNode*>(e->obj))
+		OnCollisionWithNode(e);
 }
 void CMapMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (nextNode)
+	{
+		float desX, desY;
+		nextNode->GetPosition(desX, desY);
+		//DebugOut(L"%f, %f, %f, %f\n", x, y, desX, desY);
+		SetPosition(desX, desY);
+		if (x == desX && y ==desY)
+		{
+			SetSpeed(0, 0);
+			curNode = nextNode;
+			nextNode = NULL;
+		}
+	}
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 void CMapMario::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -21,9 +35,9 @@ void CMapMario::GetBoundingBox(float& left, float& top, float& right, float& bot
 	bottom = top + 16;
 }
 
-void CMapMario::OnCollisionWithLevel(LPCOLLISIONEVENT e)
+void CMapMario::OnCollisionWithNode(LPCOLLISIONEVENT e)
 {
-
+	nextNode = (CNode*)(e->obj);
 }
 void CMapMario::Render()
 {
@@ -38,4 +52,5 @@ void CMapMario::Render()
 		aniId = ID_ANI_MAP_MAIRO_RACCOON;
 
 	animations->Get(aniId)->Render(x, y);
+	RenderBoundingBox();
 }
