@@ -1,18 +1,12 @@
-#pragma once
-#include "Game.h"
-#include "Textures.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "Tile.h"
 #include "Line.h"
-#include "Block.h"
-#include "Node.h"
-#include "MapMario.h"
-class CMapScene : public CScene
+#include "IntroKeyEventHandler.h"
+class CIntroScene : public CScene
 {
 protected:
-	// A play scene has to have player, right?
-	CMapMario* player;
+	bool is2player = false;
 	vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_SPRITES(string line);
@@ -24,14 +18,14 @@ protected:
 	void LoadAssets(LPCWSTR assetFile);
 
 public:
-	CMapScene(int id, LPCWSTR filePath);
+	CIntroScene(int id, LPCWSTR filePath);
 
 	virtual void Load();
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
 
-	LPGAMEOBJECT GetPlayer() { return player; }
+	bool GetIs2Player() { return is2player; }
 };
 
-typedef CMapScene* LPMAPSCENE;
+typedef CIntroScene* LPINTROSCENE;

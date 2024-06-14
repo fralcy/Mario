@@ -21,6 +21,7 @@ public:
 		this->id = id;
 		this->sceneFilePath = filePath;
 		this->key_handler = NULL;
+		cx = cy = 0;
 	}
 
 	LPKEYEVENTHANDLER GetKeyEventHandler() { return key_handler; }

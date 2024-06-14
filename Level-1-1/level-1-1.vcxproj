@@ -156,6 +156,8 @@
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="Fireball.cpp" />
     <ClCompile Include="Goal.cpp" />
+    <ClCompile Include="IntroKeyEventHandler.cpp" />
+    <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="MapKeyEventHandler.cpp" />
     <ClCompile Include="MapMario.cpp" />
     <ClCompile Include="MapScene.cpp" />
@@ -197,6 +199,8 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Goal.h" />
+    <ClInclude Include="IntroKeyEventHandler.h" />
+    <ClInclude Include="IntroScene.h" />
     <ClInclude Include="MapKeyEventHandler.h" />
     <ClInclude Include="MapMario.h" />
     <ClInclude Include="MapScene.h" />
