@@ -22,7 +22,7 @@ public:
 		r = l + 16;
 		b = t + 16;
 	}
-	void Render() { RenderBoundingBox(); }
+	void Render() { /*RenderBoundingBox();*/ }
 	void GetMovableDirs(int& l, int& r, int& u, int& d)
 	{
 		l = this->l;

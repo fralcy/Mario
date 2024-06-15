@@ -1,8 +1,19 @@
+#include "Textures.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "Tile.h"
 #include "Line.h"
 #include "IntroKeyEventHandler.h"
+
+#define SCENE_SECTION_UNKNOWN -1
+#define SCENE_SECTION_ASSETS	1
+#define SCENE_SECTION_OBJECTS	2
+
+#define ASSETS_SECTION_UNKNOWN -1
+#define ASSETS_SECTION_SPRITES 1
+#define ASSETS_SECTION_ANIMATIONS 2
+
+#define MAX_SCENE_LINE 1024
 class CIntroScene : public CScene
 {
 protected:
@@ -26,6 +37,7 @@ public:
 	virtual void Unload();
 
 	bool GetIs2Player() { return is2player; }
+	void ToggleIs2Player() { is2player = !is2player; }
 };
 
 typedef CIntroScene* LPINTROSCENE;

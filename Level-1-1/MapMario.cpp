@@ -52,5 +52,5 @@ void CMapMario::Render()
 		aniId = ID_ANI_MAP_MAIRO_RACCOON;
 
 	animations->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }

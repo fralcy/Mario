@@ -8,6 +8,7 @@
 #include "Animations.h"
 #include "PlayScene.h"
 #include "MapScene.h"
+#include "IntroScene.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -464,7 +465,7 @@ void CGame::_ParseSection_SCENES(string line)
 	switch (type)
 	{
 	case SCENE_TYPE_INTRO:
-		scene = new CPlayScene(id, path);
+		scene = new CIntroScene(id, path);
 		break;
 	case SCENE_TYPE_MAP:
 		scene = new CMapScene(id, path);
