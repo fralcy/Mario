@@ -18,7 +18,11 @@ void CIntroKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_W:
 		if (scene->GetIs2Player()) break;
-		CGame::GetInstance()->InitiateSwitchScene(1);
+		CGame::GetInstance()->InitiateSwitchScene(2);
+		break;
+	case DIK_R:
+		scene->Unload();
+		scene->Load();
 		break;
 	}
 }

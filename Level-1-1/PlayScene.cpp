@@ -368,7 +368,7 @@ void CPlayScene::Update(DWORD dt)
 		cx -= game->GetBackBufferWidth() / 2;
 		cy -= game->GetBackBufferHeight() / 2;
 		if (cx < 0) cx = 0;
-		if (cx > 2550) cx = 2550;
+		if (cx > 2600) cx = 2600;
 		if (!player->NeedTracking() && cy < 160 || cy > 0 && cy < 160) cy = 0;
 		else if (cy > 160 && cy < 295) cy = 230;
 		if (cy < -240) cy = -240;

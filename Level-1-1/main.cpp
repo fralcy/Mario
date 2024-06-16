@@ -51,8 +51,8 @@ HOW TO INSTALL Microsoft.DXSDK.D3DX
 
 #define BACKGROUND_COLOR D3DXCOLOR(146.0f/255, 242.0f/255, 238.0f/255, 1.0f)
 
-#define SCREEN_WIDTH 319
-#define SCREEN_HEIGHT 240
+#define SCREEN_WIDTH 269
+#define SCREEN_HEIGHT 262
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -175,11 +175,12 @@ int Run()
 		{
 			frameStart = now;
 
-			CGame::GetInstance()->ProcessKeyboard();			
+			
 			Update(dt);
 			Render();
 
 			CGame::GetInstance()->SwitchScene();
+			CGame::GetInstance()->ProcessKeyboard();
 		}
 		else
 			Sleep(tickPerFrame - dt);	

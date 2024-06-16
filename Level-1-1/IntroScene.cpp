@@ -78,6 +78,7 @@ void CIntroScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_TILE: {
 		int spriteid = (int)atof(tokens[3].c_str());
 		obj = new CTile(x, y, spriteid);
+
 		break;
 	}
 	case OBJECT_TYPE_LINE: {
@@ -135,7 +136,6 @@ void CIntroScene::LoadAssets(LPCWSTR assetFile)
 CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
 	key_handler = new CIntroKeyHandler(this);
-	CGame::GetInstance()->SetKeyHandler(key_handler);
 }
 
 void CIntroScene::Load()
