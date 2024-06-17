@@ -108,7 +108,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
-
+	
 	// skip invalid lines - an object set must have at least id, x, y
 	if (tokens.size() < 2) return;
 
@@ -127,8 +127,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
-
+		player = (CMario*)obj;
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA: {

@@ -536,7 +536,7 @@ void CGame::SwitchScene()
 	CAnimations::GetInstance()->Clear();
 
 	current_scene = next_scene;
-	LPSCENE s = scenes[current_scene];
+	LPSCENE s = scenes[next_scene];
 	this->SetKeyHandler(s->GetKeyEventHandler());
 	s->Load();
 }

@@ -193,6 +193,16 @@ void CIntroScene::Render()
 	{
 		objects[i]->Render();
 	}
+	float x = 75, y;
+	if (!is2player)
+	{
+		y = 153;
+	}
+	else
+	{
+		y = 165;
+	}
+	CSprites::GetInstance()->Get(ID_SPRITE_INTRO_POINTER)->Draw(x ,y);
 }
 
 void CIntroScene::Unload()
