@@ -121,11 +121,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
-		if (player!=NULL) 
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
+		//if (player!=NULL) 
+		//{
+		//	DebugOut(L"[ERROR] MARIO object was created before!\n");
+		//	return;
+		//}
 		obj = new CMario(x,y); 
 		player = (CMario*)obj;
 		DebugOut(L"[INFO] Player object has been created!\n");
@@ -335,7 +335,7 @@ void CPlayScene::Load()
 	}
 
 	f.close();
-
+	if (!key_handler->IsEnabled()) key_handler->ToggleEnabled();
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
 
@@ -367,7 +367,7 @@ void CPlayScene::Update(DWORD dt)
 		cx -= game->GetBackBufferWidth() / 2;
 		cy -= game->GetBackBufferHeight() / 2;
 		if (cx < 0) cx = 0;
-		if (cx > 2600) cx = 2600;
+		if (cx > 2585) cx = 2585;
 		if (!player->NeedTracking() && cy < 160 || cy > 0 && cy < 160) cy = 0;
 		else if (cy > 160 && cy < 295) cy = 230;
 		if (cy < -240) cy = -240;
@@ -412,10 +412,9 @@ void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
-
 	objects.clear();
 	switchableObjects.clear();
-	player = NULL;
+	//player = NULL;
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);

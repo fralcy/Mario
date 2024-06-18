@@ -6,10 +6,10 @@
 #include "Koopa.h"
 #include "Mysteryblock.h"
 
-#define HITBOX_WIDTH 1
+#define HITBOX_WIDTH 10
 #define HITBOX_HEIGHT 10
-#define	HITBOX_TIMEOUT 50
-#define HITBOX_SPEED 0.3f
+#define	HITBOX_TIMEOUT 75
+#define HITBOX_SPEED 0.25f
 
 class CHitbox: public CGameObject {
 protected:
@@ -17,7 +17,7 @@ protected:
 public:
 	CHitbox(float x, float y) : CGameObject(x, y) { time_start = GetTickCount64(); };
 	void Render() {
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b) {

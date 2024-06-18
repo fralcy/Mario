@@ -8,5 +8,5 @@ public:
 	virtual void KeyState(BYTE *states);
 	virtual void OnKeyDown(int KeyCode);
 	virtual void OnKeyUp(int KeyCode);
-	CSampleKeyHandler(LPSCENE s) :CSceneKeyHandler(s) {};
+	CSampleKeyHandler(LPSCENE s) :CSceneKeyHandler(s) { type = 2; }
 };
