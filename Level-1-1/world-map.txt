@@ -4,6 +4,7 @@ mario.txt
 block.txt
 platform.txt
 background.txt
+item.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type

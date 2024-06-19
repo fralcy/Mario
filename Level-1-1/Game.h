@@ -59,7 +59,7 @@ class CGame
 	int current_scene;
 	int next_scene = -1;
 
-	int world, life = 4, coin = 0;
+	int world, life = 4, coin = 0, score = 0, mario_level = 1;
 
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
@@ -122,9 +122,13 @@ public:
 	int GetWorld() { return world; }
 	int GetLife() { return life; }
 	int GetCoin() { return coin; }
+	int GetScore() { return life; }
+	int GetMarioLevel() { return mario_level; }
 	void SetWorld(int world) { this->world = world; }
 	void SetLife(int life) { this->life = life; }
 	void SetCoin(int coin) { this->coin = coin; }
+	void SetScore(int score) { this->score = score; }
+	void SetMarioLevel(int mario_level) { this->mario_level = mario_level; }
 	~CGame();
 };
 typedef CGame* LPGAME;
