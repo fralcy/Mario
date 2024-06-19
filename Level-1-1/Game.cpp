@@ -458,20 +458,21 @@ void CGame::_ParseSection_SCENES(string line)
 	if (tokens.size() < 3) return;
 	int id = atoi(tokens[0].c_str());
 	int type = atoi(tokens[1].c_str());
-	LPCWSTR path = ToLPCWSTR(tokens[2]);
+	int world = atoi(tokens[2].c_str());
+	LPCWSTR path = ToLPCWSTR(tokens[3]);
 	LPSCENE scene = NULL;
 	// file: ASCII format (single-byte char) => Wide Char
 
 	switch (type)
 	{
 	case SCENE_TYPE_INTRO:
-		scene = new CIntroScene(id, path);
+		scene = new CIntroScene(id, world, path);
 		break;
 	case SCENE_TYPE_MAP:
-		scene = new CMapScene(id, path);
+		scene = new CMapScene(id, world, path);
 		break;
 	default:
-		scene = new CPlayScene(id, path);
+		scene = new CPlayScene(id, world, path);
 		break;
 	}
 	scenes[id] = scene;
@@ -535,6 +536,7 @@ void CGame::SwitchScene()
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 
+	previous_scene = current_scene;
 	current_scene = next_scene;
 	LPSCENE s = scenes[next_scene];
 	this->SetKeyHandler(s->GetKeyEventHandler());

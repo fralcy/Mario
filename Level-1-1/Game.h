@@ -54,8 +54,12 @@ class CGame
 	ID3D10SamplerState* pPointSamplerState;
 
 	unordered_map<int, LPSCENE> scenes;
+
+	int previous_scene;
 	int current_scene;
 	int next_scene = -1;
+
+	int world, life = 4, coin = 0;
 
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
@@ -111,10 +115,16 @@ public:
 	void Load(LPCWSTR gameFile);
 	void SwitchScene();
 	void InitiateSwitchScene(int scene_id);
+	int GetPreviousScene() { return previous_scene; }
 
 	void _ParseSection_TEXTURES(string line);
 
-
+	int GetWorld() { return world; }
+	int GetLife() { return life; }
+	int GetCoin() { return coin; }
+	void SetWorld(int world) { this->world = world; }
+	void SetLife(int life) { this->life = life; }
+	void SetCoin(int coin) { this->coin = coin; }
 	~CGame();
 };
 typedef CGame* LPGAME;

@@ -28,7 +28,9 @@ public:
 		for (int i = 0; i < 15; i++)
 			s->Get(ID_SPRITE_HUB + i + 15)->Draw(x + 16 * i, y + 16);
 		//render world map level
+		s->Get(ID_SPRITE_NUMBER + CGame::GetInstance()->GetWorld())->Draw(x + 36, y + 1);
 		//render life
+		s->Get(ID_SPRITE_NUMBER + CGame::GetInstance()->GetLife())->Draw(x + 36, y + 9);
 		//render speed meter
 		//render score
 		//render coin

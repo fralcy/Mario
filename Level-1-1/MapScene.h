@@ -24,7 +24,7 @@ protected:
 	void LoadAssets(LPCWSTR assetFile);
 
 public:
-	CMapScene(int id, LPCWSTR filePath);
+	CMapScene(int id, int world, LPCWSTR filePath);
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

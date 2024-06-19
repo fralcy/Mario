@@ -28,7 +28,7 @@ protected:
 	void LoadAssets(LPCWSTR assetFile);
 	
 public: 
-	CPlayScene(int id, LPCWSTR filePath);
+	CPlayScene(int id, int world, LPCWSTR filePath);
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

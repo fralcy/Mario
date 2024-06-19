@@ -133,7 +133,7 @@ void CIntroScene::LoadAssets(LPCWSTR assetFile)
 	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
 
-CIntroScene::CIntroScene(int id, LPCWSTR filePath) : CScene(id, filePath)
+CIntroScene::CIntroScene(int id, int world, LPCWSTR filePath) : CScene(id, world, filePath)
 {
 	key_handler = new CIntroKeyHandler(this);
 }

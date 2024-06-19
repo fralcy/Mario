@@ -29,7 +29,7 @@ protected:
 	void LoadAssets(LPCWSTR assetFile);
 
 public:
-	CIntroScene(int id, LPCWSTR filePath);
+	CIntroScene(int id, int world, LPCWSTR filePath);
 
 	virtual void Load();
 	virtual void Update(DWORD dt);

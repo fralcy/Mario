@@ -194,7 +194,7 @@
 #define MARIO_FLOATING_TIME	150
 #define MARIO_FLY_PREPARE_TIME 2000
 #define MARIO_CAN_FLY_TIME 7500
-
+#define MARIO_DIE_TIMEOUT 2500
 
 class CMario : public CGameObject
 {
@@ -207,10 +207,9 @@ class CMario : public CGameObject
 
 	int level; 
 	int untouchable; 
-	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start, p_meter_start, canFly_start;
+	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start, p_meter_start, canFly_start, die_start;
 	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking, isRunning, canFly;
 	int coin; 
-	int life;
 	int p_meter;
 	vector<int> cards;
 
@@ -253,7 +252,6 @@ public:
 		isFloating_start = -1;
 		needTracking = true;
 		coin = 0;
-		life = 4;
 		isRunning = 0;
 		p_meter = 0;
 		p_meter_start = 0;

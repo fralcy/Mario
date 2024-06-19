@@ -15,10 +15,12 @@ protected:
 	int id;
 	LPCWSTR sceneFilePath;
 	float cx, cy;
+	int world;
 public: 
-	CScene(int id, LPCWSTR filePath)
+	CScene(int id, int world, LPCWSTR filePath)
 	{
 		this->id = id;
+		this->world = world;
 		this->sceneFilePath = filePath;
 		this->key_handler = NULL;
 		cx = cy = 0;

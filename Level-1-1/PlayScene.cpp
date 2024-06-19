@@ -29,8 +29,8 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath):
-	CScene(id, filePath)
+CPlayScene::CPlayScene(int id, int world, LPCWSTR filePath):
+	CScene(id, world, filePath)
 {
 	player = NULL;
 	key_handler = new CSampleKeyHandler(this);
@@ -339,6 +339,7 @@ void CPlayScene::Load()
 
 	f.close();
 	if (!key_handler->IsEnabled()) key_handler->ToggleEnabled();
+	CGame::GetInstance()->SetWorld(world);
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
 

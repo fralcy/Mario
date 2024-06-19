@@ -72,17 +72,17 @@ void CMapScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		CNode* start = NULL;
-		for (int i = 0; i < objects.size(); i++)
-		{
-			if (dynamic_cast<CNode*>(objects[i]))
+			for (int i = 0; i < objects.size(); i++)
 			{
+				if (dynamic_cast<CNode*>(objects[i]))
+				{
 				start = (CNode*)objects[i];
 				if (start->GetType() == -1)
-				{
-					break;
+					{
+						break;
+					}
 				}
 			}
-		}
 		obj = new CMapMario(x, y, 1, start);
 		player = (CMapMario*)obj;
 
@@ -185,7 +185,7 @@ void CMapScene::LoadAssets(LPCWSTR assetFile)
 	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
 
-CMapScene::CMapScene(int id, LPCWSTR filePath) : CScene(id, filePath)
+CMapScene::CMapScene(int id, int world, LPCWSTR filePath) : CScene(id, world, filePath)
 {
 	player = NULL;
 	key_handler = new CMapKeyHandler(this);
@@ -222,7 +222,7 @@ void CMapScene::Load()
 	}
 
 	f.close();
-
+	CGame::GetInstance()->SetWorld(world);
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
 

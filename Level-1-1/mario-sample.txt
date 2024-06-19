@@ -3,13 +3,13 @@ start	1
 width	320
 height	240
 
-#id	type	file
+#id	type	world	file
 # type: 0: intro, 1: map; 2: play scene 
 [SCENES]
-0	0	empty.txt
-1	0	intro.txt
-2	1	world-map.txt
-3	2	level_1-1.txt
+0	0	0	empty.txt
+1	0	0	intro.txt
+2	1	1	world-map.txt
+3	2	1	level_1-1.txt
 
 # id	file 
 [TEXTURES]

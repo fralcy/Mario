@@ -123,6 +123,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (needTracking && y >= 115) needTracking = false;
 	isOnPlatform = false;
 	if (!isFloating) ay = MARIO_GRAVITY;
+	//switch to previous after mario die
+	if (state == MARIO_STATE_DIE)
+	{
+		if (GetTickCount64()-die_start>MARIO_DIE_TIMEOUT)
+		{
+			if (CGame::GetInstance()->GetLife()!=-1)
+			{
+				CGame::GetInstance()->InitiateSwitchScene(CGame::GetInstance()->GetPreviousScene());
+				CGame::GetInstance()->SetLife(CGame::GetInstance()->GetLife() - 1);
+			}
+			else
+			{
+				CGame::GetInstance()->InitiateSwitchScene(1);
+				CGame::GetInstance()->SetLife(4);
+			}
+		}
+	}
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -359,7 +376,7 @@ void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
 	}
 	else
 	{
-		life++;
+		CGame::GetInstance()->SetLife(CGame::GetInstance()->GetLife()+1);
 	}
 	shroom->Delete();
 }
@@ -776,7 +793,7 @@ void CMario::Render()
 	animations->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 	
-	DebugOutTitle(L"Coins: %d - Life: %d - P-Speed: %d - isRunning: %d - CanFly: %d", coin, life, p_meter, isRunning, canFly);
+	DebugOutTitle(L"Coins: %d - P-Speed: %d - isRunning: %d - CanFly: %d", coin, p_meter, isRunning, canFly);
 }
 
 void CMario::SetState(int state)
@@ -857,6 +874,7 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
+		die_start = GetTickCount64();
 		break;
 	case MARIO_STATE_ATTACK_RIGHT:
 	case MARIO_STATE_ATTACK_LEFT:
