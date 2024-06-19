@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include "debug.h"
 #include "MapScene.h"
+#include "Hub.h"
 #include "MapKeyEventHandler.h"
 
 #define SCENE_SECTION_UNKNOWN -1
@@ -112,6 +113,10 @@ void CMapScene::_ParseSection_OBJECTS(string line)
 		int length = (int)atof(tokens[3].c_str());
 		int spriteId = (int)atof(tokens[4].c_str());
 		obj = new CLine(x, y, length, spriteId); break;
+		break;
+	}
+	case OBJECT_TYPE_HUB: {
+		obj = new CHub(x, y);
 		break;
 	}
 	default:

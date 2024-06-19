@@ -199,6 +199,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Fireball.h" />
     <ClInclude Include="Goal.h" />
+    <ClInclude Include="Hub.h" />
     <ClInclude Include="IntroKeyEventHandler.h" />
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="MapKeyEventHandler.h" />

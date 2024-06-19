@@ -130,3 +130,5 @@ background.txt
 
 #MARIO
 40	40	56
+#HUB
+45	16	202

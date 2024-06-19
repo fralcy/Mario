@@ -24,6 +24,7 @@
 #include "Spawner.h"
 #include "Hitbox.h"
 #include "MapBound.h"
+#include "Hub.h"
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -255,8 +256,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CPortal(x, y, r, b, scene_id);
 	}
 	break;
-
-
+	case OBJECT_TYPE_HUB: {
+		obj = new CHub(x, y);
+		break;
+	}
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
@@ -368,10 +371,10 @@ void CPlayScene::Update(DWORD dt)
 		cy -= game->GetBackBufferHeight() / 2;
 		if (cx < 0) cx = 0;
 		if (cx > 2585) cx = 2585;
-		if (!player->NeedTracking() && cy < 160 || cy > 0 && cy < 160) cy = 0;
-		else if (cy > 160 && cy < 295) cy = 230;
+		if (!player->NeedTracking() && cy < 150 || cy > 0 && cy < 150) cy = 0;
+		else if (cy > 150 && cy < 295) cy = 230;
 		if (cy < -240) cy = -240;
-		if (cy == 230) cx = 2240;
+		if (cy == 230) cx = 2262;
 	}
 
 	CGame::GetInstance()->SetCamPos(cx, cy);
@@ -384,7 +387,7 @@ void CPlayScene::Render()
 {
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (abs(objects[i]->GetX() - cx) < 16 * 20 && abs(objects[i]->GetY() - cy) < 16 * 14 || dynamic_cast<CPlatform*>(objects[i]))
+		if (abs(objects[i]->GetX() - cx) < 16 * 20 && abs(objects[i]->GetY() - cy) < 16 * 14 || dynamic_cast<CPlatform*>(objects[i]) || dynamic_cast<CHub*>(objects[i]))
 			objects[i]->Render();
 	}
 }

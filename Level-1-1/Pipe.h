@@ -8,7 +8,7 @@ class CPipe : public CGameObject
 public:
 	CPipe(float x, float y, float w, float h, float desX, float desY);
 	virtual void Render() {
-		RenderBoundingBox();
+		//RenderBoundingBox();
 	}
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
