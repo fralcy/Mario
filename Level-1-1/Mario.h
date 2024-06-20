@@ -209,7 +209,6 @@ class CMario : public CGameObject
 	int untouchable; 
 	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start, p_meter_start, canFly_start, die_start;
 	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking, isRunning, canFly;
-	int coin; 
 	int p_meter;
 	vector<int> cards;
 
@@ -251,7 +250,6 @@ public:
 		isFloating = 0;
 		isFloating_start = -1;
 		needTracking = true;
-		coin = 0;
 		isRunning = 0;
 		p_meter = 0;
 		p_meter_start = 0;
@@ -280,7 +278,6 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void GetDamage();
 	int GetLevel() { return level; }
-	void AddCoin() { coin++; }
 	bool IsHolding() { return (hold_obj) ? 1 : 0; }
 	void Throw();
 	void Drop() { hold_obj = NULL; }

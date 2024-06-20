@@ -122,7 +122,7 @@ public:
 	int GetWorld() { return world; }
 	int GetLife() { return life; }
 	int GetCoin() { return coin; }
-	int GetScore() { return life; }
+	int GetScore() { return score; }
 	int GetMarioLevel() { return mario_level; }
 	void SetWorld(int world) { this->world = world; }
 	void SetLife(int life) { this->life = life; }

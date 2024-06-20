@@ -137,6 +137,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				CGame::GetInstance()->InitiateSwitchScene(1);
 				CGame::GetInstance()->SetLife(4);
+				CGame::GetInstance()->SetCoin(0);
 			}
 		}
 	}
@@ -213,6 +214,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			{
 				goomba->SetState(GOOMBA_STATE_STOMPED);
 				vy = -MARIO_JUMP_DEFLECT_SPEED;
+				CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
 			}
 		}
 		else // hit by Goomba
@@ -234,6 +236,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 				goomba->SetState(GOOMBA_STATE_STOMPED);
 				vy = -MARIO_JUMP_DEFLECT_SPEED;
 			}
+			CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
 		}
 		else // hit by Goomba
 		{
@@ -265,6 +268,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		{
 			koopa->SetType(KOOPA_TYPE_NORMAL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
 		}
 		else
 		{
@@ -278,6 +282,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		{
 			koopa->SetState(KOOPA_STATE_SHELL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
 		}
 		else
 		{
@@ -306,6 +311,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		else if (e->ny < 0)
 		{
 			koopa->SetSpeed(0, 0);
+			CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
 		}
 		else if (abs(koopa->GetVX()) == KOOPA_SPINNING_SPEED)
 		{
@@ -341,7 +347,22 @@ void CMario::OnCollisionWithGoal(LPCOLLISIONEVENT e)
 	SetSpeed(0, MARIO_JUMP_SPEED_Y / 2);
 	SetState(MARIO_STATE_WALKING_RIGHT);
 	goal->Collect();
-	cards.push_back(goal->GetItem());
+	int item = goal->GetItem();
+	cards.push_back(item);
+	switch (item)
+	{
+	case GOAL_ITEM_SHROOM:
+		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 2000);
+		break;
+	case GOAL_ITEM_FLOWER:
+		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 3000);
+		break;
+	case GOAL_ITEM_STAR:
+		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 5000);
+		break;
+	default:
+		break;
+	}
 	scene->DeletMapBound();
 }
 void CMario::Throw()
@@ -357,7 +378,8 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	if (coin->GetType() == 1)
 	{
 		e->obj->Delete();
-		AddCoin();
+		CGame::GetInstance()->SetCoin(CGame::GetInstance()->GetCoin() + 1);
+		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
 	}
 }
 void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
@@ -373,6 +395,7 @@ void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
 		{
 			StartUntouchable();
 		}
+		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 1000);
 	}
 	else
 	{
@@ -402,6 +425,7 @@ void CMario::OnCollisionWithSwitchBlock(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
 	e->obj->Delete();
+	CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 1000);
 	if (level == MARIO_LEVEL_BIG)
 	{
 		SetLevel(MARIO_LEVEL_RACCOON);
@@ -422,6 +446,7 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 		CEffect* broken = new CEffect(x, y, ID_SPRITE_BRICK_BROKEN);
 		scene->AddObj(broken);
 		brick->Delete();
+		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 10);
 	}
 }
 void CMario::OnCollisionWithSpawner(LPCOLLISIONEVENT e)
@@ -793,7 +818,7 @@ void CMario::Render()
 	animations->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 	
-	DebugOutTitle(L"Coins: %d - P-Speed: %d - isRunning: %d - CanFly: %d", coin, p_meter, isRunning, canFly);
+	DebugOutTitle(L"P-Speed: %d - isRunning: %d - CanFly: %d", p_meter, isRunning, canFly);
 }
 
 void CMario::SetState(int state)

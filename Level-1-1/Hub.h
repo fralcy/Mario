@@ -35,14 +35,14 @@ public:
 		s->Get(ID_SPRITE_NUMBER + g->GetLife())->Draw(x + 36, y + 9);
 		//render speed meter
 		//render score
-		int score = 1234567;
+		int score = g->GetScore();
 		for (int i = 1; i < 8; i++)
 		{
 			s->Get(ID_SPRITE_NUMBER + score % 10)->Draw(x + 108 - (8 * i), y + 9);
 			score /= 10;
 		}
 		//render coin
-		int coin = 45;
+		int coin = g->GetCoin();
 		s->Get(ID_SPRITE_NUMBER + coin / 10)->Draw(x + 132, y + 1);
 		s->Get(ID_SPRITE_NUMBER + coin % 10)->Draw(x + 140, y + 1);
 		//render time

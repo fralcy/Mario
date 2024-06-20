@@ -73,7 +73,8 @@ void CMysteryBlock::SpawnItem(int dir)
     else
     {
         obj = new CCoin(x, y, 0);
-        player->AddCoin();
+        CGame::GetInstance()->SetCoin(CGame::GetInstance()->GetCoin() + 1);
+        CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
     }
     scene->AddObj(obj);
 }
