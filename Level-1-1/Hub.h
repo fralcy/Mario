@@ -49,7 +49,7 @@ public:
 		if (dynamic_cast<CPlayScene*>(g->GetCurrentScene()))
 		{
 			CPlayScene* scene = (CPlayScene*)(g->GetCurrentScene());
-			int time = 300;
+			int time = scene->GetTime();
 			for (int i = 1; i < 4; i++)
 			{
 				s->Get(ID_SPRITE_NUMBER + time % 10)->Draw(x + 148 - (8 * i), y + 9);

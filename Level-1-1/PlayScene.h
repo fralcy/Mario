@@ -19,6 +19,9 @@ protected:
 	vector<LPGAMEOBJECT> addedObjects;
 	vector<LPGAMEOBJECT> switchableObjects;
 
+	int time = 300;
+	ULONGLONG timer_tick = GetTickCount64();
+
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 
@@ -43,6 +46,7 @@ public:
 	vector<LPGAMEOBJECT> GetSwitchableObjects() { return switchableObjects; }
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 	void DeletMapBound();
+	int GetTime() { return time; }
 };
 
 typedef CPlayScene* LPPLAYSCENE;

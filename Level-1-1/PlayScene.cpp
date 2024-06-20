@@ -377,7 +377,17 @@ void CPlayScene::Update(DWORD dt)
 		if (cy < -240) cy = -240;
 		if (cy == 230) cx = 2262;
 	}
-
+	//count time
+	if (GetTickCount64() - timer_tick > 1000)
+	{
+		time--;
+		timer_tick = GetTickCount64();
+	}
+	//kill mario when time's up
+	if (time == 0)
+	{
+		player->SetState(MARIO_STATE_DIE);
+	}
 	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
