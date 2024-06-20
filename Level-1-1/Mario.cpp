@@ -128,16 +128,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		if (GetTickCount64()-die_start>MARIO_DIE_TIMEOUT)
 		{
-			if (CGame::GetInstance()->GetLife()!=-1)
+			CGame* g = CGame::GetInstance();
+			if (g->GetLife()!=-1)//return previous scene if there are lifes remain
 			{
-				CGame::GetInstance()->InitiateSwitchScene(CGame::GetInstance()->GetPreviousScene());
-				CGame::GetInstance()->SetLife(CGame::GetInstance()->GetLife() - 1);
+				g->InitiateSwitchScene(CGame::GetInstance()->GetPreviousScene());
+				g->SetLife(CGame::GetInstance()->GetLife() - 1);
 			}
-			else
+			else//return intro if there is no life lefts
 			{
-				CGame::GetInstance()->InitiateSwitchScene(1);
-				CGame::GetInstance()->SetLife(4);
-				CGame::GetInstance()->SetCoin(0);
+				g->InitiateSwitchScene(1);
+				g->SetLife(4);
+				g->SetCoin(0);
+				g->ClearCards();
 			}
 		}
 	}
@@ -348,17 +350,18 @@ void CMario::OnCollisionWithGoal(LPCOLLISIONEVENT e)
 	SetState(MARIO_STATE_WALKING_RIGHT);
 	goal->Collect();
 	int item = goal->GetItem();
-	cards.push_back(item);
+	CGame* g = CGame::GetInstance();
+	g->CollectCard(item);
 	switch (item)
 	{
 	case GOAL_ITEM_SHROOM:
-		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 2000);
+		g->SetScore(CGame::GetInstance()->GetScore() + 2000);
 		break;
 	case GOAL_ITEM_FLOWER:
-		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 3000);
+		g->SetScore(CGame::GetInstance()->GetScore() + 3000);
 		break;
 	case GOAL_ITEM_STAR:
-		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 5000);
+		g->SetScore(CGame::GetInstance()->GetScore() + 5000);
 		break;
 	default:
 		break;

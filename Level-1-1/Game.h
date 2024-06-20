@@ -60,6 +60,7 @@ class CGame
 	int next_scene = -1;
 
 	int world, life = 4, coin = 0, score = 0, mario_level = 1;
+	vector<int> cards;
 
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
@@ -129,6 +130,11 @@ public:
 	void SetCoin(int coin) { this->coin = coin; }
 	void SetScore(int score) { this->score = score; }
 	void SetMarioLevel(int mario_level) { this->mario_level = mario_level; }
+
+	void CollectCard(int item) { cards.push_back(item); }
+	int GetCardsNumber() { return (int)cards.size(); }
+	int GetCard(int i) { return cards[i]; }
+	void ClearCards() { cards.clear(); }
 	~CGame();
 };
 typedef CGame* LPGAME;

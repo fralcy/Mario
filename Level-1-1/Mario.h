@@ -210,7 +210,7 @@ class CMario : public CGameObject
 	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start, p_meter_start, canFly_start, die_start;
 	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking, isRunning, canFly;
 	int p_meter;
-	vector<int> cards;
+	
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);

@@ -57,9 +57,10 @@ public:
 			}
 		}
 		//render collected cards
-		s->Get(ID_SPRITE_SHROOM)->Draw(x + 168, y + 6);
-		s->Get(ID_SPRITE_SHROOM)->Draw(x + 192, y + 6);
-		s->Get(ID_SPRITE_SHROOM)->Draw(x + 216, y + 6);
+		for (int i = 0; i < g->GetCardsNumber(); i++)
+		{
+			s->Get(ID_SPRITE_SHROOM + 1000 * (g->GetCard(i) - 1))->Draw(x + 168 + i * 24, y + 6);
+		}
 	}
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b) {}
