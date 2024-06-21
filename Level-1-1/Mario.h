@@ -287,4 +287,5 @@ public:
 	bool CanFly() { return level == MARIO_LEVEL_RACCOON && canFly && !isOnPlatform; }
 	bool CanFloat() { return level == MARIO_LEVEL_RACCOON && !isFloating && !isOnPlatform; }
 	bool NeedTracking() { return needTracking; }
+	int GetPMeter() { return p_meter; }
 };

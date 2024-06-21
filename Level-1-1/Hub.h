@@ -33,7 +33,6 @@ public:
 		s->Get(ID_SPRITE_NUMBER + g->GetWorld())->Draw(x + 36, y + 1);
 		//render life
 		s->Get(ID_SPRITE_NUMBER + g->GetLife())->Draw(x + 36, y + 9);
-		//render speed meter
 		//render score
 		int score = g->GetScore();
 		for (int i = 1; i < 8; i++)
@@ -45,15 +44,34 @@ public:
 		int coin = g->GetCoin();
 		s->Get(ID_SPRITE_NUMBER + coin / 10)->Draw(x + 132, y + 1);
 		s->Get(ID_SPRITE_NUMBER + coin % 10)->Draw(x + 140, y + 1);
-		//render time
 		if (dynamic_cast<CPlayScene*>(g->GetCurrentScene()))
 		{
+			//render time
 			CPlayScene* scene = (CPlayScene*)(g->GetCurrentScene());
 			int time = scene->GetTime();
 			for (int i = 1; i < 4; i++)
 			{
 				s->Get(ID_SPRITE_NUMBER + time % 10)->Draw(x + 148 - (8 * i), y + 9);
 				time /= 10;
+			}
+			//render speed meter
+			CMario* player = (CMario*)scene->GetPlayer();
+			int speed = player->GetPMeter();
+			for (int i = 0; i < speed && i < 6; i++)
+			{
+				s->Get(ID_SPRITE_SPEED_BAR)->Draw(x + 52 + (8 * i), y + 1);
+			}
+			if (speed == 7)
+			{
+				s->Get(ID_SPRITE_SPEED_POWER)->Draw(x + 104, y + 1);
+			}
+			if (player->CanFly())
+			{
+				for (int i = 0; i < 6; i++)
+				{
+					s->Get(ID_SPRITE_SPEED_BAR)->Draw(x + 52 + (8 * i), y + 1);
+				}
+				s->Get(ID_SPRITE_SPEED_POWER)->Draw(x + 104, y + 1);
 			}
 		}
 		//render collected cards

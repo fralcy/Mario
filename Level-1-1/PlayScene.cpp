@@ -396,11 +396,25 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
+	CHub* hub = NULL;
+	CMario* mario = NULL;
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (abs(objects[i]->GetX() - cx) < 16 * 20 && abs(objects[i]->GetY() - cy) < 16 * 14 || dynamic_cast<CPlatform*>(objects[i]) || dynamic_cast<CHub*>(objects[i]))
+		if (dynamic_cast<CHub*>(objects[i]))
+		{
+			hub = (CHub *)objects[i];
+			continue;
+		}
+		if (dynamic_cast<CMario*>(objects[i]))
+		{
+			mario = (CMario*)objects[i];
+			continue;
+		}
+		if (abs(objects[i]->GetX() - cx) < 16 * 20 && abs(objects[i]->GetY() - cy) < 16 * 14 || dynamic_cast<CPlatform*>(objects[i]))
 			objects[i]->Render();
 	}
+	hub->Render();
+	mario->Render();
 }
 
 /*
