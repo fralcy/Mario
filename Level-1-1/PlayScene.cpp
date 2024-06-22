@@ -269,7 +269,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	obj->SetPosition(x, y);
 
 
-	objects.push_back(obj);
+		objects.push_back(obj);
 }
 
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
@@ -354,12 +354,14 @@ void CPlayScene::Update(DWORD dt)
 		if (!dynamic_cast<CMario*>(objects[i]))
 		coObjects.push_back(objects[i]);
 	}
-
-	for (size_t i = 0; i < objects.size(); i++)
+	if (player->GetState() != MARIO_STATE_USING_PIPE)
 	{
-		objects[i]->Update(dt, &coObjects);
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			objects[i]->Update(dt, &coObjects);
+		}
 	}
-
+	else player->Update(dt, &coObjects);
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 
@@ -372,22 +374,26 @@ void CPlayScene::Update(DWORD dt)
 		cy -= game->GetBackBufferHeight() / 2;
 		if (cx < 0) cx = 0;
 		if (cx > 2585) cx = 2585;
-		if (!player->NeedTracking() && cy < 150 || cy > 0 && cy < 150) cy = 0;
+		if (!player->NeedTracking() && cy <= 150 || cy > 0 && cy <= 150) cy = 0;
 		else if (cy > 150 && cy < 295) cy = 230;
 		if (cy < -240) cy = -240;
 		if (cy == 230) cx = 2262;
 	}
 	//count time
-	if (GetTickCount64() - timer_tick > 1000)
+	if (player->GetState()!=MARIO_STATE_USING_PIPE)
 	{
-		time--;
-		timer_tick = GetTickCount64();
+		if (GetTickCount64() - timer_tick > 1000)
+		{
+			time--;
+			timer_tick = GetTickCount64();
+		}
 	}
 	//kill mario when time's up
 	if (time == 0)
 	{
 		player->SetState(MARIO_STATE_DIE);
 	}
+	DebugOut(L"%f, %f\n", cx, cy);
 	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
@@ -398,11 +404,17 @@ void CPlayScene::Render()
 {
 	CHub* hub = NULL;
 	CMario* mario = NULL;
+	vector<CBlock*> block;
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CHub*>(objects[i]))
 		{
 			hub = (CHub *)objects[i];
+			continue;
+		}
+		if (dynamic_cast<CBlock*>(objects[i]))
+		{
+			block.push_back((CBlock*)objects[i]);
 			continue;
 		}
 		if (dynamic_cast<CMario*>(objects[i]))
@@ -413,8 +425,12 @@ void CPlayScene::Render()
 		if (abs(objects[i]->GetX() - cx) < 16 * 20 && abs(objects[i]->GetY() - cy) < 16 * 14 || dynamic_cast<CPlatform*>(objects[i]))
 			objects[i]->Render();
 	}
-	hub->Render();
 	mario->Render();
+	for (int i = 0; i < block.size(); i++)
+	{
+		block[i]->Render();
+	}
+	hub->Render();
 }
 
 /*

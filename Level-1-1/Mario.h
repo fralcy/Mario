@@ -21,6 +21,8 @@
 
 #define MARIO_GRAVITY			0.002f
 
+#define MARIO_USING_PIPE_SPEED	0.0090f
+
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
 #define MARIO_STATE_DIE				-10
@@ -46,6 +48,7 @@
 #define MARIO_STATE_FLY				1100
 #define MARIO_STATE_FLOAT			1200
 
+#define MARIO_STATE_USING_PIPE		1300
 #pragma region ANIMATION_ID
 
 #define ID_ANI_MARIO_IDLE_RIGHT 400
@@ -195,6 +198,7 @@
 #define MARIO_FLY_PREPARE_TIME 2000
 #define MARIO_CAN_FLY_TIME 7500
 #define MARIO_DIE_TIMEOUT 2500
+#define MARIO_USING_PIPE_TIME 2000
 
 class CMario : public CGameObject
 {
@@ -207,10 +211,10 @@ class CMario : public CGameObject
 
 	int level; 
 	int untouchable; 
-	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start, p_meter_start, canFly_start, die_start;
-	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking, isRunning, canFly;
+	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start, p_meter_start, canFly_start, die_start, usingPipe_start;
+	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking, isRunning, canFly, isUsingPipe;
 	int p_meter;
-	
+	float desX, desY;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -255,6 +259,8 @@ public:
 		p_meter_start = 0;
 		canFly = false;
 		canFly_start = 0;
+		isUsingPipe = 0;
+		usingPipe_start = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -262,7 +268,7 @@ public:
 
 	int IsCollidable()
 	{ 
-		return (state != MARIO_STATE_DIE); 
+		return (state != MARIO_STATE_DIE && state != MARIO_STATE_USING_PIPE); 
 	}
 
 	int IsBlocking() { return 0/*(state != MARIO_STATE_DIE && untouchable==0)*/; }

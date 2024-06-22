@@ -28,7 +28,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
-
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
 	{
@@ -78,10 +77,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				p_meter_start = GetTickCount64();
 			}
-			if (GetTickCount64() - p_meter_start > MARIO_FLY_PREPARE_TIME / 7)
+			if (p_meter == 7)
 			{
-				p_meter--;
-				p_meter_start = 0;
+				if (GetTickCount64() - p_meter_start > MARIO_FLY_PREPARE_TIME / 3)
+				{
+					p_meter--;
+					p_meter_start = 0;
+				}
+			}
+			else
+			{
+				if (GetTickCount64() - p_meter_start > MARIO_FLY_PREPARE_TIME / 7)
+				{
+					p_meter--;
+					p_meter_start = 0;
+				}
 			}
 		}
 	}
@@ -142,6 +152,26 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				g->ClearCards();
 			}
 		}
+	}
+	//stop using pipe
+	if (isUsingPipe)
+	{
+		if (desY > y)
+		{
+			vy = MARIO_USING_PIPE_SPEED;
+		}
+		else
+		{
+			vy = -MARIO_USING_PIPE_SPEED;
+		}
+		if (GetTickCount64() - usingPipe_start > MARIO_USING_PIPE_TIME)
+		{
+			isUsingPipe = 0;
+			usingPipe_start = 0;
+			SetPosition(desX, desY);
+			SetState(MARIO_STATE_IDLE);
+		}
+
 	}
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -329,17 +359,9 @@ void CMario::Pick(CKoopa* koopa)
 void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e)
 {
 	CPipe* pipe = dynamic_cast<CPipe*>(e->obj);
-	float desX, desY;
 	pipe->GetDestinationPosition(desX, desY);
-	if (e->ny < 0)
-	{
-
-	}
-	else
-	{
-
-	}
-	SetPosition(desX, desY);
+	x = pipe->GetX();
+	SetState(MARIO_STATE_USING_PIPE);
 }
 void CMario::OnCollisionWithGoal(LPCOLLISIONEVENT e)
 {
@@ -381,8 +403,16 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	if (coin->GetType() == 1)
 	{
 		e->obj->Delete();
-		CGame::GetInstance()->SetCoin(CGame::GetInstance()->GetCoin() + 1);
-		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
+		CGame* g = CGame::GetInstance();
+		int coin = g->GetCoin();
+		coin++;
+		if (coin >=100)
+		{
+			coin = 0;
+			g->SetLife(g->GetLife() + 1);
+		}
+		g->SetCoin(coin);
+		g->SetScore(g->GetScore() + 100);
 	}
 }
 void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
@@ -491,6 +521,10 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 int CMario::GetAniIdSmall()
 {
 	int aniId = -1;
+	if (isUsingPipe)
+	{
+		return ID_ANI_MARIO_SMALL_USING_PIPE;
+	}
 	if (!isOnPlatform)
 	{
 		if (hold_obj)
@@ -585,6 +619,10 @@ int CMario::GetAniIdSmall()
 int CMario::GetAniIdBig()
 {
 	int aniId = -1;
+	if (isUsingPipe)
+	{
+		return ID_ANI_MARIO_USING_PIPE;
+	}
 	if (!isOnPlatform)
 	{
 		if (hold_obj)
@@ -686,6 +724,10 @@ int CMario::GetAniIdBig()
 int CMario::GetAniIdRaccoon()
 {
 	int aniId = -1;
+	if (isUsingPipe)
+	{
+		return ID_ANI_MARIO_RACCOON_USING_PIPE;
+	}
 	if (isAttacking)
 	{
 		if (nx >= 0)
@@ -894,8 +936,10 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_IDLE:
+		if (isUsingPipe) return;
 		ax = 0.0f;
 		vx = 0.0f;
+		ay = MARIO_GRAVITY;
 		break;
 
 	case MARIO_STATE_DIE:
@@ -936,6 +980,14 @@ void CMario::SetState(int state)
 			}
 		}
 		break;
+	case MARIO_STATE_USING_PIPE:
+	{
+		isUsingPipe = true;
+		usingPipe_start = GetTickCount64();
+		vx = 0.0f;
+		ax = 0.0f;
+	}
+	break;
 	}
 
 	CGameObject::SetState(state);
