@@ -49,6 +49,8 @@
 #define MARIO_STATE_FLOAT			1200
 
 #define MARIO_STATE_USING_PIPE		1300
+
+#define MARIO_STATE_LEVEL_UP		1400
 #pragma region ANIMATION_ID
 
 #define ID_ANI_MARIO_IDLE_RIGHT 400
@@ -168,6 +170,9 @@
 
 #define ID_ANI_MARIO_RACCOON_FLOAT_RIGHT 2500
 #define ID_ANI_MARIO_RACCOON_FLOAT_LEFT 2501
+
+#define ID_ANI_MARIO_LEVEL_UP_RIGHT 2600
+#define ID_ANI_MARIO_LEVEL_UP_LEFT 2601
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -199,6 +204,7 @@
 #define MARIO_CAN_FLY_TIME 7500
 #define MARIO_DIE_TIMEOUT 2500
 #define MARIO_USING_PIPE_TIME 2000
+#define MARIO_LEVEL_UP_TIME 1000
 
 class CMario : public CGameObject
 {
@@ -211,8 +217,8 @@ class CMario : public CGameObject
 
 	int level; 
 	int untouchable; 
-	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start, p_meter_start, canFly_start, die_start, usingPipe_start;
-	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking, isRunning, canFly, isUsingPipe;
+	ULONGLONG untouchable_start, isKicking_start, isAttacking_start, isFloating_start, p_meter_start, canFly_start, die_start, usingPipe_start, isLevelUp_start;
+	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking, isRunning, canFly, isUsingPipe, isLevelUp;
 	int p_meter;
 	float desX, desY;
 
@@ -261,6 +267,8 @@ public:
 		canFly_start = 0;
 		isUsingPipe = 0;
 		usingPipe_start = 0;
+		isLevelUp = 0;
+		isLevelUp_start = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

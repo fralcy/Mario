@@ -354,7 +354,7 @@ void CPlayScene::Update(DWORD dt)
 		if (!dynamic_cast<CMario*>(objects[i]))
 		coObjects.push_back(objects[i]);
 	}
-	if (player->GetState() != MARIO_STATE_USING_PIPE)
+	if (player->GetState() != MARIO_STATE_USING_PIPE && player->GetState() != MARIO_STATE_LEVEL_UP)
 	{
 		for (size_t i = 0; i < objects.size(); i++)
 		{

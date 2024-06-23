@@ -13,7 +13,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	if (!isEnabled) return;
 	LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario *)scene->GetPlayer(); 
-	if (mario->GetState() == MARIO_STATE_USING_PIPE) return;
+	if (mario->GetState() == MARIO_STATE_USING_PIPE || mario->GetState() == MARIO_STATE_LEVEL_UP) return;
 	switch (KeyCode)
 	{
 	case DIK_DOWN:

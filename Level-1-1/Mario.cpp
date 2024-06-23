@@ -171,7 +171,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			SetPosition(desX, desY);
 			SetState(MARIO_STATE_IDLE);
 		}
-
+	}
+	//level up
+	if (isLevelUp)
+	{
+		vx = 0;
+		vy = 0;
+		if (GetTickCount64() - isLevelUp_start > MARIO_LEVEL_UP_TIME)
+		{
+			isLevelUp = false;
+			isLevelUp_start = 0;
+			SetState(MARIO_STATE_IDLE);
+		}
 	}
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -423,6 +434,7 @@ void CMario::OnCollisionWithShroom(LPCOLLISIONEVENT e)
 		if (level == MARIO_LEVEL_SMALL)
 		{
 			SetLevel(MARIO_LEVEL_BIG);
+			SetState(MARIO_STATE_LEVEL_UP);
 		}
 		else
 		{
@@ -853,6 +865,17 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if(isLevelUp)
+	{
+		if (nx > 0)
+		{
+			aniId = ID_ANI_MARIO_LEVEL_UP_RIGHT;
+		}
+		else
+		{
+			aniId = ID_ANI_MARIO_LEVEL_UP_LEFT;
+		}
+	}
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
@@ -984,6 +1007,14 @@ void CMario::SetState(int state)
 	{
 		isUsingPipe = true;
 		usingPipe_start = GetTickCount64();
+		vx = 0.0f;
+		ax = 0.0f;
+		break;
+	}
+	case MARIO_STATE_LEVEL_UP:
+	{
+		isLevelUp = true;
+		isLevelUp_start = GetTickCount64();
 		vx = 0.0f;
 		ax = 0.0f;
 	}

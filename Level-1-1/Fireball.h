@@ -16,9 +16,11 @@
 
 #define ID_ANI_FIREBALL 32000
 
+#define FIREBALL_TIMEOUT 10000
 class CFireball : public CGameObject
 {
 protected:
+	ULONGLONG start;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();

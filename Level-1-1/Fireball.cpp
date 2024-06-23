@@ -36,6 +36,7 @@ CFireball::CFireball(float x, float y, int dir):CGameObject(x,y)
 		vx = FIREBALL_SPEED;
 		break;
 	}
+	start = GetTickCount64();
 }
 void CFireball::Render()
 {
@@ -47,7 +48,7 @@ void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	x += vx * dt;
 	y += vy * dt;
-	if (y > 260 || y < 0)
+	if (GetTickCount64()-start > FIREBALL_TIMEOUT)
 	{
 		Delete();
 	}
