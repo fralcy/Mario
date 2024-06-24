@@ -356,6 +356,7 @@ void CPlayScene::Update(DWORD dt)
 	}
 	if (player->GetState() != MARIO_STATE_USING_PIPE && player->GetState() != MARIO_STATE_LEVEL_UP)
 	{
+		DebugOut(L"%d\n", player->GetState());
 		for (size_t i = 0; i < objects.size(); i++)
 		{
 			objects[i]->Update(dt, &coObjects);
@@ -393,7 +394,7 @@ void CPlayScene::Update(DWORD dt)
 	{
 		player->SetState(MARIO_STATE_DIE);
 	}
-	DebugOut(L"%f, %f\n", cx, cy);
+
 	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();

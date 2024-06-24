@@ -141,15 +141,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			CGame* g = CGame::GetInstance();
 			if (g->GetLife()!=-1)//return previous scene if there are lifes remain
 			{
+				g->SetMarioLevel(1);
 				g->InitiateSwitchScene(CGame::GetInstance()->GetPreviousScene());
 				g->SetLife(CGame::GetInstance()->GetLife() - 1);
+				g->SetCurMapNode(g->GetPrevMapNode());
 			}
 			else//return intro if there is no life lefts
 			{
 				g->InitiateSwitchScene(1);
 				g->SetLife(4);
 				g->SetCoin(0);
+				g->SetScore(0);
 				g->ClearCards();
+				g->SetCurMapNode(0);
+				g->SetMarioLevel(1);
+				g->ClearCompletedNodes();
 			}
 		}
 	}
@@ -524,7 +530,11 @@ void CMario::OnCollisionWithMapBound(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
-	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+	CGame* g = CGame::GetInstance();
+	g->SetPrevMapNode(g->GetCurMapNode());
+	g->CompleteCurNode();
+	g->SetMarioLevel(level);
+	g->InitiateSwitchScene(p->GetSceneId());
 }
 
 //

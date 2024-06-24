@@ -15,10 +15,12 @@ class CMapMario : public CGameObject
 	int level;
 	CNode* curNode, *nextNode;
 public:
-	CMapMario(float x, float y, int level, CNode* curNode) : CGameObject(x, y) {
+	CMapMario(int level, CNode* curNode) : CGameObject(x, y) {
 		this->level = level;
 		this->curNode = curNode;
 		this->nextNode = NULL;
+		this->x = curNode->GetX();
+		this->y = curNode->GetY();
 	}
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

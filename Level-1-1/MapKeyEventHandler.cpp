@@ -13,7 +13,8 @@ void CMapKeyHandler::KeyState(BYTE* states)
 
 void CMapKeyHandler::OnKeyDown(int KeyCode)
 {
-	LPMAPSCENE scene = (LPMAPSCENE)CGame::GetInstance()->GetCurrentScene();
+	CGame* game = CGame::GetInstance();
+	LPMAPSCENE scene = (LPMAPSCENE)game->GetCurrentScene();
 	CMapMario* mario = (CMapMario*)scene->GetPlayer();
 	int l, r, u, d;
 	mario->GetCurrentNode()->GetMovableDirs(l, r, u, d);
@@ -42,7 +43,11 @@ void CMapKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_S:
 		int selectedSceneId = mario->GetCurrentNode()->GetSceneId();
 		if (selectedSceneId != -1)
-			CGame::GetInstance()->InitiateSwitchScene(selectedSceneId);
+		{
+			game->SetPrevMapNode(game->GetCurMapNode());
+			game->SetCurMapNode(mario->GetCurrentNode()->GetId());
+			game->InitiateSwitchScene(selectedSceneId);
+		}
 		break;
 	}
 }

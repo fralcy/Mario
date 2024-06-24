@@ -71,19 +71,20 @@ void CMapScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		CNode* start = NULL;
-			for (int i = 0; i < objects.size(); i++)
+		CGame* game = CGame::GetInstance();
+		CNode* node = NULL;
+		for (int i = 0; i < objects.size(); i++)
+		{
+			if (dynamic_cast<CNode*>(objects[i]))
 			{
-				if (dynamic_cast<CNode*>(objects[i]))
+			node = (CNode*)objects[i];
+			if (node->GetId() == game->GetCurMapNode())
 				{
-				start = (CNode*)objects[i];
-				if (start->GetType() == -1)
-					{
-						break;
-					}
+					break;
 				}
 			}
-		obj = new CMapMario(x, y, 1, start);
+		}
+		obj = new CMapMario(game->GetMarioLevel(), node);
 		player = (CMapMario*)obj;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
@@ -94,9 +95,11 @@ void CMapScene::_ParseSection_OBJECTS(string line)
 		int r = atoi(tokens[4].c_str());
 		int u = atoi(tokens[5].c_str());
 		int d = atoi(tokens[6].c_str());
-		int type = atoi(tokens[7].c_str());
+		int id = atoi(tokens[7].c_str());
 		int sceneId = atoi(tokens[8].c_str());
-		obj = new CNode(x, y, l, r, u, d, type, sceneId);
+		int isCompleted = CGame::GetInstance()->isCompleted(id);
+
+		obj = new CNode(x, y, l, r, u, d, id, sceneId);
 		break;
 	}
 	case OBJECT_TYPE_BLOCK: {
@@ -124,7 +127,7 @@ void CMapScene::_ParseSection_OBJECTS(string line)
 		return;
 	}
 	// General object setup
-	obj->SetPosition(x, y);
+	//obj->SetPosition(x, y);
 
 
 	objects.push_back(obj);

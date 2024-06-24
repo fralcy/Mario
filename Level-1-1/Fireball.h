@@ -16,7 +16,7 @@
 
 #define ID_ANI_FIREBALL 32000
 
-#define FIREBALL_TIMEOUT 10000
+#define FIREBALL_TIMEOUT 5000
 class CFireball : public CGameObject
 {
 protected:

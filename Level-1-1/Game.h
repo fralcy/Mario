@@ -62,6 +62,9 @@ class CGame
 	int world, life = 4, coin = 0, score = 0, mario_level = 1;
 	vector<int> cards;
 
+	int curMapNode, prevMapNode;
+	vector<int> completedNodes;
+
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
 
@@ -135,6 +138,23 @@ public:
 	int GetCardsNumber() { return (int)cards.size(); }
 	int GetCard(int i) { return cards[i]; }
 	void ClearCards() { cards.clear(); }
+
+	int GetCurMapNode() { return curMapNode; }
+	int GetPrevMapNode() { return prevMapNode; }
+	void SetCurMapNode(int node) { curMapNode = node; }
+	void SetPrevMapNode(int node) { curMapNode = node; }
+
+	void CompleteCurNode() { completedNodes.push_back(curMapNode); }
+	bool isCompleted(int id) 
+	{
+		for (int i = 0; i < completedNodes.size(); i++)
+		{
+			if (id == completedNodes[i])
+				return true;
+		}
+		return false;
+	}
+	void ClearCompletedNodes() { completedNodes.clear(); }
 	~CGame();
 };
 typedef CGame* LPGAME;
