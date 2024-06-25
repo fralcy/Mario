@@ -41,11 +41,12 @@ void CMapKeyHandler::OnKeyDown(int KeyCode)
 		scene->Load();
 		break;
 	case DIK_S:
-		int selectedSceneId = mario->GetCurrentNode()->GetSceneId();
-		if (selectedSceneId != -1)
+		CNode* node = mario->GetCurrentNode();
+		int selectedSceneId = node->GetSceneId();
+		if (selectedSceneId != -1 && !game->isCompleted(node->GetId()))
 		{
 			game->SetPrevMapNode(game->GetCurMapNode());
-			game->SetCurMapNode(mario->GetCurrentNode()->GetId());
+			game->SetCurMapNode(node->GetId());
 			game->InitiateSwitchScene(selectedSceneId);
 		}
 		break;

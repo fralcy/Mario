@@ -33,7 +33,7 @@ public:
 			}
 			else
 			{
-
+				s->Get(ID_SPRITE_MAP_LEVEL)->Draw(x, y);
 			}
 		}
 		/*RenderBoundingBox();*/

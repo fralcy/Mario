@@ -381,7 +381,7 @@ void CPlayScene::Update(DWORD dt)
 		if (cy == 230) cx = 2262;
 	}
 	//count time
-	if (player->GetState()!=MARIO_STATE_USING_PIPE)
+	if (key_handler->IsEnabled())
 	{
 		if (GetTickCount64() - timer_tick > 1000)
 		{

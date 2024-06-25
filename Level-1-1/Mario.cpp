@@ -531,10 +531,12 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
 	CGame* g = CGame::GetInstance();
+	LPPLAYSCENE scene = (LPPLAYSCENE)g->GetCurrentScene();
 	g->SetPrevMapNode(g->GetCurMapNode());
 	g->CompleteCurNode();
 	g->SetMarioLevel(level);
 	g->InitiateSwitchScene(p->GetSceneId());
+	g->SetScore(g->GetScore() + scene->GetTime()*50);
 }
 
 //
