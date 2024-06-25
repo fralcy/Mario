@@ -340,6 +340,7 @@ void CPlayScene::Load()
 	f.close();
 	if (!key_handler->IsEnabled()) key_handler->ToggleEnabled();
 	CGame::GetInstance()->SetWorld(world);
+	time = 300;
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
 
@@ -406,6 +407,8 @@ void CPlayScene::Render()
 	CHub* hub = NULL;
 	CMario* mario = NULL;
 	vector<CBlock*> block;
+	vector<CGameObject*> items;
+	vector<CGameObject*> itemblock;
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CHub*>(objects[i]))
@@ -423,6 +426,11 @@ void CPlayScene::Render()
 			mario = (CMario*)objects[i];
 			continue;
 		}
+		if (dynamic_cast<CShroom*>(objects[i]) || dynamic_cast<CLeaf*>(objects[i]) || dynamic_cast<CCoin*>(objects[i])|| dynamic_cast<CFireball*>(objects[i]))
+		{
+			items.push_back(objects[i]);
+			continue;
+		}
 		if (abs(objects[i]->GetX() - cx) < 16 * 20 && abs(objects[i]->GetY() - cy) < 16 * 14 || dynamic_cast<CPlatform*>(objects[i]))
 			objects[i]->Render();
 	}
@@ -430,6 +438,10 @@ void CPlayScene::Render()
 	for (int i = 0; i < block.size(); i++)
 	{
 		block[i]->Render();
+	}
+	for (int i = 0; i < items.size(); i++)
+	{
+		items[i]->Render();
 	}
 	hub->Render();
 }

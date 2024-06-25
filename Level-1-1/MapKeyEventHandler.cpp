@@ -18,6 +18,9 @@ void CMapKeyHandler::OnKeyDown(int KeyCode)
 	CMapMario* mario = (CMapMario*)scene->GetPlayer();
 	int l, r, u, d;
 	mario->GetCurrentNode()->GetMovableDirs(l, r, u, d);
+	float x, y;
+	mario->GetSpeed(x, y);
+	if (x != 0 || y != 0)return;
 	switch (KeyCode)
 	{
 	case DIK_LEFT:
