@@ -897,8 +897,6 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
-	
-	DebugOutTitle(L"P-Speed: %d - isRunning: %d - CanFly: %d", p_meter, isRunning, canFly);
 }
 
 void CMario::SetState(int state)

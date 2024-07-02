@@ -61,7 +61,7 @@ void CIntroScene::_ParseSection_ASSETS(string line)
 	LoadAssets(path.c_str());
 }
 
-void CIntroScene::_ParseSection_OBJECTS(string line)
+void CIntroScene::_ParseSection_PLATFORM(string line)
 {
 	vector<string> tokens = split(line);
 
@@ -87,17 +87,56 @@ void CIntroScene::_ParseSection_OBJECTS(string line)
 		obj = new CLine(x, y, length, spriteId); break;
 		break;
 	}
+	case OBJECT_TYPE_PLATFORM:
+	{
+
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int length = atoi(tokens[5].c_str());
+		int sprite_begin = atoi(tokens[6].c_str());
+		int sprite_middle = atoi(tokens[7].c_str());
+		int sprite_end = atoi(tokens[8].c_str());
+
+		obj = new CPlatform(
+			x, y,
+			cell_width, cell_height, length,
+			sprite_begin, sprite_middle, sprite_end
+		);
+
+		break;
+	}
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
 	}
-	// General object setup
-	obj->SetPosition(x, y);
-
-
-	objects.push_back(obj);
+	platform.push_back(obj);
 }
+void CIntroScene::_ParseSection_CURTAIN(string line)
+{
+	vector<string> tokens = split(line);
 
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	CGameObject* obj = NULL;
+
+	switch (object_type)
+	{
+	case OBJECT_TYPE_LINE: {
+		int length = (int)atof(tokens[3].c_str());
+		int spriteId = (int)atof(tokens[4].c_str());
+		obj = new CLine(x, y, length, spriteId); break;
+		break;
+	}
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return;
+	}
+	curtain.push_back(obj);
+}
 void CIntroScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -155,7 +194,8 @@ void CIntroScene::Load()
 
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
-		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
+		if (line == "[PLATFORM]") { section = SCENE_SECTION_PLATFORM; continue; };
+		if (line == "[CURTAIN]") { section = SCENE_SECTION_CURTAIN; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -164,7 +204,8 @@ void CIntroScene::Load()
 		switch (section)
 		{
 		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
-		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_PLATFORM: _ParseSection_PLATFORM(line); break;
+		case SCENE_SECTION_CURTAIN: _ParseSection_CURTAIN(line); break;
 		}
 	}
 
@@ -175,43 +216,83 @@ void CIntroScene::Load()
 
 void CIntroScene::Update(DWORD dt)
 {
-	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 0; i < objects.size(); i++)
+	//vector<LPGAMEOBJECT> coObjects;
+	//for (size_t i = 0; i < objects.size(); i++)
+	//{
+	//	coObjects.push_back(objects[i]);
+	//}
+	//for (size_t i = 0; i < objects.size(); i++)
+	//{
+	//	objects[i]->Update(dt, &coObjects);
+	//}
+	//CGame::GetInstance()->SetCamPos(0, 0);
+	if (GetTickCount64() - timer_tick > 100)
 	{
-		coObjects.push_back(objects[i]);
+		time += 0.1f;
+		timer_tick = GetTickCount64();
 	}
-	for (size_t i = 0; i < objects.size(); i++)
+	for (int i = 0; i < curtain.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+		float x, y;
+		curtain[i]->GetPosition(x, y);
+		curtain[i]->SetPosition(x, y - 2.4f);
+		if (y < -8) curtain[i]->Delete();
 	}
-	CGame::GetInstance()->SetCamPos(0, 0);
+	PurgeDeletedObjects();
 }
 
 void CIntroScene::Render()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 0; i < platform.size(); i++)
 	{
-		objects[i]->Render();
+		platform[i]->Render();
 	}
-	float x = 72, y;
-	if (!is2player)
+	for (int i = 0; i < curtain.size(); i++)
 	{
-		y = 150;
+		curtain[i]->Render();
 	}
-	else
-	{
-		y = 166;
-	}
-	CSprites::GetInstance()->Get(ID_SPRITE_INTRO_POINTER)->Draw(x ,y);
+	//float x = 72, y;
+	//if (!is2player)
+	//{
+	//	y = 150;
+	//}
+	//else
+	//{
+	//	y = 166;
+	//}
+	//CSprites::GetInstance()->Get(ID_SPRITE_INTRO_POINTER)->Draw(x ,y);
 }
 
 void CIntroScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
+	for (int i = 0; i < platform.size(); i++)
+		delete platform[i];
+	platform.clear();
 
-	objects.clear();
+	for (int i = 0; i < curtain.size(); i++)
+		delete curtain[i];
+	curtain.clear();
+
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
+}
+void CIntroScene::PurgeDeletedObjects()
+{
+	vector<LPGAMEOBJECT>::iterator it;
+	for (it = curtain.begin(); it != curtain.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+
+	// NOTE: remove_if will swap all deleted items to the end of the vector
+	// then simply trim the vector, this is much more efficient than deleting individual items
+	curtain.erase(
+		std::remove_if(curtain.begin(), curtain.end(), CIntroScene::IsGameObjectDeleted),
+		curtain.end());
 }
