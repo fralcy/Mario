@@ -127,10 +127,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		//	DebugOut(L"[ERROR] MARIO object was created before!\n");
 		//	return;
 		//}
-		obj = new CMario(x,y); 
+	{
+		int nx = atoi(tokens[3].c_str());
+		int isMario = atoi(tokens[4].c_str());
+		obj = new CMario(x, y, CGame::GetInstance()->GetMarioLevel(), nx, isMario);
 		player = (CMario*)obj;
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
+	}
 	case OBJECT_TYPE_GOOMBA: {
 		int type = (int)atof(tokens[3].c_str());
 		obj = new CGoomba(x, y, type);

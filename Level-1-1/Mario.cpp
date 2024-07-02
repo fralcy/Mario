@@ -942,7 +942,9 @@ void CMario::SetState(int state)
 				vy = -MARIO_JUMP_SPEED_Y;
 		}
 		break;
-
+	case MARIO_STATE_HIGH_JUMP:
+		vy = -MARIO_JUMP_SPEED_Y * 1.5f;
+		break;
 	case MARIO_STATE_RELEASE_JUMP:
 		if (isFloating) break;
 		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;

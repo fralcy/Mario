@@ -51,6 +51,8 @@
 #define MARIO_STATE_USING_PIPE		1300
 
 #define MARIO_STATE_LEVEL_UP		1400
+
+#define MARIO_STATE_HIGH_JUMP		1500
 #pragma region ANIMATION_ID
 
 #define ID_ANI_MARIO_IDLE_RIGHT 400
@@ -221,7 +223,7 @@ class CMario : public CGameObject
 	BOOLEAN isOnPlatform, isKicking, isAttacking, canAttack, isFloating, needTracking, isRunning, canFly, isUsingPipe, isLevelUp;
 	int p_meter;
 	float desX, desY;
-
+	bool isMario;
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
@@ -243,14 +245,14 @@ class CMario : public CGameObject
 	int GetAniIdRaccoon();
 
 public:
-	CMario(float x, float y) : CGameObject(x, y)
+	CMario(float x, float y, int level, int nx, bool isMario) : CGameObject(x, y)
 	{
 		isSitting = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
 		hold_obj = NULL;
-		level = MARIO_LEVEL_SMALL;
+		this->level = level;
 		untouchable = isKicking = 0;
 		untouchable_start = isKicking_start = -1;
 		canAttack = true;
@@ -269,6 +271,8 @@ public:
 		usingPipe_start = 0;
 		isLevelUp = 0;
 		isLevelUp_start = 0;
+		this->nx = nx;
+		this->isMario = isMario;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

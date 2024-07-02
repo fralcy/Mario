@@ -78,9 +78,14 @@ void CIntroScene::_ParseSection_PLATFORM(string line)
 	case OBJECT_TYPE_TILE: {
 		int spriteid = (int)atof(tokens[3].c_str());
 		obj = new CTile(x, y, spriteid);
-
 		break;
 	}
+	case OBJECT_TYPE_BLOCK: {
+		int spriteid = (int)atof(tokens[3].c_str());
+		obj = new CBlock(x, y, spriteid);
+		break;
+	}
+
 	case OBJECT_TYPE_LINE: {
 		int length = (int)atof(tokens[3].c_str());
 		int spriteId = (int)atof(tokens[4].c_str());
@@ -136,6 +141,62 @@ void CIntroScene::_ParseSection_CURTAIN(string line)
 		return;
 	}
 	curtain.push_back(obj);
+}
+void CIntroScene::_ParseSection_PLAYER(string line)
+{
+	vector<string> tokens = split(line);
+
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	int level = atoi(tokens[3].c_str());
+	int nx = atoi(tokens[4].c_str());
+	int isMario = atoi(tokens[5].c_str());
+	CMario* obj = NULL;
+
+	switch (object_type)
+	{
+	case OBJECT_TYPE_MARIO:
+	{
+		obj = new CMario(x, y, level, nx, isMario);
+		break;
+	}
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return;
+	}
+	if (player1 == NULL)
+		player1 = obj;
+	else
+		player2 = obj;
+}
+void CIntroScene::_ParseSection_TITLE(string line)
+{
+	vector<string> tokens = split(line);
+
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	CGameObject* obj = NULL;
+
+	switch (object_type)
+	{
+	case OBJECT_TYPE_TILE: {
+		int spriteId = (int)atof(tokens[3].c_str());
+		obj = new CTile(x, y, spriteId);
+		break;
+	}
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return;
+	}
+	title.push_back(obj);
 }
 void CIntroScene::LoadAssets(LPCWSTR assetFile)
 {
@@ -196,6 +257,8 @@ void CIntroScene::Load()
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[PLATFORM]") { section = SCENE_SECTION_PLATFORM; continue; };
 		if (line == "[CURTAIN]") { section = SCENE_SECTION_CURTAIN; continue; };
+		if (line == "[PLAYER]") { section = SCENE_SECTION_PLAYER; continue; };
+		if (line == "[TITLE]") { section = SCENE_SECTION_TITLE; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -206,6 +269,8 @@ void CIntroScene::Load()
 		case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 		case SCENE_SECTION_PLATFORM: _ParseSection_PLATFORM(line); break;
 		case SCENE_SECTION_CURTAIN: _ParseSection_CURTAIN(line); break;
+		case SCENE_SECTION_PLAYER: _ParseSection_PLAYER(line); break;
+		case SCENE_SECTION_TITLE: _ParseSection_TITLE(line); break;
 		}
 	}
 
@@ -216,28 +281,56 @@ void CIntroScene::Load()
 
 void CIntroScene::Update(DWORD dt)
 {
-	//vector<LPGAMEOBJECT> coObjects;
-	//for (size_t i = 0; i < objects.size(); i++)
-	//{
-	//	coObjects.push_back(objects[i]);
-	//}
-	//for (size_t i = 0; i < objects.size(); i++)
-	//{
-	//	objects[i]->Update(dt, &coObjects);
-	//}
-	//CGame::GetInstance()->SetCamPos(0, 0);
-	if (GetTickCount64() - timer_tick > 100)
+	vector<LPGAMEOBJECT> coObjects;
+	for (size_t i = 0; i < platform.size(); i++)
 	{
-		time += 0.1f;
+		coObjects.push_back(platform[i]);
+	}
+	if (player1) player1->Update(dt, &coObjects);
+	if (player2) player2->Update(dt, &coObjects);
+	CGame::GetInstance()->SetCamPos(0, 0);
+	if (GetTickCount64() - timer_tick > 50)
+	{
+		time += 0.05f;
 		timer_tick = GetTickCount64();
 	}
 	for (int i = 0; i < curtain.size(); i++)
 	{
 		float x, y;
 		curtain[i]->GetPosition(x, y);
-		curtain[i]->SetPosition(x, y - 2.4f);
+		curtain[i]->SetPosition(x, y - 1.6f);
 		if (y < -8) curtain[i]->Delete();
 	}
+	if (time >= 2.0f && time <=2.1f)
+	{
+		player1->SetState(MARIO_STATE_WALKING_RIGHT);
+		player2->SetState(MARIO_STATE_WALKING_LEFT);
+	}
+	if (time >= 2.8f && time <=2.9f)
+	{
+		player1->SetState(MARIO_STATE_JUMP);
+	}
+	if (time >= 3.1f && time <= 3.15f)
+	{
+		player2->SetPosition(player2->GetX(), player2->GetY() - 2);
+		player2->SetState(MARIO_STATE_SIT);
+	}
+	if (time >= 3.15f && time <= 3.2f)
+	{
+		player1->SetState(MARIO_STATE_HIGH_JUMP);
+	}
+	if (time >= 3.45f && time <= 3.5f)
+	{
+		player2->SetState(MARIO_STATE_SIT_RELEASE);
+	}
+	if (time >= 3.5f && title[0]->GetY()<=32)
+	{
+		for (int i = 0; i < title.size(); i++)
+		{
+			title[i]->SetPosition(title[i]->GetX(), title[i]->GetY() + 1.6f);
+		}
+	}
+	DebugOutTitle(L"%f", time);
 	PurgeDeletedObjects();
 }
 
@@ -250,6 +343,15 @@ void CIntroScene::Render()
 	for (int i = 0; i < curtain.size(); i++)
 	{
 		curtain[i]->Render();
+	}
+	if (time >= 1 && player1) player1->Render();
+	if (time >= 1 && player2) player2->Render();
+	if (time >= 3.5f)
+	{
+		for (int i = 0; i < title.size(); i++)
+		{
+			title[i]->Render();
+		}
 	}
 	//float x = 72, y;
 	//if (!is2player)
@@ -272,7 +374,8 @@ void CIntroScene::Unload()
 	for (int i = 0; i < curtain.size(); i++)
 		delete curtain[i];
 	curtain.clear();
-
+	player1 = NULL;
+	player2 = NULL;
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
