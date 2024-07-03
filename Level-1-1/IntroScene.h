@@ -6,6 +6,8 @@
 #include "Mario.h"
 #include "Platform.h"
 #include "Block.h"
+#include "Goomba.h"
+#include "Koopa.h"
 #include "IntroKeyEventHandler.h"
 
 #define SCENE_SECTION_UNKNOWN -1
@@ -14,6 +16,8 @@
 #define SCENE_SECTION_CURTAIN	3
 #define SCENE_SECTION_PLAYER	4
 #define SCENE_SECTION_TITLE		5
+#define SCENE_SECTION_BACKGROUND	6
+#define SCENE_SECTION_BACKGROUND2	7
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -29,6 +33,8 @@ protected:
 	CMario* player1;
 	CMario* player2;
 	vector<LPGAMEOBJECT> title;
+	vector<LPGAMEOBJECT> background;
+	vector<LPGAMEOBJECT> background2;
 	vector<LPGAMEOBJECT> gamemode;
 	LPGAMEOBJECT pointer;
 	float time = 0;
@@ -41,6 +47,8 @@ protected:
 	void _ParseSection_CURTAIN(string line);
 	void _ParseSection_PLAYER(string line);
 	void _ParseSection_TITLE(string line);
+	void _ParseSection_BACKGROUND(string line);
+	void _ParseSection_BACKGROUND2(string line);
 
 	void LoadAssets(LPCWSTR assetFile);
 

@@ -198,6 +198,62 @@ void CIntroScene::_ParseSection_TITLE(string line)
 	}
 	title.push_back(obj);
 }
+void CIntroScene::_ParseSection_BACKGROUND(string line)
+{
+	vector<string> tokens = split(line);
+
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	CGameObject* obj = NULL;
+
+	switch (object_type)
+	{
+	case OBJECT_TYPE_LINE: {
+		int length = (int)atof(tokens[3].c_str());
+		int spriteId = (int)atof(tokens[4].c_str());
+		obj = new CLine(x, y, length, spriteId); break;
+		break;
+	}
+	case OBJECT_TYPE_TILE: {
+		int spriteId = (int)atof(tokens[3].c_str());
+		obj = new CTile(x, y, spriteId);
+		break;
+	}
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return;
+	}
+	background.push_back(obj);
+}
+void CIntroScene::_ParseSection_BACKGROUND2(string line)
+{
+	vector<string> tokens = split(line);
+
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	CGameObject* obj = NULL;
+
+	switch (object_type)
+	{
+	case OBJECT_TYPE_TILE: {
+		int spriteId = (int)atof(tokens[3].c_str());
+		obj = new CTile(x, y, spriteId);
+		break;
+	}
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return;
+	}
+	background2.push_back(obj);
+}
 void CIntroScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -259,6 +315,8 @@ void CIntroScene::Load()
 		if (line == "[CURTAIN]") { section = SCENE_SECTION_CURTAIN; continue; };
 		if (line == "[PLAYER]") { section = SCENE_SECTION_PLAYER; continue; };
 		if (line == "[TITLE]") { section = SCENE_SECTION_TITLE; continue; };
+		if (line == "[BACKGROUND]") { section = SCENE_SECTION_BACKGROUND; continue; };
+		if (line == "[BACKGROUND2]") { section = SCENE_SECTION_BACKGROUND2; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -271,11 +329,13 @@ void CIntroScene::Load()
 		case SCENE_SECTION_CURTAIN: _ParseSection_CURTAIN(line); break;
 		case SCENE_SECTION_PLAYER: _ParseSection_PLAYER(line); break;
 		case SCENE_SECTION_TITLE: _ParseSection_TITLE(line); break;
+		case SCENE_SECTION_BACKGROUND: _ParseSection_BACKGROUND(line); break;
+		case SCENE_SECTION_BACKGROUND2: _ParseSection_BACKGROUND2(line); break;
 		}
 	}
 
 	f.close();
-
+	time = 0;
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
 
@@ -344,8 +404,13 @@ void CIntroScene::Render()
 	{
 		curtain[i]->Render();
 	}
-	if (time >= 1 && player1) player1->Render();
-	if (time >= 1 && player2) player2->Render();
+	if (time >= 4.6f)
+	{
+		for (int i = 0; i < background.size(); i++)
+		{
+			background[i]->Render();
+		}
+	}
 	if (time >= 3.5f)
 	{
 		for (int i = 0; i < title.size(); i++)
@@ -353,6 +418,15 @@ void CIntroScene::Render()
 			title[i]->Render();
 		}
 	}
+	if (time >= 4.6f)
+	{
+		for (int i = 0; i < background2.size(); i++)
+		{
+			background2[i]->Render();
+		}
+	}
+	if (time >= 1 && player1) player1->Render();
+	if (time >= 1 && player2) player2->Render();
 	//float x = 72, y;
 	//if (!is2player)
 	//{
