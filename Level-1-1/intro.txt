@@ -4,6 +4,9 @@ background.txt
 platform.txt
 block.txt
 mario.txt
+enemy.txt
+item.txt
+effect.txt
 # type	x	y	extra_settings per object type
 [PLATFORM]
 10	8	-8	100000
@@ -222,3 +225,9 @@ mario.txt
 9	40	40	28302
 9	216	30	28301
 9	232	30	28302
+[OBJECT]
+6	56	8
+2	72	8	0
+13	110	8	2	0
+8	104	8
+13	184	8	1	0

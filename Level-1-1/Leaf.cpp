@@ -5,6 +5,15 @@ CLeaf::CLeaf(float x, float y):CGameObject(x, y)
 {
 	starttime = 0;
 	time = 0;
+	LPSCENE scene = CGame::GetInstance()->GetCurrentScene();
+	if (scene->GetType() == SCENE_TYPE_PLAY)
+	{
+		isspawning = true;
+	}
+	else
+	{
+		isspawning = false;
+	}
 }
 
 void CLeaf::Render()
@@ -33,14 +42,13 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else
 		{
 			isspawning = false;
-			vy = LEAF_FALL_SPEED;
 			starttime = GetTickCount64();
 		}
 }
 	else
 	{
 		time = GetTickCount64() - starttime;
-		y += vy * dt;
+		y += LEAF_FALL_SPEED * dt;
 		x = float(LEAF_AMPLITUDE * cos((2 * M_PI * LEAF_FREQUENCY) * time + M_PI) + (x0 + LEAF_AMPLITUDE));
 	}
 

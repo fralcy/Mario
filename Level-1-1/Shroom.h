@@ -18,7 +18,7 @@ class CShroom : public CGameObject
 protected:
 	float ax;
 	float ay;
-	bool isspawning = true;
+	bool isspawning;
 	float maxheight = y - 16;
 	int type;
 

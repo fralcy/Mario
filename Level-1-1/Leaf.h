@@ -9,12 +9,12 @@
 #define LEAF_BBOX_HEIGHT 16
 #define LEAF_AMPLITUDE 20
 #define LEAF_FREQUENCY 0.0005f
-#define LEAF_FALL_SPEED 0.02f
+#define LEAF_FALL_SPEED 0.03f
 
 class CLeaf : public CGameObject {
 protected:
 	float x0 = x;
-	bool isspawning = true;
+	bool isspawning;
 	float maxheight = y - 48;
 	ULONGLONG time;
 	ULONGLONG starttime;

@@ -254,6 +254,39 @@ void CIntroScene::_ParseSection_BACKGROUND2(string line)
 	}
 	background2.push_back(obj);
 }
+void CIntroScene::_ParseSection_OBJECT(string line)
+{
+	vector<string> tokens = split(line);
+
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	CGameObject* obj = NULL;
+
+	switch (object_type)
+	{
+	case OBJECT_TYPE_GOOMBA: {
+		int type = (int)atof(tokens[3].c_str());
+		obj = new CGoomba(x, y, type);
+		break;
+	}
+	case OBJECT_TYPE_KOOPA: {
+		int color = (int)atof(tokens[3].c_str());
+		int type = (int)atof(tokens[4].c_str());
+		obj = new CKoopa(x, y, color, type); break;
+		break;
+	}
+	case OBJECT_TYPE_LEAF: obj = new CLeaf(x, y); break;
+	case OBJECT_TYPE_SHROOM: obj = new CShroom(x, y, -1, SHROOM_TYPE_RED); break;
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return;
+	}
+	objects.push_back(obj);
+}
 void CIntroScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -292,6 +325,7 @@ void CIntroScene::LoadAssets(LPCWSTR assetFile)
 CIntroScene::CIntroScene(int id, int world, LPCWSTR filePath) : CScene(id, world, filePath)
 {
 	key_handler = new CIntroKeyHandler(this);
+	type = 0;
 }
 
 void CIntroScene::Load()
@@ -317,6 +351,7 @@ void CIntroScene::Load()
 		if (line == "[TITLE]") { section = SCENE_SECTION_TITLE; continue; };
 		if (line == "[BACKGROUND]") { section = SCENE_SECTION_BACKGROUND; continue; };
 		if (line == "[BACKGROUND2]") { section = SCENE_SECTION_BACKGROUND2; continue; };
+		if (line == "[OBJECT]") { section = SCENE_SECTION_OBJECT; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -331,6 +366,7 @@ void CIntroScene::Load()
 		case SCENE_SECTION_TITLE: _ParseSection_TITLE(line); break;
 		case SCENE_SECTION_BACKGROUND: _ParseSection_BACKGROUND(line); break;
 		case SCENE_SECTION_BACKGROUND2: _ParseSection_BACKGROUND2(line); break;
+		case SCENE_SECTION_OBJECT: _ParseSection_OBJECT(line); break;
 		}
 	}
 
@@ -345,6 +381,17 @@ void CIntroScene::Update(DWORD dt)
 	for (size_t i = 0; i < platform.size(); i++)
 	{
 		coObjects.push_back(platform[i]);
+	}
+	if (time >= 4.6f)
+	{
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			coObjects.push_back(objects[i]);
+		}
+		for (size_t i = 0; i < objects.size(); i++)
+		{
+			objects[i]->Update(dt, &coObjects);
+		}
 	}
 	if (player1) player1->Update(dt, &coObjects);
 	if (player2) player2->Update(dt, &coObjects);
@@ -390,6 +437,41 @@ void CIntroScene::Update(DWORD dt)
 			title[i]->SetPosition(title[i]->GetX(), title[i]->GetY() + 1.6f);
 		}
 	}
+	if (time >= 4.6f && time <= 4.7f)
+	{
+		for (int i = 0; i < objects.size(); i++)
+		{
+			if (dynamic_cast<CKoopa*>(objects[i]))
+				objects[i]->SetState(KOOPA_STATE_KNOCKED);
+			if (dynamic_cast<CGoomba*>(objects[i]))
+				objects[i]->SetSpeed(0, 0);
+		}
+	}
+	if (time >= 7.35f && time <= 7.4f)
+	{
+		for (int i = 0; i < objects.size(); i++)
+		{
+			if (dynamic_cast<CKoopa*>(objects[i]))
+				objects[i]->SetState(KOOPA_STATE_SHELL);
+		}
+		player2->SetState(MARIO_STATE_JUMP);
+	}
+	if (time >= 7.4f && time <= 7.45f)
+	{
+		player2->SetState(MARIO_STATE_RUNNING_LEFT);
+	}
+	if (time >= 7.5f && time <= 7.6f)
+	{
+		player2->SetState(MARIO_STATE_JUMP);
+	}
+	if (time >= 7.9f && time <= 7.95f)
+	{
+		player2->SetState(MARIO_STATE_WALKING_RIGHT);
+	}
+	if (time >= 9.1f && time <= 9.15f)
+	{
+		player2->SetState(MARIO_STATE_IDLE);
+	}
 	DebugOutTitle(L"%f", time);
 	PurgeDeletedObjects();
 }
@@ -425,6 +507,13 @@ void CIntroScene::Render()
 			background2[i]->Render();
 		}
 	}
+	if (time >= 4.6f)
+	{
+		for (int i = 0; i < objects.size(); i++)
+		{
+			objects[i]->Render();
+		}
+	}
 	if (time >= 1 && player1) player1->Render();
 	if (time >= 1 && player2) player2->Render();
 	//float x = 72, y;
@@ -444,10 +533,21 @@ void CIntroScene::Unload()
 	for (int i = 0; i < platform.size(); i++)
 		delete platform[i];
 	platform.clear();
-
 	for (int i = 0; i < curtain.size(); i++)
 		delete curtain[i];
 	curtain.clear();
+	for (int i = 0; i < title.size(); i++)
+		delete title[i];
+	title.clear();
+	for (int i = 0; i < background.size(); i++)
+		delete background[i];
+	background.clear();
+	for (int i = 0; i < background2.size(); i++)
+		delete background2[i];
+	background2.clear();
+	for (int i = 0; i < objects.size(); i++)
+		delete objects[i];
+	objects.clear();
 	player1 = NULL;
 	player2 = NULL;
 	CSprites::GetInstance()->Clear();
@@ -466,10 +566,20 @@ void CIntroScene::PurgeDeletedObjects()
 			*it = NULL;
 		}
 	}
-
-	// NOTE: remove_if will swap all deleted items to the end of the vector
-	// then simply trim the vector, this is much more efficient than deleting individual items
 	curtain.erase(
 		std::remove_if(curtain.begin(), curtain.end(), CIntroScene::IsGameObjectDeleted),
 		curtain.end());
+
+	for (it = objects.begin(); it != objects.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	objects.erase(
+		std::remove_if(objects.begin(), objects.end(), CIntroScene::IsGameObjectDeleted),
+		objects.end());
 }

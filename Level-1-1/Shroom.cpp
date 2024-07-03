@@ -6,6 +6,15 @@ CShroom::CShroom(float x, float y, int nx, int type) :CGameObject(x, y)
 	this->ay = SHROOM_GRAVITY;
 	this->nx = nx;
 	this->type = type;
+	LPSCENE scene = CGame::GetInstance()->GetCurrentScene();
+	if (scene->GetType() == SCENE_TYPE_PLAY)
+	{
+		isspawning = true;
+	}
+	else
+	{
+		isspawning = false;
+	}
 }
 
 void CShroom::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -45,16 +54,11 @@ void CShroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			y -= 0.05f * dt;
 		}
-		else
-		{
-			isspawning = false;
-			vx = SHROOM_WALKING_SPEED * nx;
-		}
 	}
 	else
 	{
 		vy += ay * dt;
-		vx += ax * dt;
+		vx = SHROOM_WALKING_SPEED * nx;
 	}
 
 	CGameObject::Update(dt, coObjects);

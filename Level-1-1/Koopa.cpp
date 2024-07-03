@@ -28,20 +28,32 @@ CKoopa::CKoopa(float x, float y, int color, int type) : CGameObject(x, y)
     this->ay = KOOPA_GRAVITY;
     hide_start = recover_start = -1;
 
-    pathfinder = new CPathfinder(x, y);
-    LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-    scene->AddObj(pathfinder);
 
+    LPSCENE scene = CGame::GetInstance()->GetCurrentScene();
+    pathfinder = new CPathfinder(x, y);
+    if (scene->GetType()==SCENE_TYPE_PLAY)
+    {
+        LPPLAYSCENE playscene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+        playscene->AddObj(pathfinder);
+    }
     SetState(KOOPA_STATE_WALKING);
 }
 
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+    CKoopa* holdObj = NULL;
+    CMario* player = NULL;
     //Get player
-    LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-    CMario* player = (CMario*)scene->GetPlayer();
+    LPSCENE scene = CGame::GetInstance()->GetCurrentScene();
+    if (scene->GetType() == SCENE_TYPE_PLAY)
+    {
+        LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+        CMario* player = (CMario*)scene->GetPlayer();
+
+        holdObj = player->GetHoldObj();
+    }
     //No gravity if player is holding this
-    if (player->GetHoldObj() == this)
+    if (holdObj == this)
     {
         this->ay = 0;
     }
@@ -77,7 +89,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
                 y = y - KOOPA_HEIGHT + KOOPA_SHELL_HEIGHT + 2;
                 SetState(KOOPA_STATE_WALKING);
                 //If player is holding this
-                if (player->GetHoldObj() == this)
+                if (holdObj == this)
                 {
                     player->GetDamage(); //Damage player
                     player->Drop(); //Leave player's hands
@@ -217,9 +229,18 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
     if (state == KOOPA_STATE_WALKING || vx == 0)  return;
     float x, y;
     e->obj->GetPosition(x, y);
-    LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-    CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
-    scene->AddObj(hit);
+    LPSCENE scene = CGame::GetInstance()->GetCurrentScene();
+    if (scene->GetType() == SCENE_TYPE_PLAY)
+    {
+        LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+        CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
+        scene->AddObj(hit);
+    }
+    else if (scene->GetType() == SCENE_TYPE_INTRO)
+    {
+        
+    }
+
     e->obj->Delete();
     CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
 }
@@ -239,9 +260,17 @@ void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
     if (state == KOOPA_STATE_WALKING || vx == 0)  return;
     float x, y;
     e->obj->GetPosition(x, y);
-    LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
-    CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
-    scene->AddObj(hit);
+    LPSCENE scene = CGame::GetInstance()->GetCurrentScene();
+    if (scene->GetType() == SCENE_TYPE_PLAY)
+    {
+        LPPLAYSCENE scene = (LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene();
+        CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
+        scene->AddObj(hit);
+    }
+    else if (scene->GetType() == SCENE_TYPE_INTRO)
+    {
+
+    }
     e->obj->Delete();
     CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
 }

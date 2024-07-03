@@ -253,7 +253,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-
+	if (goomba->GetState() == GOOMBA_STATE_STOMPED) return;
 	if (goomba->GetType() == GOOMBA_TYPE_NORMAL)
 	{
 		// jump on top >> kill Goomba and deflect a bit 

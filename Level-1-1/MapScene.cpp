@@ -192,6 +192,7 @@ CMapScene::CMapScene(int id, int world, LPCWSTR filePath) : CScene(id, world, fi
 {
 	player = NULL;
 	key_handler = new CMapKeyHandler(this);
+	type = 1;
 }
 
 void CMapScene::Load()

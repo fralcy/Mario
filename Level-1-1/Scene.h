@@ -16,6 +16,7 @@ protected:
 	LPCWSTR sceneFilePath;
 	float cx, cy;
 	int world;
+	int type = -1;
 public: 
 	CScene(int id, int world, LPCWSTR filePath)
 	{
@@ -31,6 +32,7 @@ public:
 	virtual void Unload() = 0;
 	virtual void Update(DWORD dt) = 0;
 	virtual void Render() = 0;
+	virtual int GetType() { return type; }
 };
 typedef CScene * LPSCENE;
 

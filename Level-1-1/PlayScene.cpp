@@ -35,6 +35,7 @@ CPlayScene::CPlayScene(int id, int world, LPCWSTR filePath):
 	player = NULL;
 	key_handler = new CSampleKeyHandler(this);
 	cx = cy = 0;
+	type = 2;
 }
 
 
