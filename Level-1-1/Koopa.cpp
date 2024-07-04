@@ -124,7 +124,7 @@ void CKoopa::Render()
         switch (state)
         {
         case KOOPA_STATE_WALKING:
-            if (nx < 0) aniId = ID_ANI_KOOPA_WALKING_LEFT_RED;
+            if (vx < 0) aniId = ID_ANI_KOOPA_WALKING_LEFT_RED;
             else aniId = ID_ANI_KOOPA_WALKING_RIGHT_RED;
             break;
         case KOOPA_STATE_SHELL:
@@ -149,12 +149,12 @@ void CKoopa::Render()
         case KOOPA_STATE_WALKING:
             if (type == KOOPA_TYPE_NORMAL)
             {
-                if (nx < 0) aniId = ID_ANI_KOOPA_WALKING_LEFT_GREEN;
+                if (vx < 0) aniId = ID_ANI_KOOPA_WALKING_LEFT_GREEN;
                 else aniId = ID_ANI_KOOPA_WALKING_RIGHT_GREEN;
             }
             else
             {
-                if (nx < 0) aniId = ID_ANI_PARAKOOPA_WALKING_LEFT_GREEN;
+                if (vx < 0) aniId = ID_ANI_PARAKOOPA_WALKING_LEFT_GREEN;
                 else aniId = ID_ANI_PARAKOOPA_WALKING_RIGHT_GREEN;
             }
             break;

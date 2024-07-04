@@ -21,6 +21,7 @@
 #define SCENE_SECTION_BACKGROUND	6
 #define SCENE_SECTION_BACKGROUND2	7
 #define SCENE_SECTION_OBJECT	8
+#define SCENE_SECTION_OBJECT2	9
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -33,12 +34,13 @@ protected:
 	bool is2player = false;
 	vector<LPGAMEOBJECT> platform;
 	vector<LPGAMEOBJECT> curtain;
-	CMario* player1;
-	CMario* player2;
+	CMario* player1 = NULL;
+	CMario* player2 = NULL;
 	vector<LPGAMEOBJECT> title;
 	vector<LPGAMEOBJECT> background;
 	vector<LPGAMEOBJECT> background2;
 	vector<LPGAMEOBJECT> objects;
+	vector<LPGAMEOBJECT> objects2;
 	vector<LPGAMEOBJECT> gamemode;
 	LPGAMEOBJECT pointer;
 	float time = 0;
@@ -54,6 +56,7 @@ protected:
 	void _ParseSection_BACKGROUND(string line);
 	void _ParseSection_BACKGROUND2(string line);
 	void _ParseSection_OBJECT(string line);
+	void _ParseSection_OBJECT2(string line);
 
 	void LoadAssets(LPCWSTR assetFile);
 

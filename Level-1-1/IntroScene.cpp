@@ -287,6 +287,33 @@ void CIntroScene::_ParseSection_OBJECT(string line)
 	}
 	objects.push_back(obj);
 }
+void CIntroScene::_ParseSection_OBJECT2(string line)
+{
+	vector<string> tokens = split(line);
+
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	CGameObject* obj = NULL;
+
+	switch (object_type)
+	{
+	case OBJECT_TYPE_KOOPA: {
+		int color = (int)atof(tokens[3].c_str());
+		int type = (int)atof(tokens[4].c_str());
+		obj = new CKoopa(x, y, color, type);
+		obj->SetSpeed(KOOPA_WALKING_SPEED, 0);
+		break;
+	}
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return;
+	}
+	objects2.push_back(obj);
+}
 void CIntroScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -352,6 +379,7 @@ void CIntroScene::Load()
 		if (line == "[BACKGROUND]") { section = SCENE_SECTION_BACKGROUND; continue; };
 		if (line == "[BACKGROUND2]") { section = SCENE_SECTION_BACKGROUND2; continue; };
 		if (line == "[OBJECT]") { section = SCENE_SECTION_OBJECT; continue; };
+		if (line == "[OBJECT2]") { section = SCENE_SECTION_OBJECT2; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -367,6 +395,7 @@ void CIntroScene::Load()
 		case SCENE_SECTION_BACKGROUND: _ParseSection_BACKGROUND(line); break;
 		case SCENE_SECTION_BACKGROUND2: _ParseSection_BACKGROUND2(line); break;
 		case SCENE_SECTION_OBJECT: _ParseSection_OBJECT(line); break;
+		case SCENE_SECTION_OBJECT2: _ParseSection_OBJECT2(line); break;
 		}
 	}
 
@@ -391,6 +420,17 @@ void CIntroScene::Update(DWORD dt)
 		for (size_t i = 0; i < objects.size(); i++)
 		{
 			objects[i]->Update(dt, &coObjects);
+		}
+	}
+	if (time >= 14.0f)
+	{
+		for (size_t i = 0; i < objects2.size(); i++)
+		{
+			coObjects.push_back(objects2[i]);
+		}
+		for (size_t i = 0; i < objects2.size(); i++)
+		{
+			objects2[i]->Update(dt, &coObjects);
 		}
 	}
 	if (player1) player1->Update(dt, &coObjects);
@@ -588,6 +628,13 @@ void CIntroScene::Render()
 	}
 	if (time >= 1 && player1) player1->Render();
 	if (time >= 1 && time <= 13.5f && player2) player2->Render();
+	if (time >= 14.0f)
+	{
+		for (int i = 0; i < objects2.size(); i++)
+		{
+			objects2[i]->Render();
+		}
+	}
 	//float x = 72, y;
 	//if (!is2player)
 	//{
@@ -620,6 +667,9 @@ void CIntroScene::Unload()
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
 	objects.clear();
+	for (int i = 0; i < objects2.size(); i++)
+		delete objects2[i];
+	objects2.clear();
 	player1 = NULL;
 	player2 = NULL;
 	CSprites::GetInstance()->Clear();
@@ -654,4 +704,17 @@ void CIntroScene::PurgeDeletedObjects()
 	objects.erase(
 		std::remove_if(objects.begin(), objects.end(), CIntroScene::IsGameObjectDeleted),
 		objects.end());
+
+	for (it = objects2.begin(); it != objects2.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	objects2.erase(
+		std::remove_if(objects2.begin(), objects2.end(), CIntroScene::IsGameObjectDeleted),
+		objects2.end());
 }
