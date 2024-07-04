@@ -314,6 +314,31 @@ void CIntroScene::_ParseSection_OBJECT2(string line)
 	}
 	objects2.push_back(obj);
 }
+void CIntroScene::_ParseSection_GAMEMODE(string line)
+{
+	vector<string> tokens = split(line);
+
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	CGameObject* obj = NULL;
+
+	switch (object_type)
+	{
+	case OBJECT_TYPE_TILE: {
+		int spriteId = (int)atof(tokens[3].c_str());
+		obj = new CTile(x, y, spriteId);
+		break;
+	}
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return;
+	}
+	gamemode.push_back(obj);
+}
 void CIntroScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -380,6 +405,7 @@ void CIntroScene::Load()
 		if (line == "[BACKGROUND2]") { section = SCENE_SECTION_BACKGROUND2; continue; };
 		if (line == "[OBJECT]") { section = SCENE_SECTION_OBJECT; continue; };
 		if (line == "[OBJECT2]") { section = SCENE_SECTION_OBJECT2; continue; };
+		if (line == "[GAMEMODE]") { section = SCENE_SECTION_GAMEMODE; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -396,6 +422,7 @@ void CIntroScene::Load()
 		case SCENE_SECTION_BACKGROUND2: _ParseSection_BACKGROUND2(line); break;
 		case SCENE_SECTION_OBJECT: _ParseSection_OBJECT(line); break;
 		case SCENE_SECTION_OBJECT2: _ParseSection_OBJECT2(line); break;
+		case SCENE_SECTION_GAMEMODE: _ParseSection_GAMEMODE(line); break;
 		}
 	}
 
@@ -580,7 +607,10 @@ void CIntroScene::Update(DWORD dt)
 	{
 		player2->SetState(MARIO_STATE_RUNNING_RIGHT);
 	}
-	DebugOutTitle(L"%f", time);
+	if (time >= 15.0f)
+	{
+		isGameModeVisible = true;
+	}
 	PurgeDeletedObjects();
 }
 
@@ -635,16 +665,23 @@ void CIntroScene::Render()
 			objects2[i]->Render();
 		}
 	}
-	//float x = 72, y;
-	//if (!is2player)
-	//{
-	//	y = 150;
-	//}
-	//else
-	//{
-	//	y = 166;
-	//}
-	//CSprites::GetInstance()->Get(ID_SPRITE_INTRO_POINTER)->Draw(x ,y);
+	if (isGameModeVisible)
+	{
+		//gamemode[0] is the pointer
+		for (int i = 1; i < gamemode.size(); i++)
+		{
+			gamemode[i]->Render();
+		}
+		if (!is2player)
+		{
+			gamemode[0]->SetPosition(gamemode[1]->GetX()-16, gamemode[1]->GetY());
+		}
+		else
+		{
+			gamemode[0]->SetPosition(gamemode[1]->GetX() - 16, gamemode[gamemode.size()-1]->GetY());
+		}
+		gamemode[0]->Render();
+	}
 }
 
 void CIntroScene::Unload()

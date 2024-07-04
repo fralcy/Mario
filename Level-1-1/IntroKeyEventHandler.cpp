@@ -14,9 +14,15 @@ void CIntroKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_Q:
+		if (!scene->GetIsGameModeVisible()) return;
 		scene->ToggleIs2Player();
 		break;
 	case DIK_W:
+		if (!scene->GetIsGameModeVisible())
+		{
+			scene->ShowGameMode();
+			break;
+		}
 		if (scene->GetIs2Player()) break;
 		CGame::GetInstance()->InitiateSwitchScene(2);
 		break;

@@ -22,6 +22,7 @@
 #define SCENE_SECTION_BACKGROUND2	7
 #define SCENE_SECTION_OBJECT	8
 #define SCENE_SECTION_OBJECT2	9
+#define SCENE_SECTION_GAMEMODE	10
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -42,8 +43,8 @@ protected:
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> objects2;
 	vector<LPGAMEOBJECT> gamemode;
-	LPGAMEOBJECT pointer;
 	float time = 0;
+	bool isGameModeVisible = false;
 	ULONGLONG timer_tick = GetTickCount64();
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -57,6 +58,7 @@ protected:
 	void _ParseSection_BACKGROUND2(string line);
 	void _ParseSection_OBJECT(string line);
 	void _ParseSection_OBJECT2(string line);
+	void _ParseSection_GAMEMODE(string line);
 
 	void LoadAssets(LPCWSTR assetFile);
 
@@ -71,6 +73,8 @@ public:
 	void PurgeDeletedObjects();
 	bool GetIs2Player() { return is2player; }
 	void ToggleIs2Player() { is2player = !is2player; }
+	bool GetIsGameModeVisible() const { return isGameModeVisible; }
+	void ShowGameMode() { isGameModeVisible = true; }
 };
 
 typedef CIntroScene* LPINTROSCENE;
