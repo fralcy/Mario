@@ -471,6 +471,74 @@ void CIntroScene::Update(DWORD dt)
 	if (time >= 9.1f && time <= 9.15f)
 	{
 		player2->SetState(MARIO_STATE_IDLE);
+		player1->SetState(MARIO_STATE_WALKING_LEFT);
+		player1->SetState(MARIO_STATE_IDLE);
+		player1->SetPosition(player2->GetX() + 112, player2->GetY());
+		for (int i = 0; i < objects.size(); i++)
+		{
+			if (dynamic_cast<CKoopa*>(objects[i]))
+			{
+				objects[i]->SetState(KOOPA_STATE_SHELL);
+				objects[i]->SetPosition(player2->GetX() + 96, player2->GetY());
+				break;
+			}
+		}
+		player1->SetState(MARIO_STATE_RUNNING_LEFT);
+	}
+	if (time >= 9.5f && time <= 9.55f)
+	{
+		player1->SetState(MARIO_STATE_IDLE);
+	}
+	if (time >= 9.55f && time <= 9.6f)
+	{
+		player2->SetState(MARIO_STATE_WALKING_LEFT);
+	}
+	if (time >= 10.0f && time <= 10.05f)
+	{
+		player1->Throw();
+	}
+	if (time >= 10.15f && time <= 10.2f)
+	{
+		player2->SetState(MARIO_STATE_JUMP);
+	}
+	if (time >= 10.45f && time <= 10.5f)
+	{
+		player2->SetState(MARIO_STATE_WALKING_RIGHT);
+	}
+	if (time >= 10.55f && time <= 10.65f)
+	{
+		player1->SetState(MARIO_STATE_WALKING_RIGHT);
+	}
+	if (time >= 11.f && time <= 11.05f)
+	{
+		player2->SetState(MARIO_STATE_IDLE);
+	}
+	if (time >= 11.5f && time <= 11.55f)
+	{
+		for (int i = 0; i < objects.size(); i++)
+		{
+			if (dynamic_cast<CKoopa*>(objects[i]))
+			{
+				objects[i]->SetPosition(player2->GetX() - 112, player2->GetY());
+				break;
+			}
+		}
+	}
+	if (time >= 11.5f && player2->GetLevel() == MARIO_LEVEL_BIG)
+	{
+		player2->SetLevel(MARIO_LEVEL_SMALL);
+	}
+	if (time >= 12.5f && time <= 12.55f)
+	{
+		player2->SetState(MARIO_STATE_RUNNING_RIGHT);
+	}
+	if (time >= 13.0f && time <= 13.05f)
+	{
+		player2->SetState(MARIO_STATE_RUNNING_LEFT);
+	}
+	if (time >= 13.5f && time <= 13.55f)
+	{
+		player2->SetState(MARIO_STATE_RUNNING_RIGHT);
 	}
 	DebugOutTitle(L"%f", time);
 	PurgeDeletedObjects();
@@ -500,6 +568,10 @@ void CIntroScene::Render()
 			title[i]->Render();
 		}
 	}
+	if (time >= 13.5f && player2)
+	{
+		player2->Render();
+	}
 	if (time >= 4.6f)
 	{
 		for (int i = 0; i < background2.size(); i++)
@@ -515,7 +587,7 @@ void CIntroScene::Render()
 		}
 	}
 	if (time >= 1 && player1) player1->Render();
-	if (time >= 1 && player2) player2->Render();
+	if (time >= 1 && time <= 13.5f && player2) player2->Render();
 	//float x = 72, y;
 	//if (!is2player)
 	//{

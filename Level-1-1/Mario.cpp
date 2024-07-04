@@ -409,8 +409,9 @@ void CMario::OnCollisionWithGoal(LPCOLLISIONEVENT e)
 }
 void CMario::Throw()
 {
+	if (!hold_obj) return;
 	//hold_obj->SetState(KOOPA_STATE_SHELL);
-	hold_obj->SetSpeed(KOOPA_SPINNING_SPEED * nx, 0);
+	hold_obj->SetSpeed(KOOPA_SPINNING_SPEED * nx, 0.0f);
 	hold_obj = NULL;
 	StartKicking();
 }
