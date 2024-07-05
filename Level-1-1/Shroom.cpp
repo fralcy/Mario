@@ -54,6 +54,10 @@ void CShroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			y -= 0.05f * dt;
 		}
+		else
+		{
+			isspawning = false;
+		}
 	}
 	else
 	{
