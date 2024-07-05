@@ -82,7 +82,10 @@ void CMysteryBlock::SpawnItem(int dir)
             g->SetLife(g->GetLife() + 1);
         }
         g->SetCoin(coin);
-        g->SetScore(g->GetScore() + 100);
+        if (scene->GetType() == SCENE_TYPE_PLAY)
+        {
+            g->SetScore(g->GetScore() + 100);
+        }
     }
     scene->AddObj(obj);
 }

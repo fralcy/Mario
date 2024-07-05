@@ -242,7 +242,10 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
     }
 
     e->obj->Delete();
-    CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
+    if (scene->GetType() == SCENE_TYPE_PLAY)
+    {
+        CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
+    }
 }
 void CKoopa::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
@@ -253,7 +256,10 @@ void CKoopa::OnCollisionWithPlant(LPCOLLISIONEVENT e)
     CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
     scene->AddObj(hit);
     e->obj->Delete();
-    CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
+    if (scene->GetType() == SCENE_TYPE_PLAY)
+    {
+        CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
+    }
 }
 void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
@@ -272,7 +278,10 @@ void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 
     }
     e->obj->Delete();
-    CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
+    if (scene->GetType() == SCENE_TYPE_PLAY)
+    {
+        CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
+    }
 }
 void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
@@ -285,7 +294,10 @@ void CKoopa::OnCollisionWithBrick(LPCOLLISIONEVENT e)
         CEffect* broken = new CEffect(x, y, ID_SPRITE_BRICK_BROKEN);
         scene->AddObj(broken);
         brick->Delete();
-        CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 10);
+        if (scene->GetType() == SCENE_TYPE_PLAY)
+        {
+            CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 10);
+        }
     }
 }
 void CKoopa::SetState(int state)

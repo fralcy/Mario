@@ -48,7 +48,10 @@ void CHitbox::OnCollisionWithFirePlant(LPCOLLISIONEVENT e)
 	CEffect* hit = new CEffect(x, y, ID_SPRITE_HIT);
 	scene->AddObj(hit);
 	e->obj->Delete();
-	CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
+	if (scene->GetType()==SCENE_TYPE_PLAY)
+	{
+		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
+	}
 }
 void CHitbox::OnCollisionWithMysteryBlock(LPCOLLISIONEVENT e)
 {
@@ -66,7 +69,10 @@ void CHitbox::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	CEffect* hit = new CEffect (x, y, ID_SPRITE_HIT);
 	scene->AddObj(hit);
 	e->obj->Delete();
-	CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
+	if (scene->GetType() == SCENE_TYPE_PLAY)
+	{
+		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 100);
+	}
 }
 void CHitbox::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
@@ -91,6 +97,9 @@ void CHitbox::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 		CEffect* broken = new CEffect(x, y, ID_SPRITE_BRICK_BROKEN);
 		scene->AddObj(broken);
 		brick->Delete();
-		CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 10);
+		if (scene->GetType() == SCENE_TYPE_PLAY)
+		{
+			CGame::GetInstance()->SetScore(CGame::GetInstance()->GetScore() + 10);
+		}
 	}
 }
